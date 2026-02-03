@@ -1,3 +1,66 @@
 {
-
+  "status": "ok",
+  "userPlatform": "VK",
+  "responseToUser": "Отправляю рассылку",
+  "userPlatformId": "111",
+  "inline-elements": [
+    [
+      {
+        "type": "button",
+        "text": "1",
+        "color": "dark-gray",
+        "text-color": "white"
+      }
+    ],
+    [
+      {
+        "type": "button",
+        "text": "3",
+        "color": "dark-gray",
+        "text-color": "white"
+      }
+    ],
+    [
+      {
+        "type": "button",
+        "text": "2",
+        "color": "dark-gray",
+        "text-color": "white"
+      }
+    ]
+  ],
+  "reply-elements": [
+    [
+      {
+        "type": "button",
+        "text": "Задать вопрос",
+        "color": "white",
+        "text-color": "black"
+      }
+    ],
+    [{
+      "type": "link",
+      "text": "Обратная связь",
+      "color": "dark-gray",
+      "text-color": "white"
+    },
+      {
+        "type": "button",
+        "text": "Помощь",
+        "color": "dark-gray",
+        "text-color": "white"
+      }]
+  ],
+  "distributionText": "Привет! Это рассылка",
+  "sendToHimself": false,
+  "receivers": [
+    {
+      "platform": "VK",
+      "receiversId": ["123", "125"]
+    },
+    {
+      "platform": "TG",
+      "receiversId": ["1111"]
+    }
+  ]
 }

@@ -1,54 +1,56 @@
 {
   "status": "ok",
   "userPlatform": "VK",
-  "responseToUser": "Привет! Это рассылка!",
-  "userPlatformId": "111",
-  "inline-elements": [
-    [
-      {
-        "type": "button",
-        "text": "1",
-        "color": "dark-gray",
-        "text-color": "white"
-      }
+  "userIdOnPlatform": "111",
+  "responseToUser": {
+    "messageText": "Привет! Это рассылка!",
+    "inlineElements": [
+      [
+        {
+          "type": "button",
+          "text": "1",
+          "color": "dark-gray",
+          "textСolor": "white"
+        }
+      ],
+      [
+        {
+          "type": "button",
+          "text": "3",
+          "color": "dark-gray",
+          "textСolor": "white"
+        }
+      ],
+      [
+        {
+          "type": "button",
+          "text": "2",
+          "color": "dark-gray",
+          "textСolor": "white"
+        }
+      ]
     ],
-    [
-      {
-        "type": "button",
-        "text": "3",
+    "replyElements": [
+      [
+        {
+          "type": "button",
+          "text": "Задать вопрос",
+          "color": "white",
+          "textColor": "black"
+        }
+      ],
+      [{
+        "type": "link",
+        "text": "Обратная связь",
         "color": "dark-gray",
-        "text-color": "white"
-      }
-    ],
-    [
-      {
-        "type": "button",
-        "text": "2",
-        "color": "dark-gray",
-        "text-color": "white"
-      }
+        "textColor": "white"
+      },
+        {
+          "type": "button",
+          "text": "Помощь",
+          "color": "dark-gray",
+          "textColor": "white"
+        }]
     ]
-  ],
-  "reply-elements": [
-    [
-      {
-        "type": "button",
-        "text": "Задать вопрос",
-        "color": "white",
-        "text-color": "black"
-      }
-    ],
-    [{
-      "type": "link",
-      "text": "Обратная связь",
-      "color": "dark-gray",
-      "text-color": "white"
-    },
-      {
-        "type": "button",
-        "text": "Помощь",
-        "color": "dark-gray",
-        "text-color": "white"
-      }]
-  ]
+  }
 }

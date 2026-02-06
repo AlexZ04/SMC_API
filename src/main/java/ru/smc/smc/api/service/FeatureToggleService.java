@@ -28,14 +28,18 @@ public class FeatureToggleService {
     }
 
     public boolean isToggleActive(String toggleName) {
-        return getSpecificToggle(toggleName).isActive();
+        return getSpecificToggle(getAllToggles(), toggleName).isActive();
     }
 
     public void changeActiveToggleStatus(String toggleName, boolean activate) {
-        FeatureToggle toggle = getSpecificToggle(toggleName);
+        List<FeatureToggle> allToggles = getAllToggles();
+        FeatureToggle toggle = getSpecificToggle(allToggles, toggleName);
 
         if (toggle.isActive() != activate) {
             toggle.setActive(activate);
+
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(TOGGLES_PATH.toFile(), allToggles);
         }
         else {
             throw new BadRequestException(ErrorsMessages.TOGGLE_FUNCTIONAL +
@@ -66,8 +70,8 @@ public class FeatureToggleService {
         return toggles;
     }
 
-    private FeatureToggle getSpecificToggle(String toggleName) {
-        return getAllToggles().stream()
+    private FeatureToggle getSpecificToggle(List<FeatureToggle> featureToggles, String toggleName) {
+        return featureToggles.stream()
                 .filter(toggle -> toggle.getToggleName().equalsIgnoreCase(toggleName))
                 .findFirst()
                 .orElseThrow(() -> new BadRequestException("Тоггл " + toggleName + " не найден"));

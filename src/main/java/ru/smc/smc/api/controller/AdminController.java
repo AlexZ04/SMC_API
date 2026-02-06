@@ -12,7 +12,8 @@ public class AdminController {
     private final FeatureToggleService featureToggleService;
 
     @GetMapping("/test")
-    public boolean test(){
-        return featureToggleService.isToggleActive(FeatureToggles.TEST_TOGGLE);
+    public String test(){
+        return featureToggleService.isToggleActive(FeatureToggles.TEST_TOGGLE) ? "Тестовый тоггл включен" :
+                "Тестовый тоггл выключен";
     }
 }

@@ -1,4 +1,4 @@
-package ru.smc.smc.api.domain.model;
+package ru.smc.smc.api.domain.model.response;
 
 import lombok.Getter;
 

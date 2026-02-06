@@ -1,7 +1,7 @@
 [
   {
     "toggleName": "Тест",
-    "isActive": false,
+    "active": false,
     "description": "Тестовый тоггл"
   }
 ]

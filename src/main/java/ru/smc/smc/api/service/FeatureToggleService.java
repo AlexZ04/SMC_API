@@ -2,7 +2,7 @@ package ru.smc.smc.api.service;
 
 import com.sun.tools.javac.Main;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.constant.Constants;
+import ru.smc.smc.api.domain.constant.ErrorsMessages;
 import ru.smc.smc.api.domain.exceptions.BadRequestException;
 import ru.smc.smc.api.domain.model.toggle.FeatureToggle;
 import tools.jackson.core.type.TypeReference;
@@ -27,22 +27,20 @@ public class FeatureToggleService {
         return parseToggleListToText(toggles);
     }
 
+    public boolean isToggleActive(String toggleName) {
+        return getSpecificToggle(toggleName).isActive();
+    }
+
     public void changeActiveToggleStatus(String toggleName, boolean activate) {
-        Optional<FeatureToggle> toggleOptional = getSpecificToggle(toggleName);
+        FeatureToggle toggle = getSpecificToggle(toggleName);
 
-        if (toggleOptional.isPresent()) {
-            FeatureToggle toggle = toggleOptional.get();
-
-            if (toggle.isActive() != activate) {
-                toggle.setActive(activate);
-            }
-            else {
-                throw new BadRequestException(Constants.TOGGLE_FUNCTIONAL +
-                        (activate ? "включена: " : "выключена: ") +
-                        toggle.getToggleName());
-            }
-        } else {
-            throw new BadRequestException("Тоггл " + toggleName + " не найден");
+        if (toggle.isActive() != activate) {
+            toggle.setActive(activate);
+        }
+        else {
+            throw new BadRequestException(ErrorsMessages.TOGGLE_FUNCTIONAL +
+                    (activate ? "включена: " : "выключена: ") +
+                    toggle.getToggleName());
         }
     }
 
@@ -68,10 +66,11 @@ public class FeatureToggleService {
         return toggles;
     }
 
-    private Optional<FeatureToggle> getSpecificToggle(String toggleName) {
+    private FeatureToggle getSpecificToggle(String toggleName) {
         return getAllToggles().stream()
                 .filter(toggle -> toggle.getToggleName().equalsIgnoreCase(toggleName))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Тоггл " + toggleName + " не найден"));
     }
 
     private String parseToggleListToText(List<FeatureToggle> toggles) {

@@ -1,3 +1,12 @@
 spring:
   application:
     name: Smc.api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/SMC
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: false

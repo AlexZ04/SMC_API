@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="/db/changelog/000-connect-pgcrypto.xml"/>
+    <include file="db/changelog/001-create-faculty.xml"/>
+    <include file="db/changelog/002-create-bot-user.xml"/>
+    <include file="db/changelog/003-create-sports-organizer.xml"/>
+    <include file="db/changelog/004-create-message-history.xml"/>
+    <include file="db/changelog/005-create-subscription.xml"/>
+    <include file="db/changelog/006-create-bot-stats.xml"/>
+
+</databaseChangeLog>

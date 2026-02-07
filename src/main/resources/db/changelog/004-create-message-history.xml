@@ -1,0 +1,35 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="004-create-message-history" author="aleksey.z">
+        <createTable tableName="message_history">
+            <column name="id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="message" type="text"/>
+            <column name="message_time" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="message_history" indexName="idx_message_history_user_id">
+            <column name="user_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="message_history"
+                baseColumnNames="user_id"
+                constraintName="fk_message_history_user"
+                referencedTableName="bot_user"
+                referencedColumnNames="inner_id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

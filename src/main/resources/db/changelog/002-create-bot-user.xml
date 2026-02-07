@@ -1,0 +1,46 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="002-create-bot-user" author="aleksey.z">
+        <createTable tableName="bot_user">
+            <column name="inner_id" type="uuid" defaultValueComputed="gen_random_uuid()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="platform" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="platform_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="faculty_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_state" type="integer" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_sent" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="bot_user" indexName="idx_bot_user_faculty_id">
+            <column name="faculty_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="bot_user"
+                baseColumnNames="faculty_id"
+                constraintName="fk_bot_user_faculty"
+                referencedTableName="faculty"
+                referencedColumnNames="id"
+                onDelete="RESTRICT"/>
+    </changeSet>
+
+</databaseChangeLog>

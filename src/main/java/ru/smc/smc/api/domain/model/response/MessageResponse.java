@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class MessageResponse {
+    private List<String> previewMessages;
     private String responseText;
     private List<List<ElementModel>> inlineElements;
     private List<List<ElementModel>> replyElements;

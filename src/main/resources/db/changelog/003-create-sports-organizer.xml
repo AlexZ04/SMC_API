@@ -1,0 +1,38 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="003-create-sports-organizer" author="aleksey.z">
+        <createTable tableName="sports_organizer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="faculty_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="social_link" type="varchar(255)"/>
+            <column name="update_time" type="timestamptz" defaultValueComputed="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="sports_organizer"
+                             columnNames="faculty_id"
+                             constraintName="uc_sports_org_faculty_id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="sports_organizer"
+                baseColumnNames="faculty_id"
+                constraintName="fk_sports_organizer_faculty"
+                referencedTableName="faculty"
+                referencedColumnNames="id"
+                onDelete="RESTRICT"/>
+    </changeSet>
+
+</databaseChangeLog>

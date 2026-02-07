@@ -3,6 +3,7 @@
   "userPlatform": "VK",
   "userIdOnPlatform": "111",
   "responseToUser": {
+    "previewMessages": ["Первое сообщение"],
     "messageText": "Привет! Это рассылка!",
     "inlineElements": [
       [

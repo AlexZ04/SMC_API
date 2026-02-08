@@ -8,14 +8,14 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
+@AllArgsConstructor()
 public class SportsOrganizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "faculty_id", nullable = false, unique = true)
     private Faculty faculty;
 
@@ -26,5 +26,10 @@ public class SportsOrganizer {
     private String socialLink;
 
     private Instant updateTime = Instant.now();
+
+    public SportsOrganizer(String name, String socialLink) {
+        this.name = name;
+        this.socialLink = socialLink;
+    }
 }
 

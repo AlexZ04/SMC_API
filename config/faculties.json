@@ -1,98 +1,146 @@
 [
   {
     "id": 0,
-    "nameRu": "Не установлен"
+    "nameRu": "Не установлен",
+    "sportsOrgName": "-",
+    "sportsOrgLink": "-"
   },
   {
     "id": 1,
-    "nameRu": "БИ"
+    "nameRu": "БИ",
+    "sportsOrgName": "Ромашова Елизавета",
+    "sportsOrgLink": "https://vk.com/lromashovaa"
   },
   {
     "id": 2,
-    "nameRu": "ВИША «Агробиотек»"
+    "nameRu": "ВИША «Агробиотек»",
+    "sportsOrgName": "В данный момент спорторга данного факультета нет",
+    "sportsOrgLink": "-"
   },
   {
     "id": 3,
-    "nameRu": "ГГФ"
+    "nameRu": "ГГФ",
+    "sportsOrgName": "Мельникова Дарья",
+    "sportsOrgLink": "https://vk.com/daryamxq"
   },
   {
     "id": 4,
-    "nameRu": "ИИК"
+    "nameRu": "ИИК",
+    "sportsOrgName": "Александрова Елена",
+    "sportsOrgLink": "https://vk.com/a.alekk"
   },
   {
     "id": 5,
-    "nameRu": "ИО"
+    "nameRu": "ИО",
+    "sportsOrgName": "Резанова Елизавета",
+    "sportsOrgLink": "https://vk.com/yahochuspat001"
   },
   {
     "id": 6,
-    "nameRu": "ИПМКН"
+    "nameRu": "ИПМКН",
+    "sportsOrgName": "Таргаева Виктория",
+    "sportsOrgLink": "https://vk.com/vikaders"
   },
   {
     "id": 7,
-    "nameRu": "ИЭМ"
+    "nameRu": "ИЭМ",
+    "sportsOrgName": "Повалюхина Анна",
+    "sportsOrgLink": "https://vk.com/anytkaazzz"
   },
   {
     "id": 8,
-    "nameRu": "ММФ"
+    "nameRu": "ММФ",
+    "sportsOrgName": "Марченко Александра",
+    "sportsOrgLink": "https://vk.com/shmupa"
   },
   {
     "id": 9,
-    "nameRu": "РФФ"
+    "nameRu": "РФФ",
+    "sportsOrgName": "Цолко Кирилл",
+    "sportsOrgLink": "https://vk.com/kirilltsolko"
   },
   {
     "id": 10,
-    "nameRu": "САЕ ИУМТ"
+    "nameRu": "САЕ ИУМТ",
+    "sportsOrgName": "В данный момент спорторга данного факультета нет",
+    "sportsOrgLink": "-"
   },
   {
     "id": 11,
-    "nameRu": "ФЖ"
+    "nameRu": "ФЖ",
+    "sportsOrgName": "Сутуло Анастасия",
+    "sportsOrgLink": "https://vk.com/asutulo"
   },
   {
     "id": 12,
-    "nameRu": "ФилФ"
+    "nameRu": "ФилФ",
+    "sportsOrgName": "Закутина Валерия",
+    "sportsOrgLink": "https://vk.com/zakutinalera"
   },
   {
     "id": 13,
-    "nameRu": "ФИПН"
+    "nameRu": "ФИПН",
+    "sportsOrgName": "Соломатин Данила",
+    "sportsOrgLink": "https://vk.com/d.solomatin2016"
   },
   {
     "id": 14,
-    "nameRu": "ФИТ"
+    "nameRu": "ФИТ",
+    "sportsOrgName": "Воронин Вадим",
+    "sportsOrgLink": "https://vk.com/voroninvad"
   },
   {
     "id": 15,
-    "nameRu": "ФИЯ"
+    "nameRu": "ФИЯ",
+    "sportsOrgName": "Данилова Анастасия",
+    "sportsOrgLink": "https://vk.com/anastasiia.danilo"
   },
   {
     "id": 16,
-    "nameRu": "ФП"
+    "nameRu": "ФП",
+    "sportsOrgName": "Нестерова Виктория",
+    "sportsOrgLink": "https://vk.com/nestoriaa"
   },
   {
     "id": 17,
-    "nameRu": "ФсФ"
+    "nameRu": "ФсФ",
+    "sportsOrgName": "Центровская Софья",
+    "sportsOrgLink": "https://vk.com/flaxativelove"
   },
   {
     "id": 18,
-    "nameRu": "ФТФ"
+    "nameRu": "ФТФ",
+    "sportsOrgName": "Пронягин Андрей",
+    "sportsOrgLink": "https://vk.com/pronyagin_andryha"
   },
   {
     "id": 19,
-    "nameRu": "ФФ"
+    "nameRu": "ФФ",
+    "sportsOrgName": "Забелин Тимофей",
+    "sportsOrgLink": "https://vk.com/vechnovlubleny"
   },
   {
     "id": 20,
-    "nameRu": "ФФК"
+    "nameRu": "ФФК",
+    "sportsOrgName": "Абдурахимов Сайидбек",
+    "sportsOrgLink": "https://vk.com/issayiss"
   },
   {
     "id": 21,
-    "nameRu": "ХФ"
+    "nameRu": "ХФ",
+    "sportsOrgName": "Комалов Егор",
+    "sportsOrgLink": "https://vk.com/inertniy_gas"
   },
   {
     "id": 22,
-    "nameRu": "ЮИ"
+    "nameRu": "ЮИ",
+    "sportsOrgName": "Спицын Антон",
+    "sportsOrgLink": "https://vk.com/bebebe_bababaa"
   },
   {
     "id": 23,
-    "nameRu": "HITs"
+    "nameRu": "HITs",
+    "sportsOrgName": "Кузнецова Василина",
+    "sportsOrgLink": "https://vk.com/kuzneeechik"
   }
 ]

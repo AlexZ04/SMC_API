@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.smc.smc.api.domain.enums.AvailablePlatform;
+import ru.smc.smc.api.domain.enums.UserState;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor()
 public class BotUser {
     @Id
     private UUID innerId = UUID.randomUUID();
@@ -27,7 +28,9 @@ public class BotUser {
     @JoinColumn(name = "faculty_id", nullable = false)
     private Faculty faculty;
 
-    private int currentState = 0;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserState currentState = UserState.MAIN_MENU;
     private Long messageSent = 0L;
     private Instant createTime =  Instant.now();
 

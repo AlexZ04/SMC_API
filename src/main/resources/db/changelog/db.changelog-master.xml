@@ -13,5 +13,6 @@
     <include file="db/changelog/004-create-message-history.xml"/>
     <include file="db/changelog/005-create-subscription.xml"/>
     <include file="db/changelog/006-create-bot-stats.xml"/>
+    <include file="db/changelog/007-change-bot-user-current-state-to-enum.xml"/>
 
 </databaseChangeLog>

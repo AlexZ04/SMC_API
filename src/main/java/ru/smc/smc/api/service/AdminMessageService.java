@@ -24,8 +24,11 @@ public class AdminMessageService {
     }
 
     private MessageResponse formForbiddenResponse(BotUser user) {
-        log.warn("Пользователь {} не имеет прав к пользованию функциями администратора (платформа - {})", user.getIdOnPlatform(),
-                user.getPlatform());
+        log.warn("Пользователь {} не имеет прав к пользованию функциями администратора (платформа - {})." +
+                        "Внутренний id: {}",
+                user.getIdOnPlatform(),
+                user.getPlatform(),
+                user.getInnerId());
 
         return new MessageResponse();
     }

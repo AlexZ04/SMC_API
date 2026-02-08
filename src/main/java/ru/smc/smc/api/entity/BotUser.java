@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.smc.smc.api.domain.enums.AvailablePlatform;
+import ru.smc.smc.api.domain.enums.UserRole;
 import ru.smc.smc.api.domain.enums.UserState;
 
 import java.time.Instant;
@@ -31,6 +32,9 @@ public class BotUser {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserState currentState = UserState.MAIN_MENU;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role = UserRole.USER;
     private Long messageSent = 0L;
     private Instant createTime =  Instant.now();
 

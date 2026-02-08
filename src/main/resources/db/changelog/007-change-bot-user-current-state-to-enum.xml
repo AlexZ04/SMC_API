@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="007-change-user-state-to-enum" author="aleksey.z">
+
+        <renameColumn
+                tableName="bot_user"
+                oldColumnName="current_state"
+                newColumnName="current_state_old"
+                columnDataType="integer"/>
+
+        <addColumn tableName="bot_user">
+            <column name="current_state" type="varchar(100)" defaultValue="MAIN_MENU">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <dropColumn tableName="bot_user" columnName="current_state_old"/>
+
+    </changeSet>
+
+</databaseChangeLog>

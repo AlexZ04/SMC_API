@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
 @AllArgsConstructor()
 public class BotUser {
     @Id

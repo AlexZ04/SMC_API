@@ -1,19 +1,23 @@
 package ru.smc.smc.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.smc.smc.api.domain.constant.FeatureToggles;
-import ru.smc.smc.api.service.FeatureToggleService;
+import ru.smc.smc.api.domain.model.request.MessageRequestBody;
+import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.service.AdminMessageService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class AdminController {
-    private final FeatureToggleService featureToggleService;
 
-    @GetMapping("/test")
-    public String test(){
-        return featureToggleService.isToggleActive(FeatureToggles.TEST_TOGGLE) ? "Тестовый тоггл включен" :
-                "Тестовый тоггл выключен";
+    private final AdminMessageService adminMessageService;
+
+    @PostMapping("/admin")
+    public MessageResponse processMessage(@RequestBody MessageRequestBody request){
+        return adminMessageService.processMessage(request);
     }
 }

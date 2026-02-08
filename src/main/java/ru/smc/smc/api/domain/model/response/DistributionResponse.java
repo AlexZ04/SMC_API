@@ -1,6 +1,7 @@
 package ru.smc.smc.api.domain.model.response;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package ru.smc.smc.api.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
@@ -9,9 +10,10 @@ import ru.smc.smc.api.utilities.UserUtility;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AdminMessageService {
 
-    private UserService userService;
+    private final UserService userService;
 
     public MessageResponse processMessage(MessageRequestBody request) {
         BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());

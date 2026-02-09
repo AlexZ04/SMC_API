@@ -2,21 +2,22 @@ package ru.smc.smc.api.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.smc.smc.api.domain.enums.AvailablePlatform;
 import ru.smc.smc.api.domain.enums.UserRole;
 import ru.smc.smc.api.domain.enums.UserState;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor()
-@AllArgsConstructor()
+@NoArgsConstructor
+@AllArgsConstructor
 public class BotUser {
     @Id
     private UUID innerId = UUID.randomUUID();
@@ -37,14 +38,6 @@ public class BotUser {
     private UserRole role = UserRole.USER;
     private Long messageSent = 0L;
     private Instant createTime =  Instant.now();
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<MessageHistory> messages = new ArrayList<>();
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Subscription subscription;
 }

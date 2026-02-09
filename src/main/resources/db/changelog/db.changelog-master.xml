@@ -15,5 +15,7 @@
     <include file="db/changelog/006-create-bot-stats.xml"/>
     <include file="db/changelog/007-change-bot-user-current-state-to-enum.xml"/>
     <include file="db/changelog/008-add-user-role.xml"/>
+    <include file="db/changelog/009-update-message-history-structure.xml"/>
+    <include file="db/changelog/010-add-message-type-to-message-history.xml"/>
 
 </databaseChangeLog>

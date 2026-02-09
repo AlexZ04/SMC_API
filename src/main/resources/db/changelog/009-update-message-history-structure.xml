@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="009-update-message-history-structure" author="aleksey.z">
+
+        <dropForeignKeyConstraint
+                baseTableName="message_history"
+                constraintName="fk_message_history_user"/>
+
+        <dropColumn
+                tableName="message_history"
+                columnName="user_id"/>
+
+        <addColumn tableName="message_history">
+            <column name="platform" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id_on_platform" type="varchar(255)"/>
+
+            <column name="attachments_amount" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

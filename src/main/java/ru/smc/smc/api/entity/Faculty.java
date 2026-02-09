@@ -3,7 +3,6 @@ package ru.smc.smc.api.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,8 @@ import java.time.Instant;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor()
+@NoArgsConstructor
+@AllArgsConstructor
 public class Faculty {
     @Id
     private int id;

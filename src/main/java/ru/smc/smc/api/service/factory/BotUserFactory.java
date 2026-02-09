@@ -1,5 +1,6 @@
 package ru.smc.smc.api.service.factory;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.constant.ErrorsMessages;
@@ -11,9 +12,10 @@ import ru.smc.smc.api.repository.FacultyRepository;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BotUserFactory {
 
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public BotUser createNewUser(AvailablePlatform availablePlatform, String idOnPlatform) {
         Faculty defaultFaculty = facultyRepository.findById(0).orElseThrow(() -> new NotFoundException(ErrorsMessages.FACULTY_NOT_FOUND));

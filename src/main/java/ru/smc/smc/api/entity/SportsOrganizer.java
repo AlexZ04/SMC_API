@@ -1,15 +1,18 @@
 package ru.smc.smc.api.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor()
-@AllArgsConstructor()
+@NoArgsConstructor
+@AllArgsConstructor
 public class SportsOrganizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

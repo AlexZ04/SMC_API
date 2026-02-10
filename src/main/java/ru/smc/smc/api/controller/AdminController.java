@@ -1,10 +1,7 @@
 package ru.smc.smc.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.smc.smc.api.domain.enums.MessageType;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.MessageResponse;
@@ -19,7 +16,7 @@ public class AdminController {
     private static final MessageType MESSAGE_TYPE = MessageType.ADMIN;
 
     @PostMapping("/admin")
-    public MessageResponse processMessage(@RequestBody MessageRequestBody request){
-        return messageProcessorService.processMessage(request, MESSAGE_TYPE);
+    public MessageResponse processMessage(@RequestBody MessageRequestBody request, @RequestHeader String apiKey){
+        return messageProcessorService.processMessage(request, MESSAGE_TYPE, apiKey);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.smc.smc.api.domain.exceptions.BadRequestException;
 import ru.smc.smc.api.domain.exceptions.NotFoundException;
+import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
 import ru.smc.smc.api.domain.model.response.ErrorResponse;
 
 @Slf4j
@@ -26,6 +27,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
                 HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> catchUnauthorizedException(UnauthorizedException exception) {
+        logError(exception);
+
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exception.getMessage()),
+                HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler

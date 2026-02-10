@@ -8,7 +8,9 @@ import ru.smc.smc.api.domain.enums.MessageType;
 import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
+import ru.smc.smc.api.repository.BotUserRepository;
 import ru.smc.smc.api.repository.MessageHistoryRepository;
 
 import static ru.smc.smc.api.domain.constant.ErrorsMessages.INVALID_API_KEY;
@@ -20,6 +22,8 @@ public class MessageProcessorService {
 
     private final AdminMessageService adminMessageService;
     private final MessageHistoryRepository messageHistoryRepository;
+    private final BotUserRepository botUserRepository;
+    private final UserService userService;
 
     @Value("${api-config.key}")
     private String validApiKey;
@@ -29,18 +33,27 @@ public class MessageProcessorService {
             throw new UnauthorizedException(INVALID_API_KEY);
         }
 
-        primaryProcessingMessage(request, messageType);
+        BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());
 
-        return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request) : null;
+        primaryProcessingMessage(request, messageType, user);
+
+        return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request, user) : null;
     }
 
     private boolean isApiKeyValid(String apiKey) {
         return apiKey.equals(validApiKey);
     }
 
-    private void primaryProcessingMessage(MessageRequestBody request, MessageType messageType) {
+    private void primaryProcessingMessage(MessageRequestBody request, MessageType messageType, BotUser user) {
         logIncomingMessage(request, messageType);
         saveMessageToHistory(request, messageType);
+        updateStats(user);
+    }
+
+    private void updateStats(BotUser user) {
+        Long userMessages = user.getMessageSent() + 1;
+        user.setMessageSent(userMessages);
+        botUserRepository.save(user);
     }
 
     private void saveMessageToHistory(MessageRequestBody request, MessageType messageType) {

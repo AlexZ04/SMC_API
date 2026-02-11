@@ -17,5 +17,7 @@
     <include file="db/changelog/008-add-user-role.xml"/>
     <include file="db/changelog/009-update-message-history-structure.xml"/>
     <include file="db/changelog/010-add-message-type-to-message-history.xml"/>
+    <include file="db/changelog/011-add-user-platform-id.xml"/>
+    <include file="db/changelog/012-fix-platform-field.xml"/>
 
 </databaseChangeLog>

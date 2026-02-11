@@ -16,7 +16,7 @@ public class AdminController {
     private static final MessageType MESSAGE_TYPE = MessageType.ADMIN;
 
     @PostMapping("/admin")
-    public MessageResponse processMessage(@RequestBody MessageRequestBody request, @RequestHeader String apiKey){
+    public MessageResponse processMessage(@RequestBody MessageRequestBody request, @RequestHeader("api-key") String apiKey){
         return messageProcessorService.processMessage(request, MESSAGE_TYPE, apiKey);
     }
 }

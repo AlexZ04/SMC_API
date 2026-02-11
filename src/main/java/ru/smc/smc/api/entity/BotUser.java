@@ -21,7 +21,8 @@ import java.util.UUID;
 public class BotUser {
     @Id
     private UUID innerId = UUID.randomUUID();
-    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AvailablePlatform platform;
     @NotNull
     private String idOnPlatform;

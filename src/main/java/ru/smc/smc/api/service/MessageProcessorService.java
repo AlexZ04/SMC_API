@@ -1,6 +1,7 @@
 package ru.smc.smc.api.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.ExtensionMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,17 @@ import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
 import ru.smc.smc.api.repository.BotUserRepository;
 import ru.smc.smc.api.repository.MessageHistoryRepository;
+import ru.smc.smc.api.utilities.MessageDescriptor;
 
 import static ru.smc.smc.api.domain.constant.ErrorsMessages.INVALID_API_KEY;
 
+/*
+Сервис для произведения операций, общей для обоих сервисов и перенаправления сообщения в нужный сервис 
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@ExtensionMethod(MessageDescriptor.class)
 public class MessageProcessorService {
 
     private final AdminMessageService adminMessageService;
@@ -37,6 +43,10 @@ public class MessageProcessorService {
 
         primaryProcessingMessage(request, messageType, user);
 
+        if (checkReturnMessage(request, messageType, user)) {
+            return new MessageResponse();
+        }
+
         return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request, user) : null;
     }
 
@@ -44,10 +54,16 @@ public class MessageProcessorService {
         return apiKey.equals(validApiKey);
     }
 
+    // первичная обработка сообщения: логирование, сохранение в историческую таблицу и обновление статистики
     private void primaryProcessingMessage(MessageRequestBody request, MessageType messageType, BotUser user) {
         logIncomingMessage(request, messageType);
         saveMessageToHistory(request, messageType);
         updateStats(user);
+    }
+
+    // проверка сообщения на сообщения-триггеры возвращения в главное меню
+    private boolean checkReturnMessage(MessageRequestBody request, MessageType messageType, BotUser user) {
+        return request.getMessage().isReturnMessage();
     }
 
     private void updateStats(BotUser user) {
@@ -63,7 +79,7 @@ public class MessageProcessorService {
     }
 
     private void logIncomingMessage(MessageRequestBody request, MessageType messageType) {
-        log.info("Получено новое сообщение типа {}: {}. Платформа: {}, id пользователя на платформе: {}, количество вложений: {}",
-                messageType, request.getMessage(), request.getPlatform(), request.getUserIdOnPlatform(), request.getAttachmentsType());
+        log.info("Получено новое сообщение типа '{}': {}. Платформа: {}, id пользователя на платформе: '{}', количество вложений: {}",
+                messageType, request.getMessage(), request.getPlatform(), request.getUserIdOnPlatform(), request.getAttachmentsAmount());
     }
 }

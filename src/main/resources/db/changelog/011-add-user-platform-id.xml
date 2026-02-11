@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="016-add-id-on-platform-to-bot-user" author="aleksey.z">
+
+        <addColumn tableName="bot_user">
+            <column name="id_on_platform" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+        </addColumn>
+
+        <createIndex
+                indexName="idx_bot_user_platform_id"
+                tableName="bot_user">
+            <column name="platform"/>
+            <column name="id_on_platform"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

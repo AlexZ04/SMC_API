@@ -12,9 +12,7 @@ import ru.smc.smc.api.utilities.UserUtility;
 @Service
 @RequiredArgsConstructor
 public class AdminMessageService {
-
-    private final UserService userService;
-
+    
     public MessageResponse processMessage(MessageRequestBody request, BotUser user) {
         if (!UserUtility.isUserAdmin(user)) {
             return formForbiddenResponse(user);

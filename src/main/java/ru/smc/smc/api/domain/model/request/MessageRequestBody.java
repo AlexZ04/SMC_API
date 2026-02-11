@@ -15,7 +15,7 @@ public class MessageRequestBody {
     @Column(nullable = false)
     private AvailablePlatform platform;
     private String userIdOnPlatform;
-    private int attachmentsType = 0;
+    private int attachmentsAmount = 0;
 
     // todo: сделать поле для картинок и стикеров
 
@@ -25,7 +25,7 @@ public class MessageRequestBody {
         messageHistory.setMessage(message);
         messageHistory.setPlatform(platform);
         messageHistory.setUserIdOnPlatform(userIdOnPlatform);
-        messageHistory.setAttachmentsAmount(attachmentsType);
+        messageHistory.setAttachmentsAmount(attachmentsAmount);
         messageHistory.setMessageType(messageType);
 
         return messageHistory;

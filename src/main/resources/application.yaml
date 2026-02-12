@@ -14,3 +14,6 @@ spring:
 
 api-config:
   key: test-api-key
+
+messages:
+  return-to-main-screen: Возвращение в главное меню

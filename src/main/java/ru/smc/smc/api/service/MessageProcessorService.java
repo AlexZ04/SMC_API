@@ -13,6 +13,7 @@ import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
 import ru.smc.smc.api.repository.BotUserRepository;
 import ru.smc.smc.api.repository.MessageHistoryRepository;
+import ru.smc.smc.api.service.response.ResponseService;
 import ru.smc.smc.api.utilities.MessageDescriptor;
 
 import static ru.smc.smc.api.domain.constant.ErrorsMessages.INVALID_API_KEY;
@@ -30,6 +31,7 @@ public class MessageProcessorService {
     private final MessageHistoryRepository messageHistoryRepository;
     private final BotUserRepository botUserRepository;
     private final UserService userService;
+    private final ResponseService responseService;
 
     @Value("${api-config.key}")
     private String validApiKey;
@@ -44,7 +46,7 @@ public class MessageProcessorService {
         primaryProcessingMessage(request, messageType, user);
 
         if (checkReturnMessage(request, messageType, user)) {
-            return new UserResponseItem();
+            return responseService.createReturnToMainMenuMessage(user);
         }
 
         return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request, user) : null;

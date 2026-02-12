@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.smc.smc.api.domain.enums.MessageType;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.service.MessageProcessorService;
 
 @RestController
@@ -16,7 +16,7 @@ public class AdminController {
     private static final MessageType MESSAGE_TYPE = MessageType.ADMIN;
 
     @PostMapping("/admin")
-    public MessageResponse processMessage(@RequestBody MessageRequestBody request, @RequestHeader("api-key") String apiKey){
+    public UserResponseItem processMessage(@RequestBody MessageRequestBody request, @RequestHeader("api-key") String apiKey){
         return messageProcessorService.processMessage(request, MESSAGE_TYPE, apiKey);
     }
 }

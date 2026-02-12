@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.enums.MessageType;
 import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
 import ru.smc.smc.api.repository.BotUserRepository;
@@ -34,7 +34,7 @@ public class MessageProcessorService {
     @Value("${api-config.key}")
     private String validApiKey;
 
-    public MessageResponse processMessage(MessageRequestBody request, MessageType messageType, String apiKey) {
+    public UserResponseItem processMessage(MessageRequestBody request, MessageType messageType, String apiKey) {
         if (!isApiKeyValid(apiKey)) {
             throw new UnauthorizedException(INVALID_API_KEY);
         }
@@ -44,7 +44,7 @@ public class MessageProcessorService {
         primaryProcessingMessage(request, messageType, user);
 
         if (checkReturnMessage(request, messageType, user)) {
-            return new MessageResponse();
+            return new UserResponseItem();
         }
 
         return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request, user) : null;

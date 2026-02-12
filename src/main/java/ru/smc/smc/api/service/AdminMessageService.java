@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.utilities.UserUtility;
 
@@ -13,21 +13,21 @@ import ru.smc.smc.api.utilities.UserUtility;
 @RequiredArgsConstructor
 public class AdminMessageService {
     
-    public MessageResponse processMessage(MessageRequestBody request, BotUser user) {
+    public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
         if (!UserUtility.isUserAdmin(user)) {
             return formForbiddenResponse(user);
         }
 
-        return new MessageResponse();
+        return new UserResponseItem();
     }
 
-    private MessageResponse formForbiddenResponse(BotUser user) {
+    private UserResponseItem formForbiddenResponse(BotUser user) {
         log.warn("Пользователь {} не имеет прав к пользованию функциями администратора (платформа - {})." +
                         "Внутренний id: {}",
                 user.getIdOnPlatform(),
                 user.getPlatform(),
                 user.getInnerId());
 
-        return new MessageResponse();
+        return new UserResponseItem();
     }
 }

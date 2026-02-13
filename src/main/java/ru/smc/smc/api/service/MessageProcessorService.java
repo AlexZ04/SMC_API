@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.enums.MessageType;
+import ru.smc.smc.api.domain.enums.UserRole;
 import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
@@ -44,6 +45,10 @@ public class MessageProcessorService {
         BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());
 
         primaryProcessingMessage(request, messageType, user);
+
+        if (messageType == MessageType.ADMIN && user.getRole() == UserRole.USER) {
+            return responseService.createForbiddenAccessMessage(user);
+        }
 
         if (checkReturnMessage(request, messageType, user)) {
             return responseService.createReturnToMainMenuMessage(user);

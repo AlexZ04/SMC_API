@@ -33,6 +33,20 @@ public class ResponseService {
         return responseBuilder.build();
     }
 
+    public UserResponseItem createForbiddenAccessMessage(BotUser user) {
+        updateUserStaus(user, UserState.MAIN_MENU);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponse = MessageResponse.builder()
+                .responseText(responseMessagesProperties.getForbiddenAccess())
+                .build();
+
+        responseBuilder.responseToUser(messageResponse);
+
+        return responseBuilder.build();
+    }
+
     private void updateUserStaus(BotUser user, UserState userState) {
         user.setCurrentState(userState);
         botUserRepository.save(user);

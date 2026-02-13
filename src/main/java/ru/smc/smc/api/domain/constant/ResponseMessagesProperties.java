@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "messages")
 public class ResponseMessagesProperties {
     private String returnToMainScreen;
+    private String forbiddenAccess;
 }

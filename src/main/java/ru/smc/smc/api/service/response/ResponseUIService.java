@@ -22,13 +22,13 @@ public class ResponseUIService {
                 makeMainKeyboard(messageResponseBuilder);
             }
             default -> {
-
+                makeBackToBotKeyboard(messageResponseBuilder);
             }
         }
     }
 
     private void makeMainKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
-        if (featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)){
+        if (featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)) {
             messageResponseBuilder.addReplyButton(KeyboardsProperties.PARTICIPATE_IN_GIVEAWAY);
             messageResponseBuilder.addReplyRow(KeyboardsProperties.ASK_QUESTION_BUTTON, KeyboardsProperties.SET_UP_DISTRIBUTION_BUTTON);
         } else {
@@ -37,5 +37,9 @@ public class ResponseUIService {
         }
 
         messageResponseBuilder.addReplyRow(KeyboardsProperties.FEEDBACK_LINK, KeyboardsProperties.HELP_BUTTON);
+    }
+
+    private void makeBackToBotKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
+        messageResponseBuilder.addReplyButton(KeyboardsProperties.BACK_TO_BOT_BUTTON);
     }
 }

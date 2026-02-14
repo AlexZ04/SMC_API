@@ -2,13 +2,13 @@ package ru.smc.smc.api.service.response;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.constant.ResponseMessagesProperties;
 import ru.smc.smc.api.domain.enums.ResponseStatus;
 import ru.smc.smc.api.domain.enums.UserState;
 import ru.smc.smc.api.domain.model.response.MessageResponse;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
-import ru.smc.smc.api.repository.BotUserRepository;
+import ru.smc.smc.api.properties.ResponseMessagesProperties;
+import ru.smc.smc.api.service.StatsService;
 
 /*
 Сервис для формирования ответа бота
@@ -16,40 +16,59 @@ import ru.smc.smc.api.repository.BotUserRepository;
 @Service
 @RequiredArgsConstructor
 public class ResponseService {
-    private final BotUserRepository botUserRepository;
     private final ResponseMessagesProperties responseMessagesProperties;
+    private final ResponseUIService responseUIService;
+    private final StatsService statsService;
 
-    public UserResponseItem createReturnToMainMenuMessage(BotUser user) {
-        updateUserStaus(user, UserState.MAIN_MENU);
+    public UserResponseItem createUserResponse(BotUser user, UserState nextState, String responseMessage) {
+        statsService.updateUserStats(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
 
-        var messageResponse = MessageResponse.builder()
-                .responseText(responseMessagesProperties.getReturnToMainScreen())
-                .build();
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
 
-        responseBuilder.responseToUser(messageResponse);
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
 
-        return responseBuilder.build();
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
+    public UserResponseItem createReturnToMainMenuMessage(BotUser user) {
+        statsService.updateUserStats(user, UserState.MAIN_MENU);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessagesProperties.getReturnToMainScreen());
+
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
+
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
     }
 
     public UserResponseItem createForbiddenAccessMessage(BotUser user) {
-        updateUserStaus(user, UserState.MAIN_MENU);
+        statsService.updateUserStats(user, UserState.MAIN_MENU);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
 
-        var messageResponse = MessageResponse.builder()
-                .responseText(responseMessagesProperties.getForbiddenAccess())
-                .build();
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessagesProperties.getForbiddenAccess());
 
-        responseBuilder.responseToUser(messageResponse);
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
 
-        return responseBuilder.build();
-    }
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
 
-    private void updateUserStaus(BotUser user, UserState userState) {
-        user.setCurrentState(userState);
-        botUserRepository.save(user);
+        return finalResponse;
     }
 
     private UserResponseItem.UserResponseItemBuilder formPrimaryResponseInfoBuilder(BotUser user) {

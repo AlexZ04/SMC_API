@@ -8,7 +8,8 @@ import ru.smc.smc.api.domain.enums.ElementType;
 @AllArgsConstructor
 public class ElementModel {
     private ElementType type;
+    private String link; // не null, если ElementType == LINK
     private String text;
-    private String color; // todo: заменить строковое значение на таблицу цветов
-    private String textColor; // todo: заменить строковое значение на таблицу цветов
+    private String color;
+    private String textColor;
 }

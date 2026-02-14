@@ -1,4 +1,4 @@
-package ru.smc.smc.api.domain.constant;
+package ru.smc.smc.api.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

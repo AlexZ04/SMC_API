@@ -14,6 +14,7 @@ import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
 import ru.smc.smc.api.repository.BotUserRepository;
 import ru.smc.smc.api.repository.MessageHistoryRepository;
+import ru.smc.smc.api.service.admin.AdminMessageService;
 import ru.smc.smc.api.service.response.ResponseService;
 import ru.smc.smc.api.utilities.MessageDescriptor;
 

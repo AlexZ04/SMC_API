@@ -1,4 +1,4 @@
-package ru.smc.smc.api.service;
+package ru.smc.smc.api.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

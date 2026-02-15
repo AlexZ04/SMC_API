@@ -5,8 +5,7 @@ import lombok.experimental.ExtensionMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.enums.MessageType;
-import ru.smc.smc.api.domain.enums.UserRole;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
 import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
@@ -17,6 +16,7 @@ import ru.smc.smc.api.repository.MessageHistoryRepository;
 import ru.smc.smc.api.service.admin.AdminMessageService;
 import ru.smc.smc.api.service.response.ResponseService;
 import ru.smc.smc.api.utilities.MessageDescriptor;
+import ru.smc.smc.api.utilities.UserUtility;
 
 import static ru.smc.smc.api.domain.constant.ErrorsMessages.INVALID_API_KEY;
 
@@ -38,24 +38,26 @@ public class MessageProcessorService {
     @Value("${api-config.key}")
     private String validApiKey;
 
-    public UserResponseItem processMessage(MessageRequestBody request, MessageType messageType, String apiKey) {
+    public UserResponseItem processMessage(MessageRequestBody request, MessageRoleType messageRoleType, String apiKey) {
         if (!isApiKeyValid(apiKey)) {
             throw new UnauthorizedException(INVALID_API_KEY);
         }
 
         BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());
 
-        primaryProcessingMessage(request, messageType, user);
+        primaryProcessingMessage(request, messageRoleType, user);
 
-        if (messageType == MessageType.ADMIN && user.getRole() == UserRole.USER) {
+        // проверка на наличие прав у пользователя
+        if (messageRoleType == MessageRoleType.ADMIN && !UserUtility.isUserAdmin(user)) {
             return responseService.createForbiddenAccessMessage(user);
         }
 
-        if (checkReturnMessage(request, messageType, user)) {
+        // проверка сообщения на сообщения-триггеры возвращения в главное меню
+        if (request.getMessage().isReturnMessage()) {
             return responseService.createReturnToMainMenuMessage(user);
         }
 
-        return messageType == MessageType.ADMIN ? adminMessageService.processMessage(request, user) : null;
+        return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) : null;
     }
 
     private boolean isApiKeyValid(String apiKey) {
@@ -63,15 +65,10 @@ public class MessageProcessorService {
     }
 
     // первичная обработка сообщения: логирование, сохранение в историческую таблицу и обновление статистики
-    private void primaryProcessingMessage(MessageRequestBody request, MessageType messageType, BotUser user) {
-        logIncomingMessage(request, messageType);
-        saveMessageToHistory(request, messageType);
+    private void primaryProcessingMessage(MessageRequestBody request, MessageRoleType messageRoleType, BotUser user) {
+        logIncomingMessage(request, messageRoleType);
+        saveMessageToHistory(request, messageRoleType);
         updateStats(user);
-    }
-
-    // проверка сообщения на сообщения-триггеры возвращения в главное меню
-    private boolean checkReturnMessage(MessageRequestBody request, MessageType messageType, BotUser user) {
-        return request.getMessage().isReturnMessage();
     }
 
     private void updateStats(BotUser user) {
@@ -80,14 +77,14 @@ public class MessageProcessorService {
         botUserRepository.save(user);
     }
 
-    private void saveMessageToHistory(MessageRequestBody request, MessageType messageType) {
-        MessageHistory messageHistory = request.createHistoryMessage(messageType);
+    private void saveMessageToHistory(MessageRequestBody request, MessageRoleType messageRoleType) {
+        MessageHistory messageHistory = request.createHistoryMessage(messageRoleType);
 
         messageHistoryRepository.save(messageHistory);
     }
 
-    private void logIncomingMessage(MessageRequestBody request, MessageType messageType) {
+    private void logIncomingMessage(MessageRequestBody request, MessageRoleType messageRoleType) {
         log.info("Получено новое сообщение типа '{}': {}. Платформа: {}, id пользователя на платформе: '{}', количество вложений: {}",
-                messageType, request.getMessage(), request.getPlatform(), request.getUserIdOnPlatform(), request.getAttachmentsAmount());
+                messageRoleType, request.getMessage(), request.getPlatform(), request.getUserIdOnPlatform(), request.getAttachmentsAmount());
     }
 }

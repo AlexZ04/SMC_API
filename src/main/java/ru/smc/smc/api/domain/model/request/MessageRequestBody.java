@@ -5,7 +5,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 import ru.smc.smc.api.domain.enums.AvailablePlatform;
-import ru.smc.smc.api.domain.enums.MessageType;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
 import ru.smc.smc.api.entity.MessageHistory;
 
 @Data
@@ -19,14 +19,14 @@ public class MessageRequestBody {
 
     // todo: сделать поле для картинок и стикеров
 
-    public MessageHistory createHistoryMessage(MessageType messageType) {
+    public MessageHistory createHistoryMessage(MessageRoleType messageRoleType) {
         MessageHistory messageHistory = new MessageHistory();
 
         messageHistory.setMessage(message);
         messageHistory.setPlatform(platform);
         messageHistory.setUserIdOnPlatform(userIdOnPlatform);
         messageHistory.setAttachmentsAmount(attachmentsAmount);
-        messageHistory.setMessageType(messageType);
+        messageHistory.setMessageType(messageRoleType);
 
         return messageHistory;
     }

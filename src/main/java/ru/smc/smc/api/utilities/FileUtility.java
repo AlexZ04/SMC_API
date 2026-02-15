@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 @UtilityClass
 public class FileUtility {
-    public String getFileMessage(String fileName) throws Exception {
+    public String getFileMessage(String fileName) {
         Path path = Path.of("config", "texts", fileName + ".txt");
 
         if (!Files.exists(path)) {

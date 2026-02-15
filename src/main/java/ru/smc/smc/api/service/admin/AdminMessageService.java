@@ -1,33 +1,49 @@
 package ru.smc.smc.api.service.admin;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.smc.smc.api.domain.enums.MessageMeaningType;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
+import ru.smc.smc.api.domain.exceptions.NotFoundException;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
-import ru.smc.smc.api.utilities.UserUtility;
+import ru.smc.smc.api.service.MessageProcessor;
+import ru.smc.smc.api.utilities.MessageDescriptor;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminMessageService {
-    
-    public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
-        if (!UserUtility.isUserAdmin(user)) {
-            return formForbiddenResponse(user);
-        }
 
-        return new UserResponseItem();
+    private final List<MessageProcessor> processors;
+    private Map<MessageMeaningType, MessageProcessor> processorsMap = new HashMap<>();
+
+    @PostConstruct
+    private void init() {
+        processorsMap = processors.stream()
+                .collect(Collectors.toUnmodifiableMap(MessageProcessor::meaning, Function.identity()));
     }
 
-    private UserResponseItem formForbiddenResponse(BotUser user) {
-        log.warn("Пользователь {} не имеет прав к пользованию функциями администратора (платформа - {})." +
-                        "Внутренний id: {}",
-                user.getIdOnPlatform(),
-                user.getPlatform(),
-                user.getInnerId());
+    public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
+        var messageMeaning = MessageDescriptor.defineMessageMeaning(
+                request.getMessage(), MessageRoleType.ADMIN, user.getCurrentState()
+        );
 
-        return new UserResponseItem();
+        var processor = processorsMap.get(messageMeaning);
+
+        if (processor == null) {
+            throw new NotFoundException("Не найден обработчик сообщений для типа: " + messageMeaning);
+        }
+
+        return processor.processMessage(request, user);
     }
 }

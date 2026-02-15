@@ -1,6 +1,7 @@
 package ru.smc.smc.api.service.response;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.enums.ResponseStatus;
 import ru.smc.smc.api.domain.enums.UserState;
@@ -13,6 +14,7 @@ import ru.smc.smc.api.service.StatsService;
 /*
 Сервис для формирования ответа бота
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResponseService {
@@ -67,6 +69,12 @@ public class ResponseService {
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
         statsService.updateBotStats(finalResponse);
+
+        log.warn("Пользователь {} не имеет прав к пользованию функциями администратора (платформа - {})." +
+                        "Внутренний id: {}",
+                user.getIdOnPlatform(),
+                user.getPlatform(),
+                user.getInnerId());
 
         return finalResponse;
     }

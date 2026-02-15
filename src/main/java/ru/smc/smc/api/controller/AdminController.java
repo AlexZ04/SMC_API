@@ -2,7 +2,7 @@ package ru.smc.smc.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.smc.smc.api.domain.enums.MessageType;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
 import ru.smc.smc.api.domain.model.request.MessageRequestBody;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.service.MessageProcessorService;
@@ -13,7 +13,7 @@ import ru.smc.smc.api.service.MessageProcessorService;
 public class AdminController {
 
     private final MessageProcessorService messageProcessorService;
-    private static final MessageType MESSAGE_TYPE = MessageType.ADMIN;
+    private static final MessageRoleType MESSAGE_TYPE = MessageRoleType.ADMIN;
 
     @PostMapping("/admin")
     public UserResponseItem processMessage(@RequestBody MessageRequestBody request, @RequestHeader("api-key") String apiKey){

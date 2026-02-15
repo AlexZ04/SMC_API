@@ -1,6 +1,9 @@
 package ru.smc.smc.api.utilities;
 
 import lombok.experimental.UtilityClass;
+import ru.smc.smc.api.domain.enums.MessageMeaningType;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
+import ru.smc.smc.api.domain.enums.UserState;
 
 @UtilityClass
 public class MessageDescriptor {
@@ -12,5 +15,9 @@ public class MessageDescriptor {
      */
     public boolean isReturnMessage(String message) {
         return message.length() < 10 && message.toLowerCase().contains("к боту") || message.toLowerCase().contains("назад");
+    }
+
+    public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentState) {
+        return MessageMeaningType.HELP;
     }
 }

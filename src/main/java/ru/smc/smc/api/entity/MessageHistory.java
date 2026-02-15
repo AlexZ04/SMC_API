@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.smc.smc.api.domain.enums.AvailablePlatform;
-import ru.smc.smc.api.domain.enums.MessageType;
+import ru.smc.smc.api.domain.enums.MessageRoleType;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -25,6 +25,6 @@ public class MessageHistory {
     private int attachmentsAmount = 0;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MessageType messageType;
+    private MessageRoleType messageType;
     private Instant messageTime = Instant.now();
 }

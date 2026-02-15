@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import ru.smc.smc.api.domain.model.initialization.FacultyInfo;
 import ru.smc.smc.api.entity.Faculty;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+@Order(1)
 @RequiredArgsConstructor
 public class FacultiesSeeder implements ApplicationRunner {
 

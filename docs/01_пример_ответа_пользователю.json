@@ -9,6 +9,7 @@
       [
         {
           "type": "button",
+          "link": null,
           "text": "1",
           "color": "dark-gray",
           "textСolor": "white"
@@ -17,6 +18,7 @@
       [
         {
           "type": "button",
+          "link": null,
           "text": "3",
           "color": "dark-gray",
           "textСolor": "white"
@@ -25,6 +27,7 @@
       [
         {
           "type": "button",
+          "link": null,
           "text": "2",
           "color": "dark-gray",
           "textСolor": "white"
@@ -35,6 +38,7 @@
       [
         {
           "type": "button",
+          "link": null,
           "text": "Задать вопрос",
           "color": "white",
           "textColor": "black"
@@ -42,12 +46,14 @@
       ],
       [{
         "type": "link",
+        "link": "{link}",
         "text": "Обратная связь",
         "color": "dark-gray",
         "textColor": "white"
       },
         {
           "type": "button",
+          "link": null,
           "text": "Помощь",
           "color": "dark-gray",
           "textColor": "white"

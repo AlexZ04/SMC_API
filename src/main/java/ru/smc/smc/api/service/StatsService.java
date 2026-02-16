@@ -14,13 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StatsService {
-    private final BotUserRepository botUserRepository;
     private final BotStatsRepository botStatsRepository;
-
-    public void updateUserStats(BotUser user, UserState userState) {
-        user.setCurrentState(userState);
-        botUserRepository.save(user);
-    }
 
     public void updateBotStats(UserResponseItem response) {
         List<BotStats> botStatsList = botStatsRepository.findAll();

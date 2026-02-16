@@ -9,6 +9,7 @@ import ru.smc.smc.api.domain.model.response.MessageResponse;
 import ru.smc.smc.api.domain.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.properties.ResponseMessagesProperties;
+import ru.smc.smc.api.repository.BotUserRepository;
 import ru.smc.smc.api.service.StatsService;
 
 /*
@@ -21,9 +22,10 @@ public class ResponseService {
     private final ResponseMessagesProperties responseMessagesProperties;
     private final ResponseUIService responseUIService;
     private final StatsService statsService;
+    private final BotUserRepository botUserRepository;
 
     public UserResponseItem createUserResponse(BotUser user, UserState nextState, String responseMessage) {
-        statsService.updateUserStats(user, nextState);
+        updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
 
@@ -40,7 +42,7 @@ public class ResponseService {
     }
 
     public UserResponseItem createReturnToMainMenuMessage(BotUser user) {
-        statsService.updateUserStats(user, UserState.MAIN_MENU);
+        updateUserState(user, UserState.MAIN_MENU);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
 
@@ -57,7 +59,7 @@ public class ResponseService {
     }
 
     public UserResponseItem createForbiddenAccessMessage(BotUser user) {
-        statsService.updateUserStats(user, UserState.MAIN_MENU);
+        updateUserState(user, UserState.MAIN_MENU);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
 
@@ -84,5 +86,10 @@ public class ResponseService {
                 .status(ResponseStatus.OK)
                 .platform(user.getPlatform())
                 .userIdOnPlatform(user.getIdOnPlatform());
+    }
+
+    private void updateUserState(BotUser user, UserState userState) {
+        user.setCurrentState(userState);
+        botUserRepository.save(user);
     }
 }

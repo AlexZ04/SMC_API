@@ -10,7 +10,7 @@ import ru.smc.smc.api.common.exceptions.NotFoundException;
 import ru.smc.smc.api.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.common.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
-import ru.smc.smc.api.service.MessageProcessor;
+import ru.smc.smc.api.service.MessageAdminProcessor;
 import ru.smc.smc.api.utilities.MessageDescriptor;
 
 import java.util.HashMap;
@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminMessageService {
 
-    private final List<MessageProcessor> processors;
-    private Map<MessageMeaningType, MessageProcessor> processorsMap = new HashMap<>();
+    private final List<MessageAdminProcessor> processors;
+    private Map<MessageMeaningType, MessageAdminProcessor> processorsMap = new HashMap<>();
 
     @PostConstruct
     private void init() {
         processorsMap = processors.stream()
-                .collect(Collectors.toUnmodifiableMap(MessageProcessor::meaning, Function.identity()));
+                .collect(Collectors.toUnmodifiableMap(MessageAdminProcessor::meaning, Function.identity()));
     }
 
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {

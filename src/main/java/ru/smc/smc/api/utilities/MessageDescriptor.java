@@ -17,7 +17,7 @@ public class MessageDescriptor {
         return message.length() < 10 && message.toLowerCase().contains("к боту") || message.toLowerCase().contains("назад");
     }
 
-    public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentState) {
+    public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentUserState) {
         return MessageMeaningType.HELP;
     }
 }

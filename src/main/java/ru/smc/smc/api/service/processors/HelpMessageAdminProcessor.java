@@ -8,13 +8,13 @@ import ru.smc.smc.api.common.enums.UserState;
 import ru.smc.smc.api.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.common.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
-import ru.smc.smc.api.service.MessageProcessor;
+import ru.smc.smc.api.service.MessageAdminProcessor;
 import ru.smc.smc.api.service.response.ResponseService;
 import ru.smc.smc.api.utilities.FileUtility;
 
 @Service
 @RequiredArgsConstructor
-public class HelpMessageProcessor implements MessageProcessor {
+public class HelpMessageAdminProcessor implements MessageAdminProcessor {
     private final ResponseService responseService;
 
     @Override

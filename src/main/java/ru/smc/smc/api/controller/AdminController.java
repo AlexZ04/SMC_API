@@ -5,18 +5,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.smc.smc.api.common.enums.MessageRoleType;
 import ru.smc.smc.api.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.common.model.response.UserResponseItem;
-import ru.smc.smc.api.service.MessageProcessorService;
+import ru.smc.smc.api.service.MessagePrimarilyProcessor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class AdminController {
 
-    private final MessageProcessorService messageProcessorService;
+    private final MessagePrimarilyProcessor messagePrimarilyProcessor;
     private static final MessageRoleType MESSAGE_TYPE = MessageRoleType.ADMIN;
 
     @PostMapping("/admin")
     public UserResponseItem processMessage(@RequestBody MessageRequestBody request, @RequestHeader("api-key") String apiKey){
-        return messageProcessorService.processMessage(request, MESSAGE_TYPE, apiKey);
+        return messagePrimarilyProcessor.processMessage(request, MESSAGE_TYPE, apiKey);
     }
 }

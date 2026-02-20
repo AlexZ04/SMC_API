@@ -27,7 +27,7 @@ import static ru.smc.smc.api.common.constant.ErrorsMessages.INVALID_API_KEY;
 @Service
 @RequiredArgsConstructor
 @ExtensionMethod(MessageDescriptor.class)
-public class MessageProcessorService {
+public class MessagePrimarilyProcessor {
 
     private final AdminMessageService adminMessageService;
     private final MessageHistoryRepository messageHistoryRepository;

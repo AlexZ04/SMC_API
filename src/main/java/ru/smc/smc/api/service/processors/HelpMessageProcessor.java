@@ -2,11 +2,11 @@ package ru.smc.smc.api.service.processors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.constant.BotCommands;
-import ru.smc.smc.api.domain.enums.MessageMeaningType;
-import ru.smc.smc.api.domain.enums.UserState;
-import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.UserResponseItem;
+import ru.smc.smc.api.common.constant.BotCommands;
+import ru.smc.smc.api.common.enums.MessageMeaningType;
+import ru.smc.smc.api.common.enums.UserState;
+import ru.smc.smc.api.common.model.request.MessageRequestBody;
+import ru.smc.smc.api.common.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.service.MessageProcessor;
 import ru.smc.smc.api.service.response.ResponseService;

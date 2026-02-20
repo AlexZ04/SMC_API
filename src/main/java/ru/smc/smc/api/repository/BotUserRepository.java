@@ -1,7 +1,7 @@
 package ru.smc.smc.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.smc.smc.api.domain.enums.AvailablePlatform;
+import ru.smc.smc.api.common.enums.AvailablePlatform;
 import ru.smc.smc.api.entity.BotUser;
 
 import java.util.Optional;

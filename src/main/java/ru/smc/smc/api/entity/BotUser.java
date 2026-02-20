@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.smc.smc.api.domain.enums.AvailablePlatform;
-import ru.smc.smc.api.domain.enums.UserRole;
-import ru.smc.smc.api.domain.enums.UserState;
+import ru.smc.smc.api.common.enums.AvailablePlatform;
+import ru.smc.smc.api.common.enums.UserRole;
+import ru.smc.smc.api.common.enums.UserState;
 
 import java.time.Instant;
 import java.util.UUID;

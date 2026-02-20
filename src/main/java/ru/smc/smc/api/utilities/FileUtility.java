@@ -1,7 +1,7 @@
 package ru.smc.smc.api.utilities;
 
 import lombok.experimental.UtilityClass;
-import ru.smc.smc.api.domain.exceptions.NotFoundException;
+import ru.smc.smc.api.common.exceptions.NotFoundException;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,9 +1,9 @@
 package ru.smc.smc.api.utilities;
 
 import lombok.experimental.UtilityClass;
-import ru.smc.smc.api.domain.enums.MessageMeaningType;
-import ru.smc.smc.api.domain.enums.MessageRoleType;
-import ru.smc.smc.api.domain.enums.UserState;
+import ru.smc.smc.api.common.enums.MessageMeaningType;
+import ru.smc.smc.api.common.enums.MessageRoleType;
+import ru.smc.smc.api.common.enums.UserState;
 
 @UtilityClass
 public class MessageDescriptor {

@@ -2,9 +2,9 @@ package ru.smc.smc.api.service;
 
 import com.sun.tools.javac.Main;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.constant.ErrorsMessages;
-import ru.smc.smc.api.domain.exceptions.BadRequestException;
-import ru.smc.smc.api.domain.model.toggle.FeatureToggle;
+import ru.smc.smc.api.common.constant.ErrorsMessages;
+import ru.smc.smc.api.common.exceptions.BadRequestException;
+import ru.smc.smc.api.common.model.toggle.FeatureToggle;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FeatureToggleService {

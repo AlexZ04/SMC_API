@@ -7,7 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.smc.smc.api.domain.model.initialization.FacultyInfo;
+import ru.smc.smc.api.common.model.initialization.FacultyInfo;
 import ru.smc.smc.api.entity.Faculty;
 import ru.smc.smc.api.entity.SportsOrganizer;
 import ru.smc.smc.api.repository.FacultyRepository;

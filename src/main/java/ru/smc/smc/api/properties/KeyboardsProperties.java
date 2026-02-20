@@ -1,8 +1,8 @@
 package ru.smc.smc.api.properties;
 
-import ru.smc.smc.api.domain.enums.Colors;
-import ru.smc.smc.api.domain.enums.ElementType;
-import ru.smc.smc.api.domain.model.response.ElementModel;
+import ru.smc.smc.api.common.enums.Colors;
+import ru.smc.smc.api.common.enums.ElementType;
+import ru.smc.smc.api.common.model.response.ElementModel;
 
 public class KeyboardsProperties {
     public static ElementModel ASK_QUESTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Задать вопрос",

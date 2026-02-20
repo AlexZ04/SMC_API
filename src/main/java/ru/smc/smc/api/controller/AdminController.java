@@ -2,9 +2,9 @@ package ru.smc.smc.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.smc.smc.api.domain.enums.MessageRoleType;
-import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.UserResponseItem;
+import ru.smc.smc.api.common.enums.MessageRoleType;
+import ru.smc.smc.api.common.model.request.MessageRequestBody;
+import ru.smc.smc.api.common.model.response.UserResponseItem;
 import ru.smc.smc.api.service.MessageProcessorService;
 
 @RestController

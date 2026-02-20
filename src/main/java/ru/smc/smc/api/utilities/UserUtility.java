@@ -1,7 +1,7 @@
 package ru.smc.smc.api.utilities;
 
 import lombok.experimental.UtilityClass;
-import ru.smc.smc.api.domain.enums.UserRole;
+import ru.smc.smc.api.common.enums.UserRole;
 import ru.smc.smc.api.entity.BotUser;
 
 @UtilityClass

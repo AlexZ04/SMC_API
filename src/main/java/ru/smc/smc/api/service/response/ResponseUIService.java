@@ -2,9 +2,9 @@ package ru.smc.smc.api.service.response;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.constant.FeatureToggles;
-import ru.smc.smc.api.domain.enums.UserState;
-import ru.smc.smc.api.domain.model.response.MessageResponse;
+import ru.smc.smc.api.common.constant.FeatureToggles;
+import ru.smc.smc.api.common.enums.UserState;
+import ru.smc.smc.api.common.model.response.MessageResponse;
 import ru.smc.smc.api.properties.KeyboardsProperties;
 import ru.smc.smc.api.service.FeatureToggleService;
 

@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.smc.smc.api.domain.exceptions.BadRequestException;
-import ru.smc.smc.api.domain.exceptions.NotFoundException;
-import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
-import ru.smc.smc.api.domain.model.response.ErrorResponse;
+import ru.smc.smc.api.common.exceptions.BadRequestException;
+import ru.smc.smc.api.common.exceptions.NotFoundException;
+import ru.smc.smc.api.common.exceptions.UnauthorizedException;
+import ru.smc.smc.api.common.model.response.ErrorResponse;
 
 @Slf4j
 @ControllerAdvice

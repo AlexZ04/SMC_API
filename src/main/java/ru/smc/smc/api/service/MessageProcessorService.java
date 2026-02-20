@@ -5,10 +5,10 @@ import lombok.experimental.ExtensionMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.smc.smc.api.domain.enums.MessageRoleType;
-import ru.smc.smc.api.domain.exceptions.UnauthorizedException;
-import ru.smc.smc.api.domain.model.request.MessageRequestBody;
-import ru.smc.smc.api.domain.model.response.UserResponseItem;
+import ru.smc.smc.api.common.enums.MessageRoleType;
+import ru.smc.smc.api.common.exceptions.UnauthorizedException;
+import ru.smc.smc.api.common.model.request.MessageRequestBody;
+import ru.smc.smc.api.common.model.response.UserResponseItem;
 import ru.smc.smc.api.entity.BotUser;
 import ru.smc.smc.api.entity.MessageHistory;
 import ru.smc.smc.api.repository.BotUserRepository;
@@ -18,7 +18,7 @@ import ru.smc.smc.api.service.response.ResponseService;
 import ru.smc.smc.api.utilities.MessageDescriptor;
 import ru.smc.smc.api.utilities.UserUtility;
 
-import static ru.smc.smc.api.domain.constant.ErrorsMessages.INVALID_API_KEY;
+import static ru.smc.smc.api.common.constant.ErrorsMessages.INVALID_API_KEY;
 
 /*
 Сервис для произведения операций, общей для обоих сервисов и перенаправления сообщения в нужный сервис 

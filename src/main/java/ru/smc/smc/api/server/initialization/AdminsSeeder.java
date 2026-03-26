@@ -7,11 +7,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.smc.smc.api.common.enums.UserRole;
-import ru.smc.smc.api.common.model.initialization.AdminInfo;
-import ru.smc.smc.api.entity.BotUser;
-import ru.smc.smc.api.repository.BotUserRepository;
-import ru.smc.smc.api.service.factory.BotUserFactory;
+import ru.smc.smc.api.application.common.enums.UserRole;
+import ru.smc.smc.api.application.common.model.initialization.AdminInfo;
+import ru.smc.smc.api.domain.entity.BotUser;
+import ru.smc.smc.api.domain.repository.BotUserRepository;
+import ru.smc.smc.api.application.service.factory.BotUserFactory;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 

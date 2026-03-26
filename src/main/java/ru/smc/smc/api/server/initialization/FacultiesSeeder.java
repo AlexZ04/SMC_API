@@ -7,11 +7,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.smc.smc.api.common.model.initialization.FacultyInfo;
-import ru.smc.smc.api.entity.Faculty;
-import ru.smc.smc.api.entity.SportsOrganizer;
-import ru.smc.smc.api.repository.FacultyRepository;
-import ru.smc.smc.api.repository.SportsOrganizerRepository;
+import ru.smc.smc.api.application.common.model.initialization.FacultyInfo;
+import ru.smc.smc.api.domain.entity.Faculty;
+import ru.smc.smc.api.domain.entity.SportsOrganizer;
+import ru.smc.smc.api.domain.repository.FacultyRepository;
+import ru.smc.smc.api.domain.repository.SportsOrganizerRepository;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 

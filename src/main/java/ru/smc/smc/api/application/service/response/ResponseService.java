@@ -10,7 +10,7 @@ import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.application.properties.ResponseMessagesProperties;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
-import ru.smc.smc.api.application.service.StatsService;
+import ru.smc.smc.api.application.service.stats.StatsService;
 
 /*
 Сервис для формирования ответа бота
@@ -32,7 +32,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessage);
 
-        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
@@ -49,7 +49,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessagesProperties.getReturnToMainScreen());
 
-        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user.getRole());
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
@@ -66,7 +66,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessagesProperties.getForbiddenAccess());
 
-        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder);
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user.getRole());
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();

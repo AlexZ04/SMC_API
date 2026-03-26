@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service;
+package ru.smc.smc.api.application.service.processors.admin;
 
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;

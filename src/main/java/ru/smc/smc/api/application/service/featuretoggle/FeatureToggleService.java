@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service;
+package ru.smc.smc.api.application.service.featuretoggle;
 
 import com.sun.tools.javac.Main;
 import org.springframework.stereotype.Service;

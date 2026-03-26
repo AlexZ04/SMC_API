@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service;
+package ru.smc.smc.api.application.service.stats;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

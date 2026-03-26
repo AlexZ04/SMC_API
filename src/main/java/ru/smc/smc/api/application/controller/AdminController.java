@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
-import ru.smc.smc.api.application.service.MessagePrimarilyProcessor;
+import ru.smc.smc.api.application.service.processors.MessagePrimarilyProcessor;
 
 @RestController
 @RequiredArgsConstructor

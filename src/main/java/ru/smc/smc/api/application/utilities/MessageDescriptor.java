@@ -5,6 +5,11 @@ import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.application.common.enums.UserState;
 
+/*
+Дескриптор сообщений пользователя.
+Определяет принадлежность сообщений к определённому типу.
+Проверка сообщений не регистрозависима
+ */
 @UtilityClass
 public class MessageDescriptor {
     /*
@@ -17,7 +22,26 @@ public class MessageDescriptor {
         return message.length() < 10 && message.toLowerCase().contains("к боту") || message.toLowerCase().contains("назад");
     }
 
+    /*
+    Метод для определения типа отправленного пользователем сообщения
+     */
     public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentUserState) {
-        return MessageMeaningType.HELP;
+        var messageMeaning = checkIfHelpMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
+        return MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - запрос помощи
+    Условия:
+    1) Длина менее 10 символов
+    2) Сообщение содержит в себе слово "помощь"
+     */
+    private static MessageMeaningType checkIfHelpMessage(String message, MessageRoleType messageRoleType, UserState currentUserState) {
+        return message.length() < 10 && (message.toLowerCase().contains("помощь")) ?
+                MessageMeaningType.HELP : MessageMeaningType.UNDEFINED;
     }
 }

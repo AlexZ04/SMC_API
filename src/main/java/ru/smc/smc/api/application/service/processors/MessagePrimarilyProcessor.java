@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service;
+package ru.smc.smc.api.application.service.processors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
@@ -9,11 +9,11 @@ import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.application.common.exceptions.UnauthorizedException;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
+import ru.smc.smc.api.application.service.user.UserService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.MessageHistory;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
 import ru.smc.smc.api.domain.repository.MessageHistoryRepository;
-import ru.smc.smc.api.application.service.admin.AdminMessageService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.utilities.MessageDescriptor;
 import ru.smc.smc.api.application.utilities.UserUtility;
@@ -30,6 +30,7 @@ import static ru.smc.smc.api.application.common.constant.ErrorsMessages.INVALID_
 public class MessagePrimarilyProcessor {
 
     private final AdminMessageService adminMessageService;
+    private final UserMessageService userMessageService;
     private final MessageHistoryRepository messageHistoryRepository;
     private final BotUserRepository botUserRepository;
     private final UserService userService;
@@ -57,7 +58,8 @@ public class MessagePrimarilyProcessor {
             return responseService.createReturnToMainMenuMessage(user);
         }
 
-        return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) : null;
+        return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) :
+                userMessageService.processMessage(request, user);
     }
 
     private boolean isApiKeyValid(String apiKey) {

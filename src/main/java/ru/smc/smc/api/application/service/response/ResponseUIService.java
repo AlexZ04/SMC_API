@@ -3,10 +3,11 @@ package ru.smc.smc.api.application.service.response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FeatureToggles;
+import ru.smc.smc.api.application.common.enums.UserRole;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
-import ru.smc.smc.api.application.service.FeatureToggleService;
+import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
 
 /*
 Сервис для создания модели клавиатуры, возвращаемой пользователю
@@ -16,7 +17,7 @@ import ru.smc.smc.api.application.service.FeatureToggleService;
 public class ResponseUIService {
     private final FeatureToggleService featureToggleService;
 
-    public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder) {
+    public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder, UserRole userRole) {
         switch (userState) {
             case MAIN_MENU -> {
                 makeMainKeyboard(messageResponseBuilder);

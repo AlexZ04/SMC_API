@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FeatureToggles;
 import ru.smc.smc.api.application.common.enums.UserRole;
 import ru.smc.smc.api.application.common.enums.UserState;
+import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
+
+import java.util.List;
 
 /*
 Сервис для создания модели клавиатуры, возвращаемой пользователю
@@ -15,9 +18,24 @@ import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
 @Service
 @RequiredArgsConstructor
 public class ResponseUIService {
+
     private final FeatureToggleService featureToggleService;
 
     public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder, UserRole userRole) {
+        // возврат клавиатуры для пользователя
+        if (userRole == UserRole.USER) {
+            switch (userState) {
+                case MAIN_MENU -> {
+                    makeMainKeyboard(messageResponseBuilder);
+                }
+                default -> {
+                    makeBackToBotKeyboard(messageResponseBuilder);
+                }
+            }
+
+            return;
+        }
+        // возврат клавиатуры для администратора
         switch (userState) {
             case MAIN_MENU -> {
                 makeMainKeyboard(messageResponseBuilder);
@@ -25,6 +43,12 @@ public class ResponseUIService {
             default -> {
                 makeBackToBotKeyboard(messageResponseBuilder);
             }
+        }
+    }
+
+    public void createInlineKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder, List<List<ElementModel>> inlineElements) {
+        for (List<ElementModel> inlineElement : inlineElements) {
+            messageResponseBuilder.addInlineRow(inlineElement);
         }
     }
 

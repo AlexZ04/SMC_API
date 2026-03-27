@@ -10,11 +10,13 @@ public class KeyboardsProperties {
     public static ElementModel SET_UP_DISTRIBUTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Настроить рассылку",
             Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public static ElementModel FEEDBACK_LINK = new ElementModel(ElementType.LINK, "https://vk.com/smk_tsu?ref=group_menu&w=app5619682_-158563071%2523694549",
-            "Настроить рассылку", Colors.BLACK.getColor(), Colors.WHITE.getColor());
+            "Обратная связь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public static ElementModel HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "Помощь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public static ElementModel PARTICIPATE_IN_GIVEAWAY = new ElementModel(ElementType.BUTTON, null,
             "Участвовать в розыгрыше", Colors.GREEN.getColor(), Colors.WHITE.getColor());
     public static ElementModel BACK_TO_BOT_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "К боту", Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public static ElementModel SET_MY_FACULTY_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            "Настроить свой факультет", Colors.BLACK.getColor(), Colors.WHITE.getColor());
 }

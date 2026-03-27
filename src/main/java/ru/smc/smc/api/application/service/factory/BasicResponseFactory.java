@@ -11,7 +11,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ErrorResponseFactory {
+public class BasicResponseFactory {
 
     private final ResponseService responseService;
 

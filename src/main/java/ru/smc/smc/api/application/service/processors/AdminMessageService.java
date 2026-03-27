@@ -9,7 +9,7 @@ import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.application.common.exceptions.NotFoundException;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
-import ru.smc.smc.api.application.service.factory.ErrorResponseFactory;
+import ru.smc.smc.api.application.service.factory.BasicResponseFactory;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.application.service.processors.admin.MessageAdminProcessor;
 import ru.smc.smc.api.application.utilities.MessageDescriptor;
@@ -27,7 +27,7 @@ public class AdminMessageService {
 
     private final List<MessageAdminProcessor> processors;
     private Map<MessageMeaningType, MessageAdminProcessor> processorsMap = new HashMap<>();
-    private final ErrorResponseFactory errorResponseFactory;
+    private final BasicResponseFactory basicResponseFactory;
 
     @PostConstruct
     private void init() {
@@ -41,7 +41,7 @@ public class AdminMessageService {
         );
 
         if (messageMeaning == MessageMeaningType.UNDEFINED) {
-            return errorResponseFactory.formErrorResponse(user);
+            return basicResponseFactory.formErrorResponse(user);
         }
 
         var processor = processorsMap.get(messageMeaning);

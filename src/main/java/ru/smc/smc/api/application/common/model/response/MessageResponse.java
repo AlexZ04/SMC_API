@@ -61,6 +61,11 @@ public class MessageResponse {
             return this;
         }
 
+        public MessageResponseBuilder addInlineRow(List<ElementModel> row) {
+            this.inlineElements.add(row);
+            return this;
+        }
+
         public MessageResponseBuilder addReplyButton(ElementModel button) {
             List<ElementModel> row = new ArrayList<>();
             row.add(button);

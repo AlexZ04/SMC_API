@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.ResponseStatus;
 import ru.smc.smc.api.application.common.enums.UserState;
+import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.application.properties.ResponseMessagesProperties;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
 import ru.smc.smc.api.application.service.stats.StatsService;
+
+import java.util.List;
 
 /*
 Сервис для формирования ответа бота
@@ -19,6 +22,7 @@ import ru.smc.smc.api.application.service.stats.StatsService;
 @Service
 @RequiredArgsConstructor
 public class ResponseService {
+
     private final ResponseMessagesProperties responseMessagesProperties;
     private final ResponseUIService responseUIService;
     private final StatsService statsService;
@@ -33,6 +37,25 @@ public class ResponseService {
                 .responseText(responseMessage);
 
         responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
+    public UserResponseItem createUserResponseWithInlineKeyboard(BotUser user, UserState nextState,
+                                                                 String responseMessage, List<List<ElementModel>> inlineElements) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();

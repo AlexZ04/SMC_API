@@ -24,8 +24,8 @@ public class ResponseUIService {
     public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder, UserRole userRole) {
         // возврат клавиатуры для пользователя
         if (userRole == UserRole.USER) {
-            switch (userState) {
-                case MAIN_MENU -> {
+            switch (userState.getKeyboardCode()) {
+                case 0 -> {
                     makeMainKeyboard(messageResponseBuilder);
                 }
                 default -> {
@@ -35,9 +35,10 @@ public class ResponseUIService {
 
             return;
         }
+        
         // возврат клавиатуры для администратора
-        switch (userState) {
-            case MAIN_MENU -> {
+        switch (userState.getKeyboardCode()) {
+            case 0 -> {
                 makeMainKeyboard(messageResponseBuilder);
             }
             default -> {

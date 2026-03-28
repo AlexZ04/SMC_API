@@ -1,22 +1,29 @@
 package ru.smc.smc.api.application.properties;
 
+import lombok.experimental.UtilityClass;
 import ru.smc.smc.api.application.common.enums.Colors;
 import ru.smc.smc.api.application.common.enums.ElementType;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
 
+@UtilityClass
 public class KeyboardsProperties {
-    public static ElementModel ASK_QUESTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Задать вопрос",
+    public ElementModel ASK_QUESTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Задать вопрос",
             Colors.WHITE.getColor(), Colors.BLACK.getColor());
-    public static ElementModel SET_UP_DISTRIBUTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Настроить рассылку",
+    public ElementModel SET_UP_DISTRIBUTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Настроить рассылку",
             Colors.BLACK.getColor(), Colors.WHITE.getColor());
-    public static ElementModel FEEDBACK_LINK = new ElementModel(ElementType.LINK, "https://vk.com/smk_tsu?ref=group_menu&w=app5619682_-158563071%2523694549",
+    public ElementModel FEEDBACK_LINK = new ElementModel(ElementType.LINK, "https://vk.com/smk_tsu?ref=group_menu&w=app5619682_-158563071%2523694549",
             "Обратная связь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
-    public static ElementModel HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
+    public ElementModel HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "Помощь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
-    public static ElementModel PARTICIPATE_IN_GIVEAWAY = new ElementModel(ElementType.BUTTON, null,
+    public ElementModel PARTICIPATE_IN_GIVEAWAY = new ElementModel(ElementType.BUTTON, null,
             "Участвовать в розыгрыше", Colors.GREEN.getColor(), Colors.WHITE.getColor());
-    public static ElementModel BACK_TO_BOT_BUTTON = new ElementModel(ElementType.BUTTON, null,
+    public ElementModel BACK_TO_BOT_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "К боту", Colors.BLACK.getColor(), Colors.WHITE.getColor());
-    public static ElementModel SET_MY_FACULTY_BUTTON = new ElementModel(ElementType.BUTTON, null,
+    public ElementModel SET_MY_FACULTY_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "Настроить свой факультет", Colors.BLACK.getColor(), Colors.WHITE.getColor());
+
+    public ElementModel createInlineButton(String message) {
+        return new ElementModel(ElementType.BUTTON, null,
+                message, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    }
 }

@@ -26,7 +26,12 @@ public class MessageDescriptor {
     Метод для определения типа отправленного пользователем сообщения
      */
     public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentUserState) {
-        var messageMeaning = checkIfHelpMessage(message, messageRoleType, currentUserState);
+        var messageMeaning = checkIfHelpMessage(message);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
+        messageMeaning = checkIfAskQuestionMessage(message, messageRoleType);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
         }
@@ -40,8 +45,21 @@ public class MessageDescriptor {
     1) Длина менее 10 символов
     2) Сообщение содержит в себе слово "помощь"
      */
-    private static MessageMeaningType checkIfHelpMessage(String message, MessageRoleType messageRoleType, UserState currentUserState) {
+    private static MessageMeaningType checkIfHelpMessage(String message) {
         return message.length() < 10 && (message.toLowerCase().contains("помощь")) ?
                 MessageMeaningType.HELP : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - "Задать вопрос" (переход на соответствующих экран)
+    Условия:
+    0) Сообщение пришло в часть пользователей
+    1) Длина менее 15 символов
+    2) Сообщение содержит словосочетание "задать вопрос"
+     */
+    private static MessageMeaningType checkIfAskQuestionMessage(String message, MessageRoleType messageRoleType) {
+        return messageRoleType == MessageRoleType.USER && message.length() < 15 &&
+                (message.toLowerCase().contains("задать вопрос")) ?
+                MessageMeaningType.ASK_QUESTION : MessageMeaningType.UNDEFINED;
     }
 }

@@ -2,7 +2,7 @@ name: Build & Deploy to VPS
 
 on:
   push:
-    branches: ["main"]
+    branches: ["trunk"]
 
 concurrency:
   group: deploy-main

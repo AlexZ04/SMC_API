@@ -33,13 +33,12 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
         }
 
         if (FaqUtility.checkIfQuestionIsFaq(request.getMessage().toLowerCase())) {
-            return responseService.createUserResponseWithInlineKeyboard(user, UserState.QUESTION,
-                    FileUtility.getFileMessage(FaqUtility.getPathToAnswer(request.getMessage().toLowerCase())),
-                    createInlineKeyboard());
+            return responseService.createUserResponse(user, UserState.QUESTION,
+                    FileUtility.getFileMessage(FaqUtility.getPathToAnswer(request.getMessage().toLowerCase())));
         }
 
         return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
-                createInlineKeyboard(), "Бебебе", DistributionGroups.ADMINS, false, new ArrayList<>());
+                new ArrayList<>(), "Бебебе", DistributionGroups.ADMINS, false, new ArrayList<>());
     }
 
     @Override

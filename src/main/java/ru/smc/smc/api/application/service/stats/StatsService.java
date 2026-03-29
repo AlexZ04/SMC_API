@@ -27,7 +27,10 @@ public class StatsService {
         long sendMessages = botStats.getMessageBotSent() + response.getResponseToUser().getPreviewMessages().size() + 1;
 
         if (response.getResponseToUser() instanceof DistributionResponse) {
-            sendMessages += ((DistributionResponse) response.getResponseToUser()).getReceivers().size();
+            DistributionResponse distributionResponse = (DistributionResponse) response.getResponseToUser();
+            if (distributionResponse.getDistribution() != null) {
+                sendMessages += distributionResponse.getDistribution().getReceivers().size();
+            }
         }
 
         botStats.setMessageBotSent(sendMessages);

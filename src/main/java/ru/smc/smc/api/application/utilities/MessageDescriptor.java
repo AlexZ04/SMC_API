@@ -31,7 +31,7 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
-        messageMeaning = checkIfAskQuestionMessage(message, messageRoleType);
+        messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
         }
@@ -46,7 +46,7 @@ public class MessageDescriptor {
     2) Сообщение содержит в себе слово "помощь"
      */
     private static MessageMeaningType checkIfHelpMessage(String message) {
-        return message.length() < 10 && (message.toLowerCase().contains("помощь")) ?
+        return message.length() < 10 && (message.toLowerCase().contains("помощь") || message.toLowerCase().contains("help")) ?
                 MessageMeaningType.HELP : MessageMeaningType.UNDEFINED;
     }
 
@@ -57,9 +57,9 @@ public class MessageDescriptor {
     1) Длина менее 15 символов
     2) Сообщение содержит словосочетание "задать вопрос"
      */
-    private static MessageMeaningType checkIfAskQuestionMessage(String message, MessageRoleType messageRoleType) {
-        return messageRoleType == MessageRoleType.USER && message.length() < 15 &&
-                (message.toLowerCase().contains("задать вопрос")) ?
+    private static MessageMeaningType checkIfAskQuestionMessage(String message, MessageRoleType messageRoleType, UserState currentUserState) {
+        return currentUserState == UserState.QUESTION || (messageRoleType == MessageRoleType.USER && message.length() < 15 &&
+                (message.toLowerCase().contains("задать вопрос"))) ?
                 MessageMeaningType.ASK_QUESTION : MessageMeaningType.UNDEFINED;
     }
 }

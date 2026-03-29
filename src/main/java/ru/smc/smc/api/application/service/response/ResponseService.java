@@ -80,18 +80,25 @@ public class ResponseService {
         responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
         responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
 
-        DistributionResponse distributionResponse = (DistributionResponse) messageResponseBuilder.build();
-        distributionResponse.setResponseText(distributionText);
-        distributionResponse.setSendToHimself(sendToHimself);
-        distributionResponse.setReceivers(userService.findBotUsersByGroup(group));
-        distributionResponse.setDistributionInlineElements(inlineDistributionElements);
+        MessageResponse messageResponse = messageResponseBuilder.build();
+
+        DistributionResponse distributionResponse = new DistributionResponse();
+        distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
+        distributionResponse.setInlineElements(messageResponse.getInlineElements());
+        distributionResponse.setReplyElements(messageResponse.getReplyElements());
+        distributionResponse.setResponseText(messageResponse.getResponseText());
+        distributionResponse.setDistribution(new DistributionModel());
+        distributionResponse.getDistribution().setDistributionText(distributionText);
+        distributionResponse.getDistribution().setSendToHimself(sendToHimself);
+        distributionResponse.getDistribution().setReceivers(userService.findBotUsersByGroup(group));
+        distributionResponse.getDistribution().setDistributionInlineElements(inlineDistributionElements);
 
         responseBuilder.responseToUser(distributionResponse);
 
         UserResponseItem finalResponse = responseBuilder.build();
         statsService.updateBotStats(finalResponse);
 
-        return new UserResponseItem();
+        return finalResponse;
     }
 
     public UserResponseItem createReturnToMainMenuMessage(BotUser user) {

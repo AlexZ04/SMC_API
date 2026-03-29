@@ -10,6 +10,7 @@ import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -35,7 +36,7 @@ public class ResponseUIService {
 
             return;
         }
-        
+
         // возврат клавиатуры для администратора
         switch (userState.getKeyboardCode()) {
             case 0 -> {
@@ -67,5 +68,57 @@ public class ResponseUIService {
 
     private void makeBackToBotKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
         messageResponseBuilder.addReplyButton(KeyboardsProperties.BACK_TO_BOT_BUTTON);
+    }
+
+    public List<List<ElementModel>> makeKeyboard(UserState userState, UserRole userRole) {
+        // возврат клавиатуры для пользователя
+        if (userRole == UserRole.USER) {
+            switch (userState.getKeyboardCode()) {
+                case 0 -> {
+                    return makeMainKeyboard();
+                }
+                default -> {
+                    return makeBackToBotKeyboard();
+                }
+            }
+        }
+
+        // возврат клавиатуры для администратора
+        switch (userState.getKeyboardCode()) {
+            case 0 -> {
+                return makeMainKeyboard();
+            }
+            default -> {
+                return makeBackToBotKeyboard();
+            }
+        }
+    }
+
+    private List<List<ElementModel>> makeMainKeyboard() {
+        List<List<ElementModel>> keyboard = new ArrayList<>();
+
+        if (featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)) {
+            keyboard.add(List.of(KeyboardsProperties.PARTICIPATE_IN_GIVEAWAY));
+            keyboard.add(List.of(
+                    KeyboardsProperties.ASK_QUESTION_BUTTON,
+                    KeyboardsProperties.SET_UP_DISTRIBUTION_BUTTON
+            ));
+        } else {
+            keyboard.add(List.of(KeyboardsProperties.ASK_QUESTION_BUTTON));
+            keyboard.add(List.of(KeyboardsProperties.SET_UP_DISTRIBUTION_BUTTON));
+        }
+
+        keyboard.add(List.of(
+                KeyboardsProperties.FEEDBACK_LINK,
+                KeyboardsProperties.HELP_BUTTON
+        ));
+
+        return keyboard;
+    }
+
+    private List<List<ElementModel>> makeBackToBotKeyboard() {
+        return List.of(
+                List.of(KeyboardsProperties.BACK_TO_BOT_BUTTON)
+        );
     }
 }

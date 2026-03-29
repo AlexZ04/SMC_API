@@ -1,14 +1,15 @@
 package ru.smc.smc.api.application.common.model.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-public class PlatformReceivers {
+@Accessors(chain = true)
+public class PlatformReceiver {
     private AvailablePlatform platform;
-    private List<String> receiversId;
+    private String receiverId;
+    private List<List<ElementModel>> replyElements;
 }

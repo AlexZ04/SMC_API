@@ -3,11 +3,11 @@ package ru.smc.smc.api.application.service.response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.smc.smc.api.application.common.enums.DistributionGroups;
 import ru.smc.smc.api.application.common.enums.ResponseStatus;
 import ru.smc.smc.api.application.common.enums.UserState;
-import ru.smc.smc.api.application.common.model.response.ElementModel;
-import ru.smc.smc.api.application.common.model.response.MessageResponse;
-import ru.smc.smc.api.application.common.model.response.UserResponseItem;
+import ru.smc.smc.api.application.common.model.response.*;
+import ru.smc.smc.api.application.service.user.UserService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.application.properties.ResponseMessagesProperties;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
@@ -27,6 +27,7 @@ public class ResponseService {
     private final ResponseUIService responseUIService;
     private final StatsService statsService;
     private final BotUserRepository botUserRepository;
+    private final UserService userService;
 
     public UserResponseItem createUserResponse(BotUser user, UserState nextState, String responseMessage) {
         updateUserState(user, nextState);
@@ -62,6 +63,35 @@ public class ResponseService {
         statsService.updateBotStats(finalResponse);
 
         return finalResponse;
+    }
+
+    public UserResponseItem createUserResponseWithDistribution(BotUser user, UserState nextState, String responseMessage,
+                                                               List<List<ElementModel>> inlineElements,
+                                                               String distributionText,
+                                                               DistributionGroups group, boolean sendToHimself,
+                                                               List<List<ElementModel>> inlineDistributionElements) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
+
+        DistributionResponse distributionResponse = (DistributionResponse) messageResponseBuilder.build();
+        distributionResponse.setResponseText(distributionText);
+        distributionResponse.setSendToHimself(sendToHimself);
+        distributionResponse.setReceivers(userService.findBotUsersByGroup(group));
+        distributionResponse.setInlineElements(inlineDistributionElements);
+
+        responseBuilder.responseToUser(distributionResponse);
+
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return new UserResponseItem();
     }
 
     public UserResponseItem createReturnToMainMenuMessage(BotUser user) {

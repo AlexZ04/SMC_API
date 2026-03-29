@@ -3,6 +3,7 @@ package ru.smc.smc.api.application.service.processors.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FaqQuestionsTexts;
+import ru.smc.smc.api.application.common.enums.DistributionGroups;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
@@ -14,6 +15,7 @@ import ru.smc.smc.api.application.utilities.FaqUtility;
 import ru.smc.smc.api.application.utilities.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,9 +38,8 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
                     createInlineKeyboard());
         }
 
-        // todo сообщение передать также админам!!
-        return responseService.createUserResponseWithInlineKeyboard(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
-                createInlineKeyboard());
+        return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
+                createInlineKeyboard(), "Бебебе", DistributionGroups.ADMINS, false, new ArrayList<>());
     }
 
     @Override

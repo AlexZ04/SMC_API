@@ -1,22 +1,18 @@
 package ru.smc.smc.api.application.common.model.response;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Getter
+@Setter
+@Accessors(chain = true)
 public class DistributionResponse extends MessageResponse {
-    private final boolean sendToHimself;
-    private final List<PlatformReceivers> receivers;
 
-    public DistributionResponse(List<String> previewMessages,
-                                String responseText,
-                                List<List<ElementModel>> inlineElements,
-                                List<List<ElementModel>> replyElements, boolean sendToHimself,
-                                List<PlatformReceivers> receivers) {
-        super(previewMessages, responseText, inlineElements, replyElements);
-
-        this.sendToHimself = sendToHimself;
-        this.receivers = receivers;
-    }
+    private String messageText;
+    private boolean sendToHimself;
+    private List<PlatformReceiver> receivers;
+    private List<List<ElementModel>> inlineElements;
 }

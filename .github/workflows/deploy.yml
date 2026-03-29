@@ -13,6 +13,7 @@ permissions:
   packages: write
 
 env:
+  REGISTRY_NAMESPACE: alexz04
   IMAGE_NAME: smk-api
   CONTAINER_NAME: smk-api
   DB_CONTAINER_NAME: smk-api-db
@@ -121,8 +122,8 @@ jobs:
           file: ${{ matrix.file }}
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:${{ github.sha }}
+            ghcr.io/${{ env.REGISTRY_NAMESPACE }}/${{ matrix.image_name }}:latest
+            ghcr.io/${{ env.REGISTRY_NAMESPACE }}/${{ matrix.image_name }}:${{ github.sha }}
           cache-from: type=gha,scope=${{ matrix.cache_scope }}
           cache-to: type=gha,mode=max,scope=${{ matrix.cache_scope }}
           provenance: false
@@ -155,6 +156,7 @@ jobs:
           DB_VOLUME_NAME: ${{ env.DB_VOLUME_NAME }}
           NETWORK_NAME: ${{ env.NETWORK_NAME }}
           APP_PORT: ${{ env.APP_PORT }}
+          REGISTRY_NAMESPACE: ${{ env.REGISTRY_NAMESPACE }}
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
@@ -174,7 +176,7 @@ jobs:
                 exit 1
               fi
 
-              docker pull ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:latest
+              docker pull ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest
 
               docker network inspect $NETWORK_NAME >/dev/null 2>&1 || docker network create $NETWORK_NAME
               docker volume inspect $DB_VOLUME_NAME >/dev/null 2>&1 || docker volume create $DB_VOLUME_NAME
@@ -206,6 +208,6 @@ jobs:
                 -e SPRING_DATASOURCE_USERNAME="$POSTGRES_USER" \
                 -e SPRING_DATASOURCE_PASSWORD="$POSTGRES_PASSWORD" \
                 -p $APP_PORT:$APP_PORT \
-                ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:latest
-            ' || { echo "Another deploy is already running (lock /tmp/deploy.lock)."; exit 1; }
+                ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest
+            '
           EOF

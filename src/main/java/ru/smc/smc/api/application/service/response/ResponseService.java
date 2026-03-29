@@ -84,7 +84,7 @@ public class ResponseService {
         distributionResponse.setResponseText(distributionText);
         distributionResponse.setSendToHimself(sendToHimself);
         distributionResponse.setReceivers(userService.findBotUsersByGroup(group));
-        distributionResponse.setInlineElements(inlineDistributionElements);
+        distributionResponse.setDistributionInlineElements(inlineDistributionElements);
 
         responseBuilder.responseToUser(distributionResponse);
 

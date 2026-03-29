@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,6 +14,6 @@ public class DistributionResponse extends MessageResponse {
 
     private String messageText;
     private boolean sendToHimself;
-    private List<PlatformReceiver> receivers;
-    private List<List<ElementModel>> inlineElements;
+    private List<PlatformReceiver> receivers = new ArrayList<>();
+    private List<List<ElementModel>> distributionInlineElements = new ArrayList<>();
 }

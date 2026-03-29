@@ -38,12 +38,17 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
         }
 
         return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
-                new ArrayList<>(), "Бебебе", DistributionGroups.ADMINS, false, new ArrayList<>());
+                new ArrayList<>(), formDistributionMessage(request, user), DistributionGroups.ADMINS, false, new ArrayList<>());
     }
 
     @Override
     public MessageMeaningType meaning() {
         return MessageMeaningType.ASK_QUESTION;
+    }
+
+    private String formDistributionMessage(MessageRequestBody request, BotUser user) {
+        // todo: формирование текста для рассылки с СООБЩЕНИЕ ОТ ПОЛЬЗОВАТЕЛЯ...
+        return request.getMessage();
     }
 
     private List<List<ElementModel>> createInlineKeyboard() {

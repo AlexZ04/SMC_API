@@ -1,0 +1,10 @@
+.git
+.github
+.gradle
+.idea
+build
+out
+HELP.md
+release-notes
+diagrams
+docs

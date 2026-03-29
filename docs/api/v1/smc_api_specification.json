@@ -1,0 +1,202 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/user": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "processMessage",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin": {
+      "post": {
+        "tags": [
+          "admin-controller"
+        ],
+        "operationId": "processMessage_1",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MessageRequestBody": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "VK",
+              "TG"
+            ]
+          },
+          "userIdOnPlatform": {
+            "type": "string"
+          },
+          "attachmentsAmount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ElementModel": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "BUTTON",
+              "LINK"
+            ]
+          },
+          "link": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "textColor": {
+            "type": "string"
+          }
+        }
+      },
+      "MessageResponse": {
+        "type": "object",
+        "properties": {
+          "previewMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "responseText": {
+            "type": "string"
+          },
+          "inlineElements": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ElementModel"
+              }
+            }
+          },
+          "replyElements": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ElementModel"
+              }
+            }
+          }
+        }
+      },
+      "UserResponseItem": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "ERROR"
+            ]
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "VK",
+              "TG"
+            ]
+          },
+          "userIdOnPlatform": {
+            "type": "string"
+          },
+          "responseToUser": {
+            "$ref": "#/components/schemas/MessageResponse"
+          }
+        }
+      }
+    }
+  }
+}

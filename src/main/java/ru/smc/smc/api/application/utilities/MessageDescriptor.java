@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.utilities;
 
 import lombok.experimental.UtilityClass;
+import ru.smc.smc.api.application.common.constant.BotCommands;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.application.common.enums.UserState;
@@ -31,6 +32,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfChangeTextsMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -51,6 +57,16 @@ public class MessageDescriptor {
     }
 
     /*
+    Проверка на сообщение - запрос настройки текстов
+     */
+    private static MessageMeaningType checkIfChangeTextsMessage(String message, MessageRoleType messageRoleType,
+                                                                UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.CHANGE_TEXTS_COMMAND) ?
+                MessageMeaningType.CHANGE_TEXTS : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
     Проверка на сообщение - "Задать вопрос" (переход на соответствующих экран)
     Условия:
     0) Сообщение пришло в часть пользователей
@@ -58,8 +74,8 @@ public class MessageDescriptor {
     2) Сообщение содержит словосочетание "задать вопрос"
      */
     private static MessageMeaningType checkIfAskQuestionMessage(String message, MessageRoleType messageRoleType, UserState currentUserState) {
-        return currentUserState == UserState.QUESTION || (messageRoleType == MessageRoleType.USER && message.length() < 15 &&
-                (message.toLowerCase().contains("задать вопрос"))) ?
+        return messageRoleType == MessageRoleType.USER && (currentUserState == UserState.QUESTION || (message.length() < 15 &&
+                (message.toLowerCase().contains("задать вопрос")))) ?
                 MessageMeaningType.ASK_QUESTION : MessageMeaningType.UNDEFINED;
     }
 }

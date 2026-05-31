@@ -8,4 +8,5 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class BotCommands {
     public final String HELP_COMMAND = "/help";
+    public final String CHANGE_TEXTS_COMMAND = "/changeTexts";
 }

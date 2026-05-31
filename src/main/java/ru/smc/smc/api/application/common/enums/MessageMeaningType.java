@@ -1,9 +1,10 @@
 package ru.smc.smc.api.application.common.enums;
 
 public enum MessageMeaningType {
-    HELP,
+    HELP, // [все] получить помощь по функциональности
     CHANGE_FACULTY,
-    ASK_QUESTION,
+    ASK_QUESTION, // [пользователь] задать вопрос
     SET_DISTRIBUTION,
-    UNDEFINED
+    CHANGE_TEXTS, // [администратор] смена текстов
+    UNDEFINED // [все] сообщение неопознано
 }

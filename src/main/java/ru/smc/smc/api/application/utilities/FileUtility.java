@@ -22,4 +22,14 @@ public class FileUtility {
             throw new NotFoundException("Ошибка чтения файла: " + path);
         }
     }
+
+    public void writeCustomizableFileMessage(String fileName, String message) {
+        Path path = Path.of("config", "texts", "customizable", fileName + ".txt");
+
+        try {
+            Files.writeString(path, message);
+        } catch (IOException e) {
+            throw new NotFoundException("Ошибка записи в файл: " + path);
+        }
+    }
 }

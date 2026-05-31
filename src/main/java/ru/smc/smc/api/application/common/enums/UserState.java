@@ -5,7 +5,12 @@ import lombok.Getter;
 public enum UserState {
     MAIN_MENU(0), // 0 - клавиатура главного меню
     QUESTION(1), // 1 - клавиатура "К боту"
-    CHANGE_TEXTS(1); // 1 - клавиатура "К боту"
+    CHANGE_TEXTS(1), // 1 - клавиатура "К боту"
+    CHANGE_EVENTS_DISTRIBUTION_TEXT(1), // 1 - клавиатура "К боту"
+    CHANGE_COMPETITIONS_DISTRIBUTION_TEXT(1), // 1 - клавиатура "К боту"
+    CHANGE_SCHEDULE_NEWS_DISTRIBUTION_TEXT(1), // 1 - клавиатура "К боту"
+    CHANGE_GENERAL_DISTRIBUTION_TEXT(1), // 1 - клавиатура "К боту"
+    CHANGE_GIVEAWAY_TEXT(1); // 1 - клавиатура "К боту"
 
     @Getter
     private final int keyboardCode;

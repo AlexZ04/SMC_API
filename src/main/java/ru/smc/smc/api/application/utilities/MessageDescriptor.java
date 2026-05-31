@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.utilities;
 
 import lombok.experimental.UtilityClass;
+import ru.smc.smc.api.application.common.constant.AdminTextSettingsTexts;
 import ru.smc.smc.api.application.common.constant.BotCommands;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
@@ -61,9 +62,19 @@ public class MessageDescriptor {
      */
     private static MessageMeaningType checkIfChangeTextsMessage(String message, MessageRoleType messageRoleType,
                                                                 UserState currentUserState) {
-        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
-                message.equalsIgnoreCase(BotCommands.CHANGE_TEXTS_COMMAND) ?
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase(BotCommands.CHANGE_TEXTS_COMMAND)) ||
+                        (currentUserState == UserState.CHANGE_TEXTS && AdminTextSettingsTexts.isDistributionText(message.trim())) ||
+                        isDistributionTextChangingState(currentUserState)) ?
                 MessageMeaningType.CHANGE_TEXTS : MessageMeaningType.UNDEFINED;
+    }
+
+    private static boolean isDistributionTextChangingState(UserState currentUserState) {
+        return currentUserState == UserState.CHANGE_EVENTS_DISTRIBUTION_TEXT ||
+                currentUserState == UserState.CHANGE_COMPETITIONS_DISTRIBUTION_TEXT ||
+                currentUserState == UserState.CHANGE_SCHEDULE_NEWS_DISTRIBUTION_TEXT ||
+                currentUserState == UserState.CHANGE_GENERAL_DISTRIBUTION_TEXT ||
+                currentUserState == UserState.CHANGE_GIVEAWAY_TEXT;
     }
 
     /*

@@ -17,9 +17,9 @@ api-config:
 
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    enabled: false
+    enabled: true
 
 messages:
   return-to-main-screen: Возвращение в главное меню

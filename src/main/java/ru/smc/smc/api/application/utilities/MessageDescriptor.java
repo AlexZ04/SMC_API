@@ -87,8 +87,10 @@ public class MessageDescriptor {
      */
     private static MessageMeaningType checkIfChangeSportorgMessage(String message, MessageRoleType messageRoleType,
                                                                    UserState currentUserState) {
-        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
-                message.equalsIgnoreCase(BotCommands.CHANGE_SPORTORG_COMMAND) ?
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase(BotCommands.CHANGE_SPORTORG_COMMAND)) ||
+                        currentUserState == UserState.CHANGE_SPORTORG ||
+                        currentUserState == UserState.CHANGE_SPORTORG_INFO) ?
                 MessageMeaningType.CHANGE_SPORTORG : MessageMeaningType.UNDEFINED;
     }
 

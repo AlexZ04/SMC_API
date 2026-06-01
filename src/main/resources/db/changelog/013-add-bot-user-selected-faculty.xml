@@ -1,0 +1,28 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="013-add-bot-user-selected-faculty" author="aleksey.z">
+
+        <addColumn tableName="bot_user">
+            <column name="selected_faculty_id" type="integer"/>
+        </addColumn>
+
+        <createIndex tableName="bot_user" indexName="idx_bot_user_selected_faculty_id">
+            <column name="selected_faculty_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="bot_user"
+                baseColumnNames="selected_faculty_id"
+                constraintName="fk_bot_user_selected_faculty"
+                referencedTableName="faculty"
+                referencedColumnNames="id"
+                onDelete="SET NULL"/>
+
+    </changeSet>
+
+</databaseChangeLog>

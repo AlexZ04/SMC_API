@@ -18,8 +18,11 @@ api-config:
 springdoc:
   api-docs:
     enabled: true
+    path: /v3/api-docs
   swagger-ui:
     enabled: true
+    config-url: /smc-api/v3/api-docs/swagger-config
+    url: /smc-api/v3/api-docs
 
 messages:
   return-to-main-screen: Возвращение в главное меню

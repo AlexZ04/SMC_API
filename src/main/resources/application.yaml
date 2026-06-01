@@ -12,6 +12,9 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
 
+server:
+  forward-headers-strategy: framework
+
 api-config:
   key: ${API_CONFIG_KEY:test-api-key}
 

@@ -38,6 +38,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfChangeSportorgMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -75,6 +80,16 @@ public class MessageDescriptor {
                 currentUserState == UserState.CHANGE_SCHEDULE_NEWS_DISTRIBUTION_TEXT ||
                 currentUserState == UserState.CHANGE_GENERAL_DISTRIBUTION_TEXT ||
                 currentUserState == UserState.CHANGE_GIVEAWAY_TEXT;
+    }
+
+    /*
+    Проверка на сообщение - запрос изменения спорторга факультета
+     */
+    private static MessageMeaningType checkIfChangeSportorgMessage(String message, MessageRoleType messageRoleType,
+                                                                   UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.CHANGE_SPORTORG_COMMAND) ?
+                MessageMeaningType.CHANGE_SPORTORG : MessageMeaningType.UNDEFINED;
     }
 
     /*

@@ -9,4 +9,5 @@ import lombok.experimental.UtilityClass;
 public class BotCommands {
     public final String HELP_COMMAND = "/help";
     public final String CHANGE_TEXTS_COMMAND = "/changeTexts";
+    public final String CHANGE_SPORTORG_COMMAND = "/changeSportorg";
 }

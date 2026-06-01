@@ -48,7 +48,6 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
 
     private List<List<ElementModel>> createInlineKeyboard() {
         return List.of(
-                List.of(KeyboardsProperties.createInlineButton(AdminTextSettingsTexts.SPORT_ORG_TEXT)),
                 List.of(KeyboardsProperties.createInlineButton(AdminTextSettingsTexts.EVENTS_DISTRIBUTION_TEXT)),
                 List.of(KeyboardsProperties.createInlineButton(AdminTextSettingsTexts.COMPETITIONS_DISTRIBUTION_TEXT)),
                 List.of(KeyboardsProperties.createInlineButton(AdminTextSettingsTexts.SCHEDULE_NEWS_DISTRIBUTION_TEXT)),

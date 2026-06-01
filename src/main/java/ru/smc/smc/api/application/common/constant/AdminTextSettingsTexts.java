@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class AdminTextSettingsTexts {
-    public String SPORT_ORG_TEXT = "Для спорторга";
     public String EVENTS_DISTRIBUTION_TEXT = "Для рассылки о мероприятиях";
     public String COMPETITIONS_DISTRIBUTION_TEXT = "Для рассылки о соревнованиях";
     public String SCHEDULE_NEWS_DISTRIBUTION_TEXT = "Для рассылки о новостях расписания";

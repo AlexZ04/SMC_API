@@ -6,5 +6,6 @@ public enum MessageMeaningType {
     ASK_QUESTION, // [пользователь] задать вопрос
     SET_DISTRIBUTION,
     CHANGE_TEXTS, // [администратор] смена текстов
+    CHANGE_SPORTORG, // [администратор] смена спорторга факультета
     UNDEFINED // [все] сообщение неопознано
 }

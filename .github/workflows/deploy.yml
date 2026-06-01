@@ -178,6 +178,18 @@ jobs:
 
               docker pull ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest
 
+              mkdir -p /home/deploy/smk-api/config
+
+              if [ -z "$(find /home/deploy/smk-api/config -mindepth 1 -maxdepth 1 -print -quit)" ]; then
+                echo "Bootstrapping /home/deploy/smk-api/config from image defaults..."
+                docker rm -f "$CONTAINER_NAME-config-bootstrap" >/dev/null 2>&1 || true
+                docker create --name "$CONTAINER_NAME-config-bootstrap" ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest >/dev/null
+                docker cp "$CONTAINER_NAME-config-bootstrap:/app/config/." /home/deploy/smk-api/config/
+                docker rm -f "$CONTAINER_NAME-config-bootstrap" >/dev/null
+              else
+                echo "Using existing /home/deploy/smk-api/config"
+              fi
+
               docker network inspect $NETWORK_NAME >/dev/null 2>&1 || docker network create $NETWORK_NAME
               docker volume inspect $DB_VOLUME_NAME >/dev/null 2>&1 || docker volume create $DB_VOLUME_NAME
 
@@ -207,6 +219,7 @@ jobs:
                 -e SPRING_DATASOURCE_URL="jdbc:postgresql://$DB_CONTAINER_NAME:5432/$POSTGRES_DB" \
                 -e SPRING_DATASOURCE_USERNAME="$POSTGRES_USER" \
                 -e SPRING_DATASOURCE_PASSWORD="$POSTGRES_PASSWORD" \
+                -v /home/deploy/smk-api/config:/app/config \
                 -p $APP_PORT:$APP_PORT \
                 ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest
             '

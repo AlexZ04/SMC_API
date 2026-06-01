@@ -14,6 +14,7 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 COPY --from=builder /workspace/build/libs/*.jar /app/app.jar
+COPY --from=builder /workspace/config /app/config
 
 EXPOSE 8023
 

@@ -23,6 +23,7 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String CHANGE_TEXTS_MENU_PATHFILE = "admin-change-texts";
     private static final String CHANGE_TEXTS_INPUT_MESSAGE_PATHFILE = "admin-change-texts-input-message";
+    private static final String DISTRIBUTION_UPDATED_MESSAGE = "Сообщение для рассылки обновлено, спасибо";
 
     private final ResponseService responseService;
     private final DistributionFileService distributionFileService;
@@ -32,15 +33,16 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
         if (isDistributionTextChangingState(user.getCurrentState())) {
             AdminDistributionType distributionType = defineDistributionType(user.getCurrentState());
 
+            request.validateAttachments();
             FileUtility.writeCustomizableFileMessage(distributionType.getPathFile(), defineDistributionText(request));
             distributionFileService.replaceFiles(distributionType, request.getAttachments());
 
-            return responseService.createReturnToMainMenuMessage(user);
+            return responseService.createUserResponse(user, UserState.MAIN_MENU, DISTRIBUTION_UPDATED_MESSAGE);
         }
 
         if (user.getCurrentState() == UserState.CHANGE_TEXTS && AdminTextSettingsTexts.isDistributionText(request.getMessage().trim())) {
             return responseService.createUserResponse(user, defineNextState(request.getMessage().trim()),
-                    FileUtility.getFileMessage(CHANGE_TEXTS_INPUT_MESSAGE_PATHFILE));
+                    String.format(FileUtility.getFileMessage(CHANGE_TEXTS_INPUT_MESSAGE_PATHFILE), request.getMessage().trim()));
         }
 
         return responseService.createUserResponseWithInlineKeyboard(user, UserState.CHANGE_TEXTS,

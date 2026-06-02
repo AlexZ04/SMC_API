@@ -1,6 +1,6 @@
 Доступные команды:
 /help - выводит список доступных команд
-/changeTexts - настройка рассылок
+/changeDistribution - настройка рассылок
 /changeSportorg - настройка спорторгов факультетов
 /getAllFaculties - выводит список факультетов
 /sendDistribution - отправка рассылки

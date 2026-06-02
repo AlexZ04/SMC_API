@@ -63,6 +63,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfChangeToggleStateMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -151,6 +156,18 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
                 message.equalsIgnoreCase(BotCommands.STATS_COMMAND) ?
                 MessageMeaningType.STATS : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - изменение состояния тоггла
+     */
+    private static MessageMeaningType checkIfChangeToggleStateMessage(String message, MessageRoleType messageRoleType,
+                                                                      UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU &&
+                        message.equalsIgnoreCase(BotCommands.CHANGE_TOGGLE_STATE_COMMAND)) ||
+                        currentUserState == UserState.CHANGE_TOGGLE_STATE) ?
+                MessageMeaningType.CHANGE_TOGGLE_STATE : MessageMeaningType.UNDEFINED;
     }
 
     /*

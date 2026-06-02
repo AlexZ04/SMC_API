@@ -47,6 +47,18 @@ public class FeatureToggleService {
         }
     }
 
+    public boolean changeToggleStatusToOpposite(String toggleName) {
+        List<FeatureToggle> allToggles = getAllToggles();
+        FeatureToggle toggle = getSpecificToggle(allToggles, toggleName);
+
+        toggle.setActive(!toggle.isActive());
+
+        mapper.writerWithDefaultPrettyPrinter()
+                .writeValue(TOGGLES_PATH.toFile(), allToggles);
+
+        return toggle.isActive();
+    }
+
     private List<FeatureToggle> getAllToggles() {
         List<FeatureToggle> toggles;
 

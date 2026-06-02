@@ -14,4 +14,5 @@ public class BotCommands {
     public final String SEND_DISTRIBUTION_COMMAND = "/sendDistribution";
     public final String GET_FEATURE_TOGGLES_COMMAND = "/getFeatureToggles";
     public final String STATS_COMMAND = "/stats";
+    public final String CHANGE_TOGGLE_STATE_COMMAND = "/changeToggleState";
 }

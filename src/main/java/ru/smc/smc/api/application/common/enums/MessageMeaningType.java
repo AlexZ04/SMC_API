@@ -11,5 +11,6 @@ public enum MessageMeaningType {
     SEND_DISTRIBUTION, // [администратор] отправить рассылку
     GET_FEATURE_TOGGLES, // [администратор] получить список тогглов
     STATS, // [администратор] получить статистику
+    CHANGE_TOGGLE_STATE, // [администратор] изменить состояние тоггла
     UNDEFINED // [все] сообщение неопознано
 }

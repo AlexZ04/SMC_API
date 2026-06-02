@@ -6,3 +6,4 @@
 /sendDistribution - отправка рассылки
 /getFeatureToggles - выводит список тогглов
 /stats - выводит статистику
+/changeToggleState - изменение состояния тоггла

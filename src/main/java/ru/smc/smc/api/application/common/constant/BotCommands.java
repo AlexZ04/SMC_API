@@ -12,4 +12,5 @@ public class BotCommands {
     public final String CHANGE_SPORTORG_COMMAND = "/changeSportorg";
     public final String GET_ALL_FACULTIES_COMMAND = "/getAllFaculties";
     public final String SEND_DISTRIBUTION_COMMAND = "/sendDistribution";
+    public final String GET_FEATURE_TOGGLES_COMMAND = "/getFeatureToggles";
 }

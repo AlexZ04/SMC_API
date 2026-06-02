@@ -53,6 +53,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfGetFeatureTogglesMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -121,6 +126,16 @@ public class MessageDescriptor {
                         currentUserState == UserState.SEND_DISTRIBUTION_COMPETITIONS_FACULTIES ||
                         currentUserState == UserState.SEND_DISTRIBUTION_CONFIRMATION) ?
                 MessageMeaningType.SEND_DISTRIBUTION : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - запрос списка тогглов
+     */
+    private static MessageMeaningType checkIfGetFeatureTogglesMessage(String message, MessageRoleType messageRoleType,
+                                                                      UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.GET_FEATURE_TOGGLES_COMMAND) ?
+                MessageMeaningType.GET_FEATURE_TOGGLES : MessageMeaningType.UNDEFINED;
     }
 
     /*

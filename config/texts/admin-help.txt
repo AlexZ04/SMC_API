@@ -4,3 +4,4 @@
 /changeSportorg - настройка спорторгов факультетов
 /getAllFaculties - выводит список факультетов
 /sendDistribution - отправка рассылки
+/getFeatureToggles - выводит список тогглов

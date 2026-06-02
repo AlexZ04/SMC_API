@@ -8,5 +8,6 @@ public enum MessageMeaningType {
     CHANGE_TEXTS, // [администратор] смена текстов
     CHANGE_SPORTORG, // [администратор] смена спорторга факультета
     GET_ALL_FACULTIES, // [администратор] получить список факультетов
+    SEND_DISTRIBUTION, // [администратор] отправить рассылку
     UNDEFINED // [все] сообщение неопознано
 }

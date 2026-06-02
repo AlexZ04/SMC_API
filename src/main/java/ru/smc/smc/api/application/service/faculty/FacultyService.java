@@ -6,7 +6,10 @@ import ru.smc.smc.api.domain.entity.Faculty;
 import ru.smc.smc.api.domain.repository.FacultyRepository;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +47,37 @@ public class FacultyService {
         return findActiveFacultyById(facultyId);
     }
 
+    public Optional<List<Faculty>> findActiveFacultiesByMessage(String message) {
+        List<Integer> facultyIds = parseFacultyIds(message);
+
+        if (facultyIds.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Faculty> faculties = facultyIds.stream()
+                .map(this::findActiveFacultyById)
+                .flatMap(Optional::stream)
+                .toList();
+
+        if (faculties.size() != facultyIds.size()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(faculties);
+    }
+
+    public String formFacultyIds(List<Faculty> faculties) {
+        return faculties.stream()
+                .map(faculty -> String.valueOf(faculty.getId()))
+                .collect(Collectors.joining(";"));
+    }
+
+    public String formFacultyNames(List<Faculty> faculties) {
+        return faculties.stream()
+                .map(Faculty::getNameRu)
+                .collect(Collectors.joining(", "));
+    }
+
     private String formFacultiesListMessage(String header) {
         StringBuilder message = new StringBuilder(header);
 
@@ -64,6 +98,19 @@ public class FacultyService {
             return Integer.parseInt(message.trim());
         } catch (NumberFormatException e) {
             return null;
+        }
+    }
+
+    private List<Integer> parseFacultyIds(String message) {
+        try {
+            return Stream.of(message.split(";"))
+                    .map(String::trim)
+                    .filter(value -> !value.isBlank())
+                    .map(Integer::parseInt)
+                    .distinct()
+                    .toList();
+        } catch (NumberFormatException e) {
+            return List.of();
         }
     }
 }

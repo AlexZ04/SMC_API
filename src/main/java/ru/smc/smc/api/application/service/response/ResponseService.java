@@ -101,6 +101,57 @@ public class ResponseService {
         return finalResponse;
     }
 
+    public UserResponseItem createUserResponseWithPreviewMessages(BotUser user, UserState nextState, String responseMessage,
+                                                                  List<String> previewMessages) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
+    public UserResponseItem createUserResponseWithDistributionReceivers(BotUser user, UserState nextState, String responseMessage,
+                                                                        String distributionText, boolean sendToHimself,
+                                                                        List<PlatformReceiver> receivers) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+
+        MessageResponse messageResponse = messageResponseBuilder.build();
+
+        DistributionResponse distributionResponse = new DistributionResponse();
+        distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
+        distributionResponse.setInlineElements(messageResponse.getInlineElements());
+        distributionResponse.setReplyElements(messageResponse.getReplyElements());
+        distributionResponse.setResponseText(messageResponse.getResponseText());
+        distributionResponse.setDistribution(new DistributionModel());
+        distributionResponse.getDistribution().setDistributionText(distributionText);
+        distributionResponse.getDistribution().setSendToHimself(sendToHimself);
+        distributionResponse.getDistribution().setReceivers(receivers);
+
+        responseBuilder.responseToUser(distributionResponse);
+
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
     public UserResponseItem createReturnToMainMenuMessage(BotUser user) {
         updateUserState(user, UserState.MAIN_MENU);
 

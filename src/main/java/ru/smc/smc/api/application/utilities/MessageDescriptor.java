@@ -48,6 +48,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfSendDistributionMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -103,6 +108,19 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
                 message.equalsIgnoreCase(BotCommands.GET_ALL_FACULTIES_COMMAND) ?
                 MessageMeaningType.GET_ALL_FACULTIES : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - отправка рассылки
+     */
+    private static MessageMeaningType checkIfSendDistributionMessage(String message, MessageRoleType messageRoleType,
+                                                                     UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase(BotCommands.SEND_DISTRIBUTION_COMMAND)) ||
+                        currentUserState == UserState.SEND_DISTRIBUTION ||
+                        currentUserState == UserState.SEND_DISTRIBUTION_COMPETITIONS_FACULTIES ||
+                        currentUserState == UserState.SEND_DISTRIBUTION_CONFIRMATION) ?
+                MessageMeaningType.SEND_DISTRIBUTION : MessageMeaningType.UNDEFINED;
     }
 
     /*

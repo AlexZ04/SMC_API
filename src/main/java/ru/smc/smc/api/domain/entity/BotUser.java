@@ -35,6 +35,10 @@ public class BotUser {
     @JoinColumn(name = "selected_faculty_id")
     private Faculty selectedFaculty;
 
+    private String selectedDistributionType;
+
+    private String selectedDistributionFacultyIds;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserState currentState = UserState.MAIN_MENU;

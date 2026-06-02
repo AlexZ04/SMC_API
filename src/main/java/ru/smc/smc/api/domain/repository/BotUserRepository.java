@@ -14,5 +14,6 @@ public interface BotUserRepository extends JpaRepository<BotUser, UUID> {
     List<BotUser> findByRoleNot(UserRole role); // все администраторы
     List<BotUser> findBySubscriptionSubscribedToEventDistributionTrue();
     List<BotUser> findBySubscriptionSubscribedToCompetitionDistributionTrue();
+    List<BotUser> findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(List<Integer> facultyIds);
     List<BotUser> findBySubscriptionSubscribedToScheduleDistributionTrue();
 }

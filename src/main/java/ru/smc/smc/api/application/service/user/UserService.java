@@ -49,6 +49,12 @@ public class UserService {
                 .toList();
     }
 
+    public List<PlatformReceiver> findCompetitionSubscribersByFacultyIds(List<Integer> facultyIds) {
+        return botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds).stream()
+                .map(this::mapUserToPlatformReceiver)
+                .toList();
+    }
+
     private PlatformReceiver mapUserToPlatformReceiver(BotUser botUser) {
         return new PlatformReceiver()
                 .setPlatform(botUser.getPlatform())

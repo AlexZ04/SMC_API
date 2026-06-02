@@ -32,4 +32,18 @@ public class FileUtility {
             throw new NotFoundException("Ошибка записи в файл: " + path);
         }
     }
+
+    public String getCustomizableFileMessage(String fileName) {
+        Path path = Path.of("config", "texts", "customizable", fileName + ".txt");
+
+        if (!Files.exists(path)) {
+            throw new NotFoundException("Файл не найден: " + path);
+        }
+
+        try {
+            return Files.readString(path);
+        } catch (IOException e) {
+            throw new NotFoundException("Ошибка чтения файла: " + path);
+        }
+    }
 }

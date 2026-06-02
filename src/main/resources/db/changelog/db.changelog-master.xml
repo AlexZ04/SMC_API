@@ -20,5 +20,6 @@
     <include file="db/changelog/011-add-user-platform-id.xml"/>
     <include file="db/changelog/012-fix-platform-field.xml"/>
     <include file="db/changelog/013-add-bot-user-selected-faculty.xml"/>
+    <include file="db/changelog/014-add-bot-user-selected-distribution.xml"/>
 
 </databaseChangeLog>

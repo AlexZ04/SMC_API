@@ -58,6 +58,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfStatsMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -136,6 +141,16 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
                 message.equalsIgnoreCase(BotCommands.GET_FEATURE_TOGGLES_COMMAND) ?
                 MessageMeaningType.GET_FEATURE_TOGGLES : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - запрос статистики
+     */
+    private static MessageMeaningType checkIfStatsMessage(String message, MessageRoleType messageRoleType,
+                                                          UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.STATS_COMMAND) ?
+                MessageMeaningType.STATS : MessageMeaningType.UNDEFINED;
     }
 
     /*

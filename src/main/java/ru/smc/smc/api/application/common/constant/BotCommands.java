@@ -13,4 +13,5 @@ public class BotCommands {
     public final String GET_ALL_FACULTIES_COMMAND = "/getAllFaculties";
     public final String SEND_DISTRIBUTION_COMMAND = "/sendDistribution";
     public final String GET_FEATURE_TOGGLES_COMMAND = "/getFeatureToggles";
+    public final String STATS_COMMAND = "/stats";
 }

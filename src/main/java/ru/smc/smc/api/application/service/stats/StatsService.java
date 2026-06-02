@@ -14,15 +14,16 @@ import java.util.List;
 public class StatsService {
     private final BotStatsRepository botStatsRepository;
 
-    public void updateBotStats(UserResponseItem response) {
-        List<BotStats> botStatsList = botStatsRepository.findAll();
+    public String getBotStatsInfo() {
+        BotStats botStats = getBotStats();
 
-        BotStats botStats;
-        if (botStatsList.isEmpty()) {
-            botStats = new BotStats();
-        } else {
-            botStats = botStatsRepository.findAll().getFirst();
-        }
+        return "Статистика системы:\n" +
+                "Сообщений отправлено ботом: " + botStats.getMessageBotSent() + "\n" +
+                "Интерактивных использований: " + botStats.getInteractiveUses();
+    }
+
+    public void updateBotStats(UserResponseItem response) {
+        BotStats botStats = getBotStats();
 
         long sendMessages = botStats.getMessageBotSent() + response.getResponseToUser().getPreviewMessages().size() + 1;
 
@@ -35,5 +36,15 @@ public class StatsService {
 
         botStats.setMessageBotSent(sendMessages);
         botStatsRepository.save(botStats);
+    }
+
+    private BotStats getBotStats() {
+        List<BotStats> botStatsList = botStatsRepository.findAll();
+
+        if (botStatsList.isEmpty()) {
+            return new BotStats();
+        }
+
+        return botStatsList.getFirst();
     }
 }

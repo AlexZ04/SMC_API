@@ -10,5 +10,6 @@ public enum MessageMeaningType {
     GET_ALL_FACULTIES, // [администратор] получить список факультетов
     SEND_DISTRIBUTION, // [администратор] отправить рассылку
     GET_FEATURE_TOGGLES, // [администратор] получить список тогглов
+    STATS, // [администратор] получить статистику
     UNDEFINED // [все] сообщение неопознано
 }

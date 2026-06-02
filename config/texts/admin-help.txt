@@ -5,3 +5,4 @@
 /getAllFaculties - выводит список факультетов
 /sendDistribution - отправка рассылки
 /getFeatureToggles - выводит список тогглов
+/stats - выводит статистику

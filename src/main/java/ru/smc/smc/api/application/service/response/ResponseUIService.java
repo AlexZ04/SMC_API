@@ -40,7 +40,7 @@ public class ResponseUIService {
         // возврат клавиатуры для администратора
         switch (userState.getKeyboardCode()) {
             case 0 -> {
-                makeMainKeyboard(messageResponseBuilder);
+                makeAdminMainKeyboard(messageResponseBuilder);
             }
             default -> {
                 makeBackToBotKeyboard(messageResponseBuilder);
@@ -70,6 +70,15 @@ public class ResponseUIService {
         messageResponseBuilder.addReplyButton(KeyboardsProperties.BACK_TO_BOT_BUTTON);
     }
 
+    private void makeAdminMainKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
+        messageResponseBuilder.addReplyRow(KeyboardsProperties.ADMIN_CHANGE_SPORTORG_BUTTON,
+                KeyboardsProperties.ADMIN_CHANGE_TEXTS_BUTTON);
+        messageResponseBuilder.addReplyRow(KeyboardsProperties.ADMIN_SEND_DISTRIBUTION_BUTTON,
+                KeyboardsProperties.ADMIN_CHANGE_TOGGLE_STATE_BUTTON);
+        messageResponseBuilder.addReplyRow(KeyboardsProperties.ADMIN_STATS_BUTTON,
+                KeyboardsProperties.ADMIN_HELP_BUTTON);
+    }
+
     public List<List<ElementModel>> makeKeyboard(UserState userState, UserRole userRole) {
         // возврат клавиатуры для пользователя
         if (userRole == UserRole.USER) {
@@ -86,7 +95,7 @@ public class ResponseUIService {
         // возврат клавиатуры для администратора
         switch (userState.getKeyboardCode()) {
             case 0 -> {
-                return makeMainKeyboard();
+                return makeAdminMainKeyboard();
             }
             default -> {
                 return makeBackToBotKeyboard();
@@ -119,6 +128,14 @@ public class ResponseUIService {
     private List<List<ElementModel>> makeBackToBotKeyboard() {
         return List.of(
                 List.of(KeyboardsProperties.BACK_TO_BOT_BUTTON)
+        );
+    }
+
+    private List<List<ElementModel>> makeAdminMainKeyboard() {
+        return List.of(
+                List.of(KeyboardsProperties.ADMIN_CHANGE_SPORTORG_BUTTON, KeyboardsProperties.ADMIN_CHANGE_TEXTS_BUTTON),
+                List.of(KeyboardsProperties.ADMIN_SEND_DISTRIBUTION_BUTTON, KeyboardsProperties.ADMIN_CHANGE_TOGGLE_STATE_BUTTON),
+                List.of(KeyboardsProperties.ADMIN_STATS_BUTTON, KeyboardsProperties.ADMIN_HELP_BUTTON)
         );
     }
 }

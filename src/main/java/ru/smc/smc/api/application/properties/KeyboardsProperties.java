@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.properties;
 
 import lombok.experimental.UtilityClass;
+import ru.smc.smc.api.application.common.constant.BotCommands;
 import ru.smc.smc.api.application.common.enums.Colors;
 import ru.smc.smc.api.application.common.enums.ElementType;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
@@ -21,6 +22,18 @@ public class KeyboardsProperties {
             "К боту", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel SET_MY_FACULTY_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "Настроить свой факультет", Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_STATS_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.STATS_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_CHANGE_SPORTORG_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.CHANGE_SPORTORG_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_CHANGE_TEXTS_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.CHANGE_TEXTS_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_SEND_DISTRIBUTION_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.SEND_DISTRIBUTION_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_CHANGE_TOGGLE_STATE_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.CHANGE_TOGGLE_STATE_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+    public ElementModel ADMIN_HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
+            BotCommands.HELP_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
 
     public ElementModel createInlineButton(String message) {
         return new ElementModel(ElementType.BUTTON, null,

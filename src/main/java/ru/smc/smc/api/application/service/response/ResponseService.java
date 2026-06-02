@@ -14,6 +14,7 @@ import ru.smc.smc.api.domain.repository.BotUserRepository;
 import ru.smc.smc.api.application.service.stats.StatsService;
 
 import java.util.List;
+import java.util.UUID;
 
 /*
 Сервис для формирования ответа бота
@@ -84,6 +85,7 @@ public class ResponseService {
 
         DistributionResponse distributionResponse = new DistributionResponse();
         distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
+        distributionResponse.setPreviewFiles(messageResponse.getPreviewFiles());
         distributionResponse.setInlineElements(messageResponse.getInlineElements());
         distributionResponse.setReplyElements(messageResponse.getReplyElements());
         distributionResponse.setResponseText(messageResponse.getResponseText());
@@ -103,6 +105,11 @@ public class ResponseService {
 
     public UserResponseItem createUserResponseWithPreviewMessages(BotUser user, UserState nextState, String responseMessage,
                                                                   List<String> previewMessages) {
+        return createUserResponseWithPreviewMessages(user, nextState, responseMessage, previewMessages, List.of());
+    }
+
+    public UserResponseItem createUserResponseWithPreviewMessages(BotUser user, UserState nextState, String responseMessage,
+                                                                  List<String> previewMessages, List<UUID> previewFiles) {
         updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
@@ -111,6 +118,7 @@ public class ResponseService {
                 .responseText(responseMessage);
 
         previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
+        previewFiles.forEach(messageResponseBuilder::addPreviewFile);
         responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
@@ -123,6 +131,14 @@ public class ResponseService {
     public UserResponseItem createUserResponseWithDistributionReceivers(BotUser user, UserState nextState, String responseMessage,
                                                                         String distributionText, boolean sendToHimself,
                                                                         List<PlatformReceiver> receivers) {
+        return createUserResponseWithDistributionReceivers(user, nextState, responseMessage, distributionText,
+                sendToHimself, receivers, List.of());
+    }
+
+    public UserResponseItem createUserResponseWithDistributionReceivers(BotUser user, UserState nextState, String responseMessage,
+                                                                        String distributionText, boolean sendToHimself,
+                                                                        List<PlatformReceiver> receivers,
+                                                                        List<UUID> distributionFiles) {
         updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
@@ -136,11 +152,13 @@ public class ResponseService {
 
         DistributionResponse distributionResponse = new DistributionResponse();
         distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
+        distributionResponse.setPreviewFiles(messageResponse.getPreviewFiles());
         distributionResponse.setInlineElements(messageResponse.getInlineElements());
         distributionResponse.setReplyElements(messageResponse.getReplyElements());
         distributionResponse.setResponseText(messageResponse.getResponseText());
         distributionResponse.setDistribution(new DistributionModel());
         distributionResponse.getDistribution().setDistributionText(distributionText);
+        distributionResponse.getDistribution().setDistributionFiles(distributionFiles);
         distributionResponse.getDistribution().setSendToHimself(sendToHimself);
         distributionResponse.getDistribution().setReceivers(receivers);
 

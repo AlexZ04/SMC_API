@@ -17,6 +17,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -103,6 +104,7 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
 
         DistributionSendService distributionSendService = distributionSendServiceResolver.resolve(distributionType);
         String distributionText = distributionSendService.getDistributionText();
+        List<UUID> distributionFiles = distributionSendService.getDistributionFiles();
         var receivers = distributionSendService.getReceivers(user);
 
         clearSelectedDistributionInfo(user);
@@ -111,7 +113,8 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
                 String.format(DISTRIBUTION_SENT_MESSAGE_FORMAT, distributionType.getResultText()),
                 distributionText,
                 false,
-                receivers);
+                receivers,
+                distributionFiles);
     }
 
     private UserResponseItem createDistributionConfirmationResponse(BotUser user, String confirmationMessage) {
@@ -119,7 +122,8 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
         DistributionSendService distributionSendService = distributionSendServiceResolver.resolve(distributionType);
 
         return responseService.createUserResponseWithPreviewMessages(user, UserState.SEND_DISTRIBUTION_CONFIRMATION,
-                confirmationMessage, List.of(distributionSendService.getDistributionText()));
+                confirmationMessage, List.of(distributionSendService.getDistributionText()),
+                distributionSendService.getDistributionFiles());
     }
 
     private List<List<ElementModel>> createInlineKeyboard() {

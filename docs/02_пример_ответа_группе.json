@@ -4,6 +4,7 @@
   "userIdOnPlatform": "111",
   "responseToUser": {
     "previewMessages": ["Первое сообщение"],
+    "previewFiles": ["550e8400-e29b-41d4-a716-446655440000"],
     "messageText": "Привет! Это рассылка!",
     "inlineElements": [
       [
@@ -62,6 +63,10 @@
   },
   "distribution": {
     "messageText": "Привет! Это рассылка",
+    "distributionFiles": [
+      "550e8400-e29b-41d4-a716-446655440000",
+      "550e8400-e29b-41d4-a716-446655440001"
+    ],
     "inlineElements": [
       [
         {

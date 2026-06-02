@@ -90,6 +90,46 @@
           }
         }
       }
+    },
+    "/api/v1/files/{fileId}": {
+      "get": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "getFile",
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -149,6 +189,13 @@
               "type": "string"
             }
           },
+          "previewFiles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           "responseText": {
             "type": "string"
           },
@@ -160,6 +207,66 @@
                 "$ref": "#/components/schemas/ElementModel"
               }
             }
+          },
+          "replyElements": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ElementModel"
+              }
+            }
+          },
+          "distribution": {
+            "$ref": "#/components/schemas/DistributionModel"
+          }
+        }
+      },
+      "DistributionModel": {
+        "type": "object",
+        "properties": {
+          "distributionText": {
+            "type": "string"
+          },
+          "distributionFiles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "sendToHimself": {
+            "type": "boolean"
+          },
+          "receivers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlatformReceiver"
+            }
+          },
+          "distributionInlineElements": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ElementModel"
+              }
+            }
+          }
+        }
+      },
+      "PlatformReceiver": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": [
+              "VK",
+              "TG"
+            ]
+          },
+          "receiverId": {
+            "type": "string"
           },
           "replyElements": {
             "type": "array",

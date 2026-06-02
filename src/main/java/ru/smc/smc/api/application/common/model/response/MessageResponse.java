@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageResponse {
     private List<String> previewMessages;
+    private List<UUID> previewFiles;
     private String responseText;
     private List<List<ElementModel>> inlineElements;
     private List<List<ElementModel>> replyElements;
@@ -24,6 +26,7 @@ public class MessageResponse {
     public static class MessageResponseBuilder {
 
         private final List<String> previewMessages = new ArrayList<>();
+        private final List<UUID> previewFiles = new ArrayList<>();
         private final List<List<ElementModel>> inlineElements = new ArrayList<>();
         private final List<List<ElementModel>> replyElements = new ArrayList<>();
         private String responseText;
@@ -31,6 +34,7 @@ public class MessageResponse {
         public MessageResponse build() {
             MessageResponse response = new MessageResponse();
             response.setPreviewMessages(this.previewMessages);
+            response.setPreviewFiles(this.previewFiles);
             response.setResponseText(this.responseText);
             response.setInlineElements(this.inlineElements);
             response.setReplyElements(this.replyElements);
@@ -44,6 +48,11 @@ public class MessageResponse {
 
         public MessageResponseBuilder addPreviewMessage(String message) {
             this.previewMessages.add(message);
+            return this;
+        }
+
+        public MessageResponseBuilder addPreviewFile(UUID file) {
+            this.previewFiles.add(file);
             return this;
         }
 

@@ -10,12 +10,14 @@ import ru.smc.smc.api.application.utilities.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class GeneralDistributionSendService implements DistributionSendService {
 
     private final UserService userService;
+    private final DistributionFileService distributionFileService;
 
     @Override
     public AdminDistributionType type() {
@@ -25,6 +27,11 @@ public class GeneralDistributionSendService implements DistributionSendService {
     @Override
     public String getDistributionText() {
         return FileUtility.getCustomizableFileMessage(type().getPathFile());
+    }
+
+    @Override
+    public List<UUID> getDistributionFiles() {
+        return distributionFileService.findFileIds(type());
     }
 
     @Override

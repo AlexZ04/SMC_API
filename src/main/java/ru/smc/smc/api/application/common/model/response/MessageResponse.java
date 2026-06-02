@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageResponse {
     private List<String> previewMessages;
-    private List<UUID> previewFiles;
+    private List<UUID> filesIds;
     private String responseText;
     private List<List<ElementModel>> inlineElements;
     private List<List<ElementModel>> replyElements;
@@ -26,7 +26,7 @@ public class MessageResponse {
     public static class MessageResponseBuilder {
 
         private final List<String> previewMessages = new ArrayList<>();
-        private final List<UUID> previewFiles = new ArrayList<>();
+        private final List<UUID> filesIds = new ArrayList<>();
         private final List<List<ElementModel>> inlineElements = new ArrayList<>();
         private final List<List<ElementModel>> replyElements = new ArrayList<>();
         private String responseText;
@@ -34,7 +34,7 @@ public class MessageResponse {
         public MessageResponse build() {
             MessageResponse response = new MessageResponse();
             response.setPreviewMessages(this.previewMessages);
-            response.setPreviewFiles(this.previewFiles);
+            response.setFilesIds(this.filesIds);
             response.setResponseText(this.responseText);
             response.setInlineElements(this.inlineElements);
             response.setReplyElements(this.replyElements);
@@ -51,8 +51,8 @@ public class MessageResponse {
             return this;
         }
 
-        public MessageResponseBuilder addPreviewFile(UUID file) {
-            this.previewFiles.add(file);
+        public MessageResponseBuilder addFileId(UUID file) {
+            this.filesIds.add(file);
             return this;
         }
 

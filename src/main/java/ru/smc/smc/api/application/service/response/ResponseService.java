@@ -85,7 +85,7 @@ public class ResponseService {
 
         DistributionResponse distributionResponse = new DistributionResponse();
         distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
-        distributionResponse.setPreviewFiles(messageResponse.getPreviewFiles());
+        distributionResponse.setFilesIds(messageResponse.getFilesIds());
         distributionResponse.setInlineElements(messageResponse.getInlineElements());
         distributionResponse.setReplyElements(messageResponse.getReplyElements());
         distributionResponse.setResponseText(messageResponse.getResponseText());
@@ -109,7 +109,7 @@ public class ResponseService {
     }
 
     public UserResponseItem createUserResponseWithPreviewMessages(BotUser user, UserState nextState, String responseMessage,
-                                                                  List<String> previewMessages, List<UUID> previewFiles) {
+                                                                  List<String> previewMessages, List<UUID> filesIds) {
         updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
@@ -118,7 +118,7 @@ public class ResponseService {
                 .responseText(responseMessage);
 
         previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
-        previewFiles.forEach(messageResponseBuilder::addPreviewFile);
+        filesIds.forEach(messageResponseBuilder::addFileId);
         responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
@@ -152,7 +152,7 @@ public class ResponseService {
 
         DistributionResponse distributionResponse = new DistributionResponse();
         distributionResponse.setPreviewMessages(messageResponse.getPreviewMessages());
-        distributionResponse.setPreviewFiles(messageResponse.getPreviewFiles());
+        distributionResponse.setFilesIds(messageResponse.getFilesIds());
         distributionResponse.setInlineElements(messageResponse.getInlineElements());
         distributionResponse.setReplyElements(messageResponse.getReplyElements());
         distributionResponse.setResponseText(messageResponse.getResponseText());

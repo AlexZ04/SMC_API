@@ -122,7 +122,7 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
         DistributionSendService distributionSendService = distributionSendServiceResolver.resolve(distributionType);
 
         return responseService.createUserResponseWithPreviewMessages(user, UserState.SEND_DISTRIBUTION_CONFIRMATION,
-                confirmationMessage, List.of(distributionSendService.getDistributionText()),
+                distributionSendService.getDistributionText(), List.of(confirmationMessage),
                 distributionSendService.getDistributionFiles());
     }
 

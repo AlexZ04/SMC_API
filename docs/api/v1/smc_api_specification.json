@@ -209,7 +209,7 @@
               "type": "string"
             }
           },
-          "previewFiles": {
+          "filesIds": {
             "type": "array",
             "items": {
               "type": "string",

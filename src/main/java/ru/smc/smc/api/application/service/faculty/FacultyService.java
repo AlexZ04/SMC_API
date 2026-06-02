@@ -13,22 +13,16 @@ import java.util.Optional;
 public class FacultyService {
 
     private static final String FACULTY_CHOICE_MESSAGE = "Выберете номер факультета:";
+    private static final String ALL_FACULTIES_MESSAGE = "Список факультетов:";
 
     private final FacultyRepository facultyRepository;
 
     public String getFacultiesChoiceMessage() {
-        StringBuilder message = new StringBuilder(FACULTY_CHOICE_MESSAGE);
+        return formFacultiesListMessage(FACULTY_CHOICE_MESSAGE);
+    }
 
-        facultyRepository.findAll().stream()
-                .filter(faculty -> faculty.getId() != 0)
-                .filter(Faculty::isActive)
-                .sorted(Comparator.comparing(Faculty::getId))
-                .forEach(faculty -> message.append("\n")
-                        .append(faculty.getId())
-                        .append(" - ")
-                        .append(faculty.getNameRu()));
-
-        return message.toString();
+    public String getAllFacultiesMessage() {
+        return formFacultiesListMessage(ALL_FACULTIES_MESSAGE);
     }
 
     public Optional<Faculty> findActiveFacultyById(int facultyId) {
@@ -48,6 +42,21 @@ public class FacultyService {
         }
 
         return findActiveFacultyById(facultyId);
+    }
+
+    private String formFacultiesListMessage(String header) {
+        StringBuilder message = new StringBuilder(header);
+
+        facultyRepository.findAll().stream()
+                .filter(faculty -> faculty.getId() != 0)
+                .filter(Faculty::isActive)
+                .sorted(Comparator.comparing(Faculty::getId))
+                .forEach(faculty -> message.append("\n")
+                        .append(faculty.getId())
+                        .append(" - ")
+                        .append(faculty.getNameRu()));
+
+        return message.toString();
     }
 
     private Integer parseFacultyId(String message) {

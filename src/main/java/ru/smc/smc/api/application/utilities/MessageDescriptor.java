@@ -43,12 +43,13 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
-        messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
+        messageMeaning = checkIfGetAllFacultiesMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
         }
 
-        return MessageMeaningType.UNDEFINED;
+        messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
+        return messageMeaning;
     }
 
     /*
@@ -92,6 +93,16 @@ public class MessageDescriptor {
                         currentUserState == UserState.CHANGE_SPORTORG ||
                         currentUserState == UserState.CHANGE_SPORTORG_INFO) ?
                 MessageMeaningType.CHANGE_SPORTORG : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - запрос списка факультетов
+     */
+    private static MessageMeaningType checkIfGetAllFacultiesMessage(String message, MessageRoleType messageRoleType,
+                                                                    UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.GET_ALL_FACULTIES_COMMAND) ?
+                MessageMeaningType.GET_ALL_FACULTIES : MessageMeaningType.UNDEFINED;
     }
 
     /*

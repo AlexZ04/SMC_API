@@ -153,6 +153,26 @@
           "attachmentsAmount": {
             "type": "integer",
             "format": "int32"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageFileRequest"
+            }
+          }
+        }
+      },
+      "MessageFileRequest": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "contentBase64": {
+            "type": "string"
           }
         }
       },

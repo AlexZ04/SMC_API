@@ -8,6 +8,9 @@ import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
 import ru.smc.smc.api.domain.entity.MessageHistory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class MessageRequestBody {
     private String message;
@@ -16,6 +19,7 @@ public class MessageRequestBody {
     private AvailablePlatform platform;
     private String userIdOnPlatform;
     private int attachmentsAmount = 0;
+    private List<MessageFileRequest> attachments = new ArrayList<>();
 
     // todo: сделать поле для картинок и стикеров
 
@@ -25,9 +29,17 @@ public class MessageRequestBody {
         messageHistory.setMessage(message);
         messageHistory.setPlatform(platform);
         messageHistory.setUserIdOnPlatform(userIdOnPlatform);
-        messageHistory.setAttachmentsAmount(attachmentsAmount);
+        messageHistory.setAttachmentsAmount(defineAttachmentsAmount());
         messageHistory.setMessageType(messageRoleType);
 
         return messageHistory;
+    }
+
+    private int defineAttachmentsAmount() {
+        if (attachments == null || attachments.isEmpty()) {
+            return attachmentsAmount;
+        }
+
+        return attachments.size();
     }
 }

@@ -3,12 +3,14 @@ package ru.smc.smc.api.application.service.processors.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.AdminTextSettingsTexts;
+import ru.smc.smc.api.application.common.enums.AdminDistributionType;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
+import ru.smc.smc.api.application.service.distribution.DistributionFileService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.utilities.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
@@ -23,11 +25,15 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
     private static final String CHANGE_TEXTS_INPUT_MESSAGE_PATHFILE = "admin-change-texts-input-message";
 
     private final ResponseService responseService;
+    private final DistributionFileService distributionFileService;
 
     @Override
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
         if (isDistributionTextChangingState(user.getCurrentState())) {
-            FileUtility.writeCustomizableFileMessage(defineCustomizableTextPathFile(user.getCurrentState()), request.getMessage());
+            AdminDistributionType distributionType = defineDistributionType(user.getCurrentState());
+
+            FileUtility.writeCustomizableFileMessage(distributionType.getPathFile(), defineDistributionText(request));
+            distributionFileService.replaceFiles(distributionType, request.getAttachments());
 
             return responseService.createReturnToMainMenuMessage(user);
         }
@@ -84,23 +90,31 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
                 currentState == UserState.CHANGE_GIVEAWAY_TEXT;
     }
 
-    private String defineCustomizableTextPathFile(UserState currentState) {
+    private AdminDistributionType defineDistributionType(UserState currentState) {
         if (currentState == UserState.CHANGE_EVENTS_DISTRIBUTION_TEXT) {
-            return AdminTextSettingsTexts.EVENTS_DISTRIBUTION_TEXT_PATHFILE;
+            return AdminDistributionType.EVENTS;
         }
 
         if (currentState == UserState.CHANGE_COMPETITIONS_DISTRIBUTION_TEXT) {
-            return AdminTextSettingsTexts.COMPETITIONS_DISTRIBUTION_TEXT_PATHFILE;
+            return AdminDistributionType.COMPETITIONS;
         }
 
         if (currentState == UserState.CHANGE_SCHEDULE_NEWS_DISTRIBUTION_TEXT) {
-            return AdminTextSettingsTexts.SCHEDULE_NEWS_DISTRIBUTION_TEXT_PATHFILE;
+            return AdminDistributionType.SCHEDULE;
         }
 
         if (currentState == UserState.CHANGE_GENERAL_DISTRIBUTION_TEXT) {
-            return AdminTextSettingsTexts.GENERAL_DISTRIBUTION_TEXT_PATHFILE;
+            return AdminDistributionType.GENERAL;
         }
 
-        return AdminTextSettingsTexts.GIVEAWAY_TEXT_PATHFILE;
+        return AdminDistributionType.GIVEAWAY;
+    }
+
+    private String defineDistributionText(MessageRequestBody request) {
+        if (request.getMessage() == null) {
+            return "";
+        }
+
+        return request.getMessage();
     }
 }

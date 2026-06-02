@@ -28,6 +28,8 @@ import static ru.smc.smc.api.application.common.constant.ErrorsMessages.INVALID_
 @RequiredArgsConstructor
 @ExtensionMethod(MessageDescriptor.class)
 public class MessagePrimarilyProcessor {
+    private static final String ADMIN_CHANNEL = "admin-channel";
+    private static final String USER_CHANNEL = "user-channel";
 
     private final AdminMessageService adminMessageService;
     private final UserMessageService userMessageService;
@@ -70,13 +72,22 @@ public class MessagePrimarilyProcessor {
     private void primaryProcessingMessage(MessageRequestBody request, MessageRoleType messageRoleType, BotUser user) {
         logIncomingMessage(request, messageRoleType);
         saveMessageToHistory(request, messageRoleType);
-        updateStats(user);
+        updateUserInfo(user, messageRoleType);
     }
 
-    private void updateStats(BotUser user) {
+    private void updateUserInfo(BotUser user, MessageRoleType messageRoleType) {
         Long userMessages = user.getMessageSent() + 1;
         user.setMessageSent(userMessages);
+        user.setUserChannel(defineMessageChannel(messageRoleType));
         botUserRepository.save(user);
+    }
+
+    private String defineMessageChannel(MessageRoleType messageRoleType) {
+        if (messageRoleType == MessageRoleType.ADMIN) {
+            return ADMIN_CHANNEL;
+        }
+
+        return USER_CHANNEL;
     }
 
     private void saveMessageToHistory(MessageRequestBody request, MessageRoleType messageRoleType) {

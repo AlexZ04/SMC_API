@@ -22,6 +22,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final String ADMIN_CHANNEL = "admin-channel";
+
     private final BotUserRepository botUserRepository;
     private final BotUserFactory botUserFactory;
     private final ResponseUIService responseUIService;
@@ -121,10 +123,12 @@ public class UserService {
     private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers) {
         Map<ReceiverGroupKey, List<String>> receiversIdsByGroup = new LinkedHashMap<>();
 
-        botUsers.forEach(botUser -> {
-            ReceiverGroupKey groupKey = new ReceiverGroupKey(botUser.getPlatform(), normalizeDistributionRole(botUser.getRole()));
-            receiversIdsByGroup.computeIfAbsent(groupKey, key -> new ArrayList<>()).add(botUser.getIdOnPlatform());
-        });
+        botUsers.stream()
+                .filter(this::canReceiveDistribution)
+                .forEach(botUser -> {
+                    ReceiverGroupKey groupKey = new ReceiverGroupKey(botUser.getPlatform(), normalizeDistributionRole(botUser.getRole()));
+                    receiversIdsByGroup.computeIfAbsent(groupKey, key -> new ArrayList<>()).add(botUser.getIdOnPlatform());
+                });
 
         return receiversIdsByGroup.entrySet().stream()
                 .map(entry -> mapReceiverGroupToPlatformReceiver(entry.getKey(), entry.getValue()))
@@ -145,6 +149,10 @@ public class UserService {
         }
 
         return role;
+    }
+
+    private boolean canReceiveDistribution(BotUser botUser) {
+        return botUser.getRole() != UserRole.USER || !ADMIN_CHANNEL.equals(botUser.getUserChannel());
     }
 
     private int getRolePriority(UserRole role) {

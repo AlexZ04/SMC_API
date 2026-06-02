@@ -19,11 +19,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BotUser {
+
     @Id
     private UUID innerId = UUID.randomUUID();
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AvailablePlatform platform;
+
     @NotNull
     private String idOnPlatform;
 
@@ -42,11 +45,18 @@ public class BotUser {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserState currentState = UserState.MAIN_MENU;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role = UserRole.USER;
+
+    @Column(nullable = false)
+    private String userChannel = "admin-channel";
+
     private Long messageSent = 0L;
+
     private Instant createTime =  Instant.now();
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Subscription subscription;
 }

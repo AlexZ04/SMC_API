@@ -12,6 +12,7 @@ import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.service.sportorg.SportorgService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
+import ru.smc.smc.api.domain.entity.SportsOrganizer;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String INCORRECT_FACULTY_MESSAGE = "Некорректный номер факультета. Выберете номер факультета из списка.";
-    private static final String INPUT_SPORTORG_INFO_MESSAGE_FORMAT = "Ввведите Фамилию Имя ссылку на соц.сеть нового спорторга %s. Пример: Иванов Иван ссылка";
+    private static final String INPUT_SPORTORG_INFO_MESSAGE_FORMAT = "Текущий спорторг: %s\nВвведите Фамилию Имя ссылку на соц.сеть нового спорторга %s. Пример: Иванов Иван ссылка";
+    private static final String EMPTY_SPORTORG_INFO = "не указан";
     private static final String INCORRECT_SPORTORG_INFO_MESSAGE = "Некорректный формат. Введите Фамилию Имя ссылку на соц.сеть нового спорторга. Пример: Иванов Иван ссылка";
     private static final String SPORTORG_INFO_CHANGED_MESSAGE_FORMAT = "Информация про спорторга %s записана, возвращение в главное меню";
     private static final String SPORTORG_INFO_CHANGED_DISTRIBUTION_FORMAT = "Пользователь %s обновил(-а) информацию про спорторга %s";
@@ -54,7 +56,7 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
         user.setSelectedFaculty(faculty);
 
         return responseService.createUserResponse(user, UserState.CHANGE_SPORTORG_INFO,
-                String.format(INPUT_SPORTORG_INFO_MESSAGE_FORMAT, faculty.getNameRu()));
+                String.format(INPUT_SPORTORG_INFO_MESSAGE_FORMAT, formCurrentSportorgInfo(faculty), faculty.getNameRu()));
     }
 
     private UserResponseItem processSportorgInfo(MessageRequestBody request, BotUser user) {
@@ -78,5 +80,15 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
                 DistributionGroups.ADMINS,
                 false,
                 new ArrayList<>());
+    }
+
+    private String formCurrentSportorgInfo(Faculty faculty) {
+        SportsOrganizer sportsOrganizer = faculty.getSportsOrganizer();
+
+        if (sportsOrganizer == null) {
+            return EMPTY_SPORTORG_INFO;
+        }
+
+        return sportsOrganizer.getName() + " " + sportsOrganizer.getSocialLink();
     }
 }

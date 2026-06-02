@@ -2,6 +2,7 @@
   "status": "ok",
   "userPlatform": "VK",
   "userIdOnPlatform": "111",
+  "role": "ADMIN",
   "responseToUser": {
     "previewMessages": ["Первое сообщение"],
     "filesIds": ["550e8400-e29b-41d4-a716-446655440000"],
@@ -125,10 +126,12 @@
     "receivers": [
       {
         "platform": "VK",
+        "role": "USER",
         "receiversId": ["123", "125"]
       },
       {
         "platform": "TG",
+        "role": "ADMIN",
         "receiversId": ["1111"]
       }
     ]

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 import ru.smc.smc.api.application.common.enums.DistributionGroups;
 import ru.smc.smc.api.application.common.enums.UserRole;
+import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.response.PlatformReceiver;
 import ru.smc.smc.api.application.service.factory.BotUserFactory;
 import ru.smc.smc.api.application.service.response.ResponseUIService;
@@ -12,7 +13,9 @@ import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -44,15 +47,11 @@ public class UserService {
             receivers = botUserRepository.findBySubscriptionSubscribedToScheduleDistributionTrue();
         }
 
-        return receivers.stream()
-                .map(this::mapUserToPlatformReceiver)
-                .toList();
+        return mapUsersToPlatformReceivers(receivers);
     }
 
     public List<PlatformReceiver> findCompetitionSubscribersByFacultyIds(List<Integer> facultyIds) {
-        return botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds).stream()
-                .map(this::mapUserToPlatformReceiver)
-                .toList();
+        return mapUsersToPlatformReceivers(botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds));
     }
 
     public String getAdminsInfo() {
@@ -119,11 +118,33 @@ public class UserService {
         return "Пользователь " + idOnPlatform + " на платформе " + platform + " понижен до роли " + UserRole.USER;
     }
 
-    private PlatformReceiver mapUserToPlatformReceiver(BotUser botUser) {
+    private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers) {
+        Map<ReceiverGroupKey, List<String>> receiversIdsByGroup = new LinkedHashMap<>();
+
+        botUsers.forEach(botUser -> {
+            ReceiverGroupKey groupKey = new ReceiverGroupKey(botUser.getPlatform(), normalizeDistributionRole(botUser.getRole()));
+            receiversIdsByGroup.computeIfAbsent(groupKey, key -> new ArrayList<>()).add(botUser.getIdOnPlatform());
+        });
+
+        return receiversIdsByGroup.entrySet().stream()
+                .map(entry -> mapReceiverGroupToPlatformReceiver(entry.getKey(), entry.getValue()))
+                .toList();
+    }
+
+    private PlatformReceiver mapReceiverGroupToPlatformReceiver(ReceiverGroupKey receiverGroupKey, List<String> receiversIds) {
         return new PlatformReceiver()
-                .setPlatform(botUser.getPlatform())
-                .setReceiverId(botUser.getIdOnPlatform())
-                .setReplyElements(responseUIService.makeKeyboard(botUser.getCurrentState(), botUser.getRole()));
+                .setPlatform(receiverGroupKey.platform())
+                .setRole(receiverGroupKey.role())
+                .setReceiversId(receiversIds)
+                .setReplyElements(responseUIService.makeKeyboard(UserState.MAIN_MENU, receiverGroupKey.role()));
+    }
+
+    private UserRole normalizeDistributionRole(UserRole role) {
+        if (role == UserRole.SUPER_ADMIN) {
+            return UserRole.ADMIN;
+        }
+
+        return role;
     }
 
     private int getRolePriority(UserRole role) {
@@ -132,5 +153,8 @@ public class UserService {
             case ADMIN -> 1;
             case SUPER_ADMIN -> 2;
         };
+    }
+
+    private record ReceiverGroupKey(AvailablePlatform platform, UserRole role) {
     }
 }

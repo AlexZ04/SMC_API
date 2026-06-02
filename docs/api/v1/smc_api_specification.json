@@ -285,8 +285,19 @@
               "TG"
             ]
           },
-          "receiverId": {
-            "type": "string"
+          "receiversId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN",
+              "SUPER_ADMIN"
+            ]
           },
           "replyElements": {
             "type": "array",
@@ -318,6 +329,14 @@
           },
           "userIdOnPlatform": {
             "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN",
+              "SUPER_ADMIN"
+            ]
           },
           "responseToUser": {
             "$ref": "#/components/schemas/MessageResponse"

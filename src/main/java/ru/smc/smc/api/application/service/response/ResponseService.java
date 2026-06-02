@@ -214,7 +214,8 @@ public class ResponseService {
         return UserResponseItem.builder()
                 .status(ResponseStatus.OK)
                 .platform(user.getPlatform())
-                .userIdOnPlatform(user.getIdOnPlatform());
+                .userIdOnPlatform(user.getIdOnPlatform())
+                .role(user.getRole());
     }
 
     private void updateUserState(BotUser user, UserState userState) {

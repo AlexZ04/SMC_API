@@ -68,6 +68,16 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfGetAdminsMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
+        messageMeaning = checkIfManageAdminsMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -168,6 +178,32 @@ public class MessageDescriptor {
                         message.equalsIgnoreCase(BotCommands.CHANGE_TOGGLE_STATE_COMMAND)) ||
                         currentUserState == UserState.CHANGE_TOGGLE_STATE) ?
                 MessageMeaningType.CHANGE_TOGGLE_STATE : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - запрос списка администраторов
+     */
+    private static MessageMeaningType checkIfGetAdminsMessage(String message, MessageRoleType messageRoleType,
+                                                              UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.GET_ADMINS_COMMAND) ?
+                MessageMeaningType.GET_ADMINS : MessageMeaningType.UNDEFINED;
+    }
+
+    /*
+    Проверка на сообщение - управление администраторами
+     */
+    private static MessageMeaningType checkIfManageAdminsMessage(String message, MessageRoleType messageRoleType,
+                                                                 UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU &&
+                        (message.equalsIgnoreCase(BotCommands.ADD_ADMIN_COMMAND) ||
+                                message.equalsIgnoreCase(BotCommands.ADD_SUPER_ADMIN_COMMAND) ||
+                                message.equalsIgnoreCase(BotCommands.REMOVE_ADMIN_COMMAND))) ||
+                        currentUserState == UserState.ADD_ADMIN ||
+                        currentUserState == UserState.ADD_SUPER_ADMIN ||
+                        currentUserState == UserState.REMOVE_ADMIN) ?
+                MessageMeaningType.MANAGE_ADMINS : MessageMeaningType.UNDEFINED;
     }
 
     /*

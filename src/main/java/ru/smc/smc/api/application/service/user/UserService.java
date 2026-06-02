@@ -55,10 +55,82 @@ public class UserService {
                 .toList();
     }
 
+    public String getAdminsInfo() {
+        StringBuilder adminsInfo = new StringBuilder("Администраторы системы:");
+
+        botUserRepository.findByRoleNot(UserRole.USER).forEach(admin -> adminsInfo.append("\n")
+                .append(admin.getIdOnPlatform())
+                .append(" - ")
+                .append(admin.getPlatform())
+                .append(" - ")
+                .append(admin.getRole()));
+
+        return adminsInfo.toString();
+    }
+
+    public String addOrUpdateAdminRole(AvailablePlatform platform, String idOnPlatform, UserRole targetRole) {
+        Optional<BotUser> existingUserOptional = botUserRepository.findBotUserByPlatformAndIdOnPlatform(platform, idOnPlatform);
+
+        if (existingUserOptional.isEmpty()) {
+            BotUser newUser = botUserFactory.createNewUser(platform, idOnPlatform);
+            newUser.setRole(targetRole);
+            botUserRepository.save(newUser);
+
+            return "Пользователь " + idOnPlatform + " на платформе " + platform + " создан с ролью " + targetRole;
+        }
+
+        BotUser existingUser = existingUserOptional.get();
+
+        if (existingUser.getRole() == targetRole) {
+            return "Пользователь " + idOnPlatform + " на платформе " + platform + " уже имеет роль " + targetRole;
+        }
+
+        if (getRolePriority(existingUser.getRole()) > getRolePriority(targetRole)) {
+            return "Пользователь " + idOnPlatform + " на платформе " + platform +
+                    " уже имеет роль выше выдаваемой: " + existingUser.getRole();
+        }
+
+        existingUser.setRole(targetRole);
+        botUserRepository.save(existingUser);
+
+        return "Пользователю " + idOnPlatform + " на платформе " + platform + " выдана роль " + targetRole;
+    }
+
+    public String removeAdminRole(AvailablePlatform platform, String idOnPlatform) {
+        Optional<BotUser> existingUserOptional = botUserRepository.findBotUserByPlatformAndIdOnPlatform(platform, idOnPlatform);
+
+        if (existingUserOptional.isEmpty()) {
+            return "Пользователь " + idOnPlatform + " на платформе " + platform + " не найден";
+        }
+
+        BotUser existingUser = existingUserOptional.get();
+
+        if (existingUser.getRole() == UserRole.USER) {
+            return "Пользователь " + idOnPlatform + " на платформе " + platform + " не является администратором";
+        }
+
+        if (existingUser.getRole() == UserRole.SUPER_ADMIN) {
+            return "Нельзя удалить роль суперадминистратора через эту команду";
+        }
+
+        existingUser.setRole(UserRole.USER);
+        botUserRepository.save(existingUser);
+
+        return "Пользователь " + idOnPlatform + " на платформе " + platform + " понижен до роли " + UserRole.USER;
+    }
+
     private PlatformReceiver mapUserToPlatformReceiver(BotUser botUser) {
         return new PlatformReceiver()
                 .setPlatform(botUser.getPlatform())
                 .setReceiverId(botUser.getIdOnPlatform())
                 .setReplyElements(responseUIService.makeKeyboard(botUser.getCurrentState(), botUser.getRole()));
+    }
+
+    private int getRolePriority(UserRole role) {
+        return switch (role) {
+            case USER -> 0;
+            case ADMIN -> 1;
+            case SUPER_ADMIN -> 2;
+        };
     }
 }

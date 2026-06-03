@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +18,7 @@ public class FacultyService {
     private static final String ALL_FACULTIES_MESSAGE = "Список факультетов:";
 
     private final FacultyRepository facultyRepository;
+    private final FacultyResolverService facultyResolverService;
 
     public String getFacultiesChoiceMessage() {
         return formFacultiesListMessage(FACULTY_CHOICE_MESSAGE);
@@ -29,41 +29,15 @@ public class FacultyService {
     }
 
     public Optional<Faculty> findActiveFacultyById(int facultyId) {
-        if (facultyId == 0) {
-            return Optional.empty();
-        }
-
-        return facultyRepository.findById(facultyId)
-                .filter(Faculty::isActive);
+        return facultyResolverService.findActiveFacultyById(facultyId);
     }
 
     public Optional<Faculty> findActiveFacultyByMessage(String message) {
-        Integer facultyId = parseFacultyId(message);
-
-        if (facultyId == null) {
-            return Optional.empty();
-        }
-
-        return findActiveFacultyById(facultyId);
+        return facultyResolverService.findActiveFacultyByMessage(message);
     }
 
     public Optional<List<Faculty>> findActiveFacultiesByMessage(String message) {
-        List<Integer> facultyIds = parseFacultyIds(message);
-
-        if (facultyIds.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<Faculty> faculties = facultyIds.stream()
-                .map(this::findActiveFacultyById)
-                .flatMap(Optional::stream)
-                .toList();
-
-        if (faculties.size() != facultyIds.size()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(faculties);
+        return facultyResolverService.findActiveFacultiesByMessage(message);
     }
 
     public String formFacultyIds(List<Faculty> faculties) {
@@ -93,24 +67,4 @@ public class FacultyService {
         return message.toString();
     }
 
-    private Integer parseFacultyId(String message) {
-        try {
-            return Integer.parseInt(message.trim());
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    private List<Integer> parseFacultyIds(String message) {
-        try {
-            return Stream.of(message.split(";"))
-                    .map(String::trim)
-                    .filter(value -> !value.isBlank())
-                    .map(Integer::parseInt)
-                    .distinct()
-                    .toList();
-        } catch (NumberFormatException e) {
-            return List.of();
-        }
-    }
 }

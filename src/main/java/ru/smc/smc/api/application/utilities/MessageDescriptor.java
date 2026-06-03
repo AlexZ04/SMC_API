@@ -48,6 +48,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfGetAllSportorgsMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfSendDistributionMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -133,6 +138,13 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
                 message.equalsIgnoreCase(BotCommands.GET_ALL_FACULTIES_COMMAND) ?
                 MessageMeaningType.GET_ALL_FACULTIES : MessageMeaningType.UNDEFINED;
+    }
+
+    private static MessageMeaningType checkIfGetAllSportorgsMessage(String message, MessageRoleType messageRoleType,
+                                                                    UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
+                message.equalsIgnoreCase(BotCommands.GET_ALL_SPORTORGS_COMMAND) ?
+                MessageMeaningType.GET_ALL_SPORTORGS : MessageMeaningType.UNDEFINED;
     }
 
     /*

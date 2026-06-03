@@ -57,6 +57,12 @@ public class GiveawayService {
         return (int) giveawayParticipantRepository.count();
     }
 
+    public List<BotUser> getParticipantUsers() {
+        return findAllParticipants().stream()
+                .map(GiveawayParticipant::getUser)
+                .toList();
+    }
+
     public Optional<String> getRandomParticipantsInfo(int participantsAmount) {
         List<GiveawayParticipant> allParticipants = findAllParticipants();
 

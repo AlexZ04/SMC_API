@@ -53,6 +53,10 @@ public class UserService {
         return mapUsersToPlatformReceivers(botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds));
     }
 
+    public List<PlatformReceiver> mapBotUsersToPlatformReceivers(List<BotUser> botUsers) {
+        return mapUsersToPlatformReceivers(botUsers);
+    }
+
     public String getAdminsInfo() {
         StringBuilder adminsInfo = new StringBuilder("Администраторы системы:");
 

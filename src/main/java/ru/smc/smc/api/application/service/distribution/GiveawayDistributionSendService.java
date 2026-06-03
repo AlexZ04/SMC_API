@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AdminDistributionType;
 import ru.smc.smc.api.application.common.model.response.PlatformReceiver;
+import ru.smc.smc.api.application.service.giveaway.GiveawayService;
+import ru.smc.smc.api.application.service.user.UserService;
 import ru.smc.smc.api.application.utilities.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GiveawayDistributionSendService implements DistributionSendService {
 
+    private final UserService userService;
+    private final GiveawayService giveawayService;
     private final DistributionFileService distributionFileService;
 
     @Override
@@ -34,6 +37,6 @@ public class GiveawayDistributionSendService implements DistributionSendService 
 
     @Override
     public List<PlatformReceiver> getReceivers(BotUser user) {
-        return new ArrayList<>();
+        return userService.mapBotUsersToPlatformReceivers(giveawayService.getParticipantUsers());
     }
 }

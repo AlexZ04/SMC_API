@@ -19,6 +19,7 @@ public class BotCommands {
     public final String STATS_COMMAND = "/stats";
     public final String CHANGE_TOGGLE_STATE_COMMAND = "/changeToggleState";
     public final String GET_ADMINS_COMMAND = "/getAdmins";
+    public final String GET_USER_INFO_COMMAND = "/getUserInfo";
     public final String ADD_ADMIN_COMMAND = "/addAdmin";
     public final String ADD_SUPER_ADMIN_COMMAND = "/addSuperAdmin";
     public final String REMOVE_ADMIN_COMMAND = "/removeAdmin";

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface BotUserRepository extends JpaRepository<BotUser, UUID> {
     Optional<BotUser> findBotUserByPlatformAndIdOnPlatform(AvailablePlatform platform, String idOnPlatform);
+    List<BotUser> findByIdOnPlatform(String idOnPlatform);
     List<BotUser> findByRoleNot(UserRole role); // все администраторы
     List<BotUser> findBySubscriptionSubscribedToEventDistributionTrue();
     List<BotUser> findBySubscriptionSubscribedToCompetitionDistributionTrue();

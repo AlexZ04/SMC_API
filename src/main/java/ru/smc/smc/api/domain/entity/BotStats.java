@@ -14,5 +14,6 @@ public class BotStats {
     @Id
     private UUID id = UUID.randomUUID();
     private Long messageBotSent = 0L;
+    private Long messageUserSent = 0L;
     private Long interactiveUses = 0L;
 }

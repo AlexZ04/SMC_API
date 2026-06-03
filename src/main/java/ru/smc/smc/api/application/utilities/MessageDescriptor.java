@@ -83,6 +83,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfGetUserInfoMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfManageAdminsMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -226,6 +231,14 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
                 message.equalsIgnoreCase(BotCommands.GET_ADMINS_COMMAND) ?
                 MessageMeaningType.GET_ADMINS : MessageMeaningType.UNDEFINED;
+    }
+
+    private static MessageMeaningType checkIfGetUserInfoMessage(String message, MessageRoleType messageRoleType,
+                                                                UserState currentUserState) {
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase(BotCommands.GET_USER_INFO_COMMAND)) ||
+                        currentUserState == UserState.GET_USER_INFO) ?
+                MessageMeaningType.GET_USER_INFO : MessageMeaningType.UNDEFINED;
     }
 
     /*

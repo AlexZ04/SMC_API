@@ -23,7 +23,8 @@ public enum UserState {
     SET_DISTRIBUTION(1), // 1 - клавиатура "К боту"
     UNSUBSCRIBE_DISTRIBUTION(1), // 1 - клавиатура "К боту"
     CHANGE_FACULTY(1), // 1 - клавиатура "К боту"
-    GET_GIVEAWAY_WINNERS(1); // 1 - клавиатура "К боту"
+    GET_GIVEAWAY_WINNERS(1), // 1 - клавиатура "К боту"
+    GET_USER_INFO(1); // 1 - клавиатура "К боту"
 
     @Getter
     private final int keyboardCode;

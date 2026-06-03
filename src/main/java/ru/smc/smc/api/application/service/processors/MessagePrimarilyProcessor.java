@@ -10,6 +10,7 @@ import ru.smc.smc.api.application.common.exceptions.UnauthorizedException;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.user.UserService;
+import ru.smc.smc.api.application.service.stats.StatsService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.MessageHistory;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
@@ -37,6 +38,7 @@ public class MessagePrimarilyProcessor {
     private final BotUserRepository botUserRepository;
     private final UserService userService;
     private final ResponseService responseService;
+    private final StatsService statsService;
 
     @Value("${api-config.key}")
     private String validApiKey;
@@ -72,6 +74,7 @@ public class MessagePrimarilyProcessor {
     private void primaryProcessingMessage(MessageRequestBody request, MessageRoleType messageRoleType, BotUser user) {
         logIncomingMessage(request, messageRoleType);
         saveMessageToHistory(request, messageRoleType);
+        statsService.updateIncomingMessageStats();
         updateUserInfo(user, messageRoleType);
     }
 

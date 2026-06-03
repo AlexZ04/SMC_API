@@ -9,6 +9,6 @@ public class FaqQuestionsTexts {
     public String SECOND_QUESTION = "Как вступить в профсоюз?";
     public String THIRD_QUESTION = "Кто спорторг моего факультета?";
     public String FOURTH_QUESTION = "Какие есть специализации физкультуры?";
-    public String FIFTH_QUESTION = "Где можно посмотреть расписание физкультуры?";
+    public String FIFTH_QUESTION = "Где можно посмотреть расписание занятий?";
     public String SIXTH_QUESTION = "Как закрыть долги по физкультуре?";
 }

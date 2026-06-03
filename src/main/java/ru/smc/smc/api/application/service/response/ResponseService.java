@@ -38,7 +38,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessage);
 
-        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
@@ -56,7 +56,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessage);
 
-        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
         responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
@@ -77,7 +77,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessage);
 
-        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
         responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
 
         MessageResponse messageResponse = messageResponseBuilder.build();
@@ -117,7 +117,7 @@ public class ResponseService {
 
         previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
         filesIds.forEach(messageResponseBuilder::addFileId);
-        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
@@ -144,7 +144,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessage);
 
-        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
 
         MessageResponse messageResponse = messageResponseBuilder.build();
 
@@ -176,7 +176,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessagesProperties.getReturnToMainScreen());
 
-        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();
@@ -193,7 +193,7 @@ public class ResponseService {
         var messageResponseBuilder = MessageResponse.builder()
                 .responseText(responseMessagesProperties.getForbiddenAccess());
 
-        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user.getRole());
+        responseUIService.createResponseKeyboard(UserState.MAIN_MENU, messageResponseBuilder, user);
 
         responseBuilder.responseToUser(messageResponseBuilder.build());
         UserResponseItem finalResponse = responseBuilder.build();

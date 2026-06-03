@@ -3,12 +3,13 @@ package ru.smc.smc.api.application.service.response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FeatureToggles;
-import ru.smc.smc.api.application.common.enums.UserRole;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
+import ru.smc.smc.api.application.utilities.UserUtility;
+import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResponseUIService {
 
+    private static final String ADMIN_CHANNEL = "admin-channel";
+
     private final FeatureToggleService featureToggleService;
 
-    public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder, UserRole userRole) {
+    public void createResponseKeyboard(UserState userState, MessageResponse.MessageResponseBuilder messageResponseBuilder, BotUser user) {
         // возврат клавиатуры для пользователя
-        if (userRole == UserRole.USER) {
+        if (!isAdminKeyboardAvailable(user)) {
             switch (userState.getKeyboardCode()) {
                 case 0 -> {
                     makeMainKeyboard(messageResponseBuilder);
@@ -79,9 +82,9 @@ public class ResponseUIService {
                 KeyboardsProperties.ADMIN_HELP_BUTTON);
     }
 
-    public List<List<ElementModel>> makeKeyboard(UserState userState, UserRole userRole) {
+    public List<List<ElementModel>> makeKeyboard(UserState userState, BotUser user) {
         // возврат клавиатуры для пользователя
-        if (userRole == UserRole.USER) {
+        if (!isAdminKeyboardAvailable(user)) {
             switch (userState.getKeyboardCode()) {
                 case 0 -> {
                     return makeMainKeyboard();
@@ -101,6 +104,10 @@ public class ResponseUIService {
                 return makeBackToBotKeyboard();
             }
         }
+    }
+
+    private boolean isAdminKeyboardAvailable(BotUser user) {
+        return UserUtility.isUserAdmin(user) && ADMIN_CHANNEL.equals(user.getUserChannel());
     }
 
     private List<List<ElementModel>> makeMainKeyboard() {

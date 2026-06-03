@@ -69,8 +69,7 @@ public class ResponseService {
     public UserResponseItem createUserResponseWithDistribution(BotUser user, UserState nextState, String responseMessage,
                                                                List<List<ElementModel>> inlineElements,
                                                                String distributionText,
-                                                               DistributionGroups group, boolean sendToHimself,
-                                                               List<List<ElementModel>> inlineDistributionElements) {
+                                                               DistributionGroups group, boolean sendToHimself) {
         updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
@@ -93,7 +92,6 @@ public class ResponseService {
         distributionResponse.getDistribution().setDistributionText(distributionText);
         distributionResponse.getDistribution().setSendToHimself(sendToHimself);
         distributionResponse.getDistribution().setReceivers(userService.findBotUsersByGroup(group));
-        distributionResponse.getDistribution().setDistributionInlineElements(inlineDistributionElements);
 
         responseBuilder.responseToUser(distributionResponse);
 

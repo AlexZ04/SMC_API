@@ -13,5 +13,4 @@ public class DistributionModel {
     private List<UUID> distributionFiles = new ArrayList<>();
     private boolean sendToHimself;
     private List<PlatformReceiver> receivers = new ArrayList<>();
-    private List<List<ElementModel>> distributionInlineElements = new ArrayList<>();
 }

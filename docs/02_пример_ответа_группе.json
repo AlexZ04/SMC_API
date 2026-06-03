@@ -68,60 +68,6 @@
       "550e8400-e29b-41d4-a716-446655440000",
       "550e8400-e29b-41d4-a716-446655440001"
     ],
-    "inlineElements": [
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "1",
-          "color": "dark-gray",
-          "textColor": "white"
-        }
-      ],
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "3",
-          "color": "dark-gray",
-          "textColor": "white"
-        }
-      ],
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "2",
-          "color": "dark-gray",
-          "textColor": "white"
-        }
-      ]
-    ],
-    "replyElements": [
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "Задать вопрос",
-          "color": "white",
-          "textColor": "black"
-        }
-      ],
-      [{
-        "type": "link",
-        "link": "{link}",
-        "text": "Обратная связь",
-        "color": "dark-gray",
-        "textColor": "white"
-      },
-        {
-          "type": "button",
-          "link": null,
-          "text": "Помощь",
-          "color": "dark-gray",
-          "textColor": "white"
-        }]
-    ],
     "sendToHimself": false,
     "receivers": [
       {

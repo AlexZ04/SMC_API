@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 import ru.smc.smc.api.application.common.enums.DistributionGroups;
 import ru.smc.smc.api.application.common.enums.UserRole;
-import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.response.PlatformReceiver;
 import ru.smc.smc.api.application.service.factory.BotUserFactory;
-import ru.smc.smc.api.application.service.response.ResponseUIService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
 
@@ -26,7 +24,6 @@ public class UserService {
 
     private final BotUserRepository botUserRepository;
     private final BotUserFactory botUserFactory;
-    private final ResponseUIService responseUIService;
 
     public BotUser findOrCreateBotUser(AvailablePlatform availablePlatform, String idOnPlatform) {
         Optional<BotUser> botUser = botUserRepository.findBotUserByPlatformAndIdOnPlatform(availablePlatform, idOnPlatform);
@@ -139,8 +136,7 @@ public class UserService {
         return new PlatformReceiver()
                 .setPlatform(receiverGroupKey.platform())
                 .setRole(receiverGroupKey.role())
-                .setReceiversId(receiversIds)
-                .setReplyElements(responseUIService.makeKeyboard(UserState.MAIN_MENU, receiverGroupKey.role()));
+                .setReceiversId(receiversIds);
     }
 
     private UserRole normalizeDistributionRole(UserRole role) {

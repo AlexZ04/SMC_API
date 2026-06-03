@@ -38,7 +38,7 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
         }
 
         return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
-                new ArrayList<>(), formDistributionMessage(request, user), DistributionGroups.ADMINS, false, new ArrayList<>());
+                new ArrayList<>(), formDistributionMessage(request, user), DistributionGroups.ADMINS, false);
     }
 
     @Override

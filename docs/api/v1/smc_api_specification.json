@@ -263,15 +263,6 @@
             "items": {
               "$ref": "#/components/schemas/PlatformReceiver"
             }
-          },
-          "distributionInlineElements": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ElementModel"
-              }
-            }
           }
         }
       },
@@ -298,15 +289,6 @@
               "ADMIN",
               "SUPER_ADMIN"
             ]
-          },
-          "replyElements": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ElementModel"
-              }
-            }
           }
         }
       },

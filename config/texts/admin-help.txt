@@ -3,7 +3,7 @@
 /changeDistribution - настройка рассылок
 /changeSportorg - настройка спорторгов факультетов
 /getAllFaculties - выводит список факультетов
-/getAllSportorgs - выводит список спорторгов факультетов
+/getAllSportorgs - выводит список всех спорторгов факультетов
 /sendDistribution - отправка рассылки
 /getFeatureToggles - выводит список тогглов
 /stats - выводит статистику

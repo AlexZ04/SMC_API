@@ -14,7 +14,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
 import ru.smc.smc.api.domain.entity.SportsOrganizer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -75,11 +75,10 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
 
         return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU,
                 String.format(SPORTORG_INFO_CHANGED_MESSAGE_FORMAT, selectedFaculty.getNameRu()),
-                new ArrayList<>(),
+                List.of(),
                 String.format(SPORTORG_INFO_CHANGED_DISTRIBUTION_FORMAT, user.getIdOnPlatform(), selectedFaculty.getNameRu()),
                 DistributionGroups.ADMINS,
-                false,
-                new ArrayList<>());
+                false);
     }
 
     private String formCurrentSportorgInfo(Faculty faculty) {

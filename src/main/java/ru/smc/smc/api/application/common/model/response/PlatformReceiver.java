@@ -13,5 +13,4 @@ public class PlatformReceiver {
     private AvailablePlatform platform;
     private UserRole role;
     private List<String> receiversId;
-    private List<List<ElementModel>> replyElements;
 }

@@ -10,6 +10,7 @@ import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
+import ru.smc.smc.api.application.service.faculty.FacultyService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Subscription;
@@ -30,8 +31,10 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
     private static final String UNSUBSCRIBE_CHOICE_MESSAGE = "Выберите тип рассылки, от которой хочешь отписаться:";
     private static final String NO_SUBSCRIPTIONS_MESSAGE = "Сейчас нет рассылок, от которых можно отписаться";
     private static final String INCORRECT_MESSAGE = "Выберите действие из списка";
+    private static final String FACULTY_REQUIRED_MESSAGE = "Для подписки на рассылку о соревнованиях сборной факультета сначала настрой свой факультет.";
 
     private final ResponseService responseService;
+    private final FacultyService facultyService;
 
     @Override
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
@@ -65,6 +68,13 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
     }
 
     private UserResponseItem processSubscribeChoice(BotUser user, Subscription subscription, UserDistributionType distributionType) {
+        if (distributionType == UserDistributionType.COMPETITIONS && isFacultyNotSelected(user)) {
+            user.setSelectedDistributionType(UserDistributionType.COMPETITIONS.name());
+
+            return responseService.createUserResponseWithPreviewMessages(user, UserState.CHANGE_FACULTY,
+                    FACULTY_REQUIRED_MESSAGE, List.of(facultyService.getFacultiesChoiceMessage()));
+        }
+
         distributionType.subscribe(subscription);
 
         return responseService.createUserResponseWithInlineKeyboard(user, UserState.SET_DISTRIBUTION,
@@ -167,6 +177,10 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         user.setSubscription(subscription);
 
         return subscription;
+    }
+
+    private boolean isFacultyNotSelected(BotUser user) {
+        return user.getFaculty() == null || user.getFaculty().getId() == 0;
     }
 
 }

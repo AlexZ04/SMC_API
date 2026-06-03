@@ -88,6 +88,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfChangeFacultyMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfSetDistributionMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -241,6 +246,14 @@ public class MessageDescriptor {
                         currentUserState == UserState.SET_DISTRIBUTION ||
                         currentUserState == UserState.UNSUBSCRIBE_DISTRIBUTION) ?
                 MessageMeaningType.SET_DISTRIBUTION : MessageMeaningType.UNDEFINED;
+    }
+
+    private static MessageMeaningType checkIfChangeFacultyMessage(String message, MessageRoleType messageRoleType,
+                                                                  UserState currentUserState) {
+        return messageRoleType == MessageRoleType.USER &&
+                (message.equalsIgnoreCase("Настроить свой факультет") ||
+                        currentUserState == UserState.CHANGE_FACULTY) ?
+                MessageMeaningType.CHANGE_FACULTY : MessageMeaningType.UNDEFINED;
     }
 
     /*

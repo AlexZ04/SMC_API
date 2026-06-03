@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FacultyService {
 
-    private static final String FACULTY_CHOICE_MESSAGE = "Выберете номер факультета:";
+    private static final String FACULTY_CHOICE_MESSAGE = "Выберите номер или наименование факультета:";
     private static final String ALL_FACULTIES_MESSAGE = "Список факультетов:";
 
     private final FacultyRepository facultyRepository;

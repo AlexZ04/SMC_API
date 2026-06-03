@@ -21,7 +21,8 @@ public enum UserState {
     ADD_SUPER_ADMIN(1), // 1 - клавиатура "К боту"
     REMOVE_ADMIN(1), // 1 - клавиатура "К боту"
     SET_DISTRIBUTION(1), // 1 - клавиатура "К боту"
-    UNSUBSCRIBE_DISTRIBUTION(1); // 1 - клавиатура "К боту"
+    UNSUBSCRIBE_DISTRIBUTION(1), // 1 - клавиатура "К боту"
+    CHANGE_FACULTY(1); // 1 - клавиатура "К боту"
 
     @Getter
     private final int keyboardCode;

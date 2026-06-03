@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.common.enums;
 
 public enum MessageMeaningType {
+    START, // [все] приветственное сообщение
     HELP, // [все] получить помощь по функциональности
     CHANGE_FACULTY,
     ASK_QUESTION, // [пользователь] задать вопрос

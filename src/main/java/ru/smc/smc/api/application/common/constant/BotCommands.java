@@ -7,6 +7,8 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class BotCommands {
+    public final String START_COMMAND = "/start";
+    public final String START_MESSAGE = "начать";
     public final String HELP_COMMAND = "/help";
     public final String CHANGE_TEXTS_COMMAND = "/changeDistribution";
     public final String CHANGE_SPORTORG_COMMAND = "/changeSportorg";

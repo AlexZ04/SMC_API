@@ -28,7 +28,12 @@ public class MessageDescriptor {
     Метод для определения типа отправленного пользователем сообщения
      */
     public static MessageMeaningType defineMessageMeaning(String message, MessageRoleType messageRoleType, UserState currentUserState) {
-        var messageMeaning = checkIfHelpMessage(message);
+        var messageMeaning = checkIfStartMessage(message);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
+        messageMeaning = checkIfHelpMessage(message);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
         }
@@ -85,6 +90,12 @@ public class MessageDescriptor {
 
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
+    }
+
+    private static MessageMeaningType checkIfStartMessage(String message) {
+        return message.equalsIgnoreCase(BotCommands.START_COMMAND) ||
+                message.equalsIgnoreCase(BotCommands.START_MESSAGE) ?
+                MessageMeaningType.START : MessageMeaningType.UNDEFINED;
     }
 
     /*

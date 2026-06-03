@@ -19,7 +19,9 @@ public enum UserState {
     CHANGE_TOGGLE_STATE(1), // 1 - клавиатура "К боту"
     ADD_ADMIN(1), // 1 - клавиатура "К боту"
     ADD_SUPER_ADMIN(1), // 1 - клавиатура "К боту"
-    REMOVE_ADMIN(1); // 1 - клавиатура "К боту"
+    REMOVE_ADMIN(1), // 1 - клавиатура "К боту"
+    SET_DISTRIBUTION(1), // 1 - клавиатура "К боту"
+    UNSUBSCRIBE_DISTRIBUTION(1); // 1 - клавиатура "К боту"
 
     @Getter
     private final int keyboardCode;

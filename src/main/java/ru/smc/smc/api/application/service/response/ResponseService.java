@@ -126,6 +126,28 @@ public class ResponseService {
         return finalResponse;
     }
 
+    public UserResponseItem createUserResponseWithPreviewMessagesAndInlineKeyboard(BotUser user, UserState nextState,
+                                                                                   String responseMessage,
+                                                                                   List<String> previewMessages,
+                                                                                   List<List<ElementModel>> inlineElements) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
+        responseUIService.createResponseKeyboard(nextState, messageResponseBuilder, user);
+        responseUIService.createInlineKeyboard(messageResponseBuilder, inlineElements);
+
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
     public UserResponseItem createUserResponseWithDistributionReceivers(BotUser user, UserState nextState, String responseMessage,
                                                                         String distributionText, boolean sendToHimself,
                                                                         List<PlatformReceiver> receivers) {

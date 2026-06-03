@@ -88,6 +88,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfSetDistributionMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfAskQuestionMessage(message, messageRoleType, currentUserState);
         return messageMeaning;
     }
@@ -227,6 +232,15 @@ public class MessageDescriptor {
                         currentUserState == UserState.ADD_SUPER_ADMIN ||
                         currentUserState == UserState.REMOVE_ADMIN) ?
                 MessageMeaningType.MANAGE_ADMINS : MessageMeaningType.UNDEFINED;
+    }
+
+    private static MessageMeaningType checkIfSetDistributionMessage(String message, MessageRoleType messageRoleType,
+                                                                    UserState currentUserState) {
+        return messageRoleType == MessageRoleType.USER &&
+                ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase("Настроить рассылку")) ||
+                        currentUserState == UserState.SET_DISTRIBUTION ||
+                        currentUserState == UserState.UNSUBSCRIBE_DISTRIBUTION) ?
+                MessageMeaningType.SET_DISTRIBUTION : MessageMeaningType.UNDEFINED;
     }
 
     /*

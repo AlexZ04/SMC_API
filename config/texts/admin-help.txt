@@ -12,3 +12,6 @@
 /addAdmin - добавление администратора
 /addSuperAdmin - добавление суперадминистратора
 /removeAdmin - удаление роли администратора
+/getGiveawayParticipants - выводит список участников текущего розыгрыша
+/clearGiveawayParticipants - очищает список участников текущего розыгрыша
+/getGiveawayWinners - выбирает участников розыгрыша

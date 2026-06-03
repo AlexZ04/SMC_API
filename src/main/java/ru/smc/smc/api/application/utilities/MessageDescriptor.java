@@ -88,6 +88,11 @@ public class MessageDescriptor {
             return messageMeaning;
         }
 
+        messageMeaning = checkIfGiveawayMessage(message, messageRoleType, currentUserState);
+        if (messageMeaning != MessageMeaningType.UNDEFINED) {
+            return messageMeaning;
+        }
+
         messageMeaning = checkIfChangeFacultyMessage(message, messageRoleType, currentUserState);
         if (messageMeaning != MessageMeaningType.UNDEFINED) {
             return messageMeaning;
@@ -237,6 +242,21 @@ public class MessageDescriptor {
                         currentUserState == UserState.ADD_SUPER_ADMIN ||
                         currentUserState == UserState.REMOVE_ADMIN) ?
                 MessageMeaningType.MANAGE_ADMINS : MessageMeaningType.UNDEFINED;
+    }
+
+    private static MessageMeaningType checkIfGiveawayMessage(String message, MessageRoleType messageRoleType,
+                                                             UserState currentUserState) {
+        if (messageRoleType == MessageRoleType.USER && message.equalsIgnoreCase("Участвовать в розыгрыше")) {
+            return MessageMeaningType.GIVEAWAY;
+        }
+
+        return messageRoleType == MessageRoleType.ADMIN &&
+                ((currentUserState == UserState.MAIN_MENU &&
+                        (message.equalsIgnoreCase(BotCommands.GET_GIVEAWAY_PARTICIPANTS_COMMAND) ||
+                                message.equalsIgnoreCase(BotCommands.CLEAR_GIVEAWAY_PARTICIPANTS_COMMAND) ||
+                                message.equalsIgnoreCase(BotCommands.GET_GIVEAWAY_WINNERS_COMMAND))) ||
+                        currentUserState == UserState.GET_GIVEAWAY_WINNERS) ?
+                MessageMeaningType.GIVEAWAY : MessageMeaningType.UNDEFINED;
     }
 
     private static MessageMeaningType checkIfSetDistributionMessage(String message, MessageRoleType messageRoleType,

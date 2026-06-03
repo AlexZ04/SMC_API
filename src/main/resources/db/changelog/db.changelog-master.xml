@@ -22,5 +22,6 @@
     <include file="db/changelog/013-add-bot-user-selected-faculty.xml"/>
     <include file="db/changelog/014-add-bot-user-selected-distribution.xml"/>
     <include file="db/changelog/015-add-bot-user-user-channel.xml"/>
+    <include file="db/changelog/016-create-giveaway-participant.xml"/>
 
 </databaseChangeLog>

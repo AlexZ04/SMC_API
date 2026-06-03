@@ -22,4 +22,7 @@ public class BotCommands {
     public final String ADD_ADMIN_COMMAND = "/addAdmin";
     public final String ADD_SUPER_ADMIN_COMMAND = "/addSuperAdmin";
     public final String REMOVE_ADMIN_COMMAND = "/removeAdmin";
+    public final String GET_GIVEAWAY_PARTICIPANTS_COMMAND = "/getGiveawayParticipants";
+    public final String CLEAR_GIVEAWAY_PARTICIPANTS_COMMAND = "/clearGiveawayParticipants";
+    public final String GET_GIVEAWAY_WINNERS_COMMAND = "/getGiveawayWinners";
 }

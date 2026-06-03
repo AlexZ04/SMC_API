@@ -41,7 +41,7 @@ public class UserMessageService {
         );
 
         if (messageMeaning == MessageMeaningType.UNDEFINED) {
-            return basicResponseFactory.formErrorResponse(user);
+            return basicResponseFactory.formErrorResponse(request, user);
         }
 
         var processor = processorsMap.get(messageMeaning);

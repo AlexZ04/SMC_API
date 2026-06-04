@@ -41,7 +41,7 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
                     FileUtility.getFileMessage(FaqUtility.getPathToAnswer(request.getMessage().toLowerCase())));
         }
 
-        return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU, FileUtility.getFileMessage("your-question-redirected"),
+        return responseService.createUserResponseWithDistribution(user, UserState.QUESTION, FileUtility.getFileMessage("your-question-redirected"),
                 new ArrayList<>(), userMessageToAdminsFormatter.formMessage(QUESTION_DISTRIBUTION_HEADER, request, user),
                 DistributionGroups.ADMINS, false);
     }

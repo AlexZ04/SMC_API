@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageResponse {
-    private List<String> previewMessages;
+    private List<PreviewMessage> previewMessages;
     private List<UUID> filesIds;
     private String responseText;
     private List<List<ElementModel>> inlineElements;
@@ -25,7 +25,7 @@ public class MessageResponse {
 
     public static class MessageResponseBuilder {
 
-        private final List<String> previewMessages = new ArrayList<>();
+        private final List<PreviewMessage> previewMessages = new ArrayList<>();
         private final List<UUID> filesIds = new ArrayList<>();
         private final List<List<ElementModel>> inlineElements = new ArrayList<>();
         private final List<List<ElementModel>> replyElements = new ArrayList<>();
@@ -47,7 +47,17 @@ public class MessageResponse {
         }
 
         public MessageResponseBuilder addPreviewMessage(String message) {
-            this.previewMessages.add(message);
+            this.previewMessages.add(new PreviewMessage(message, List.of()));
+            return this;
+        }
+
+        public MessageResponseBuilder addPreviewMessage(String message, List<List<ElementModel>> inlineElements) {
+            this.previewMessages.add(new PreviewMessage(message, inlineElements));
+            return this;
+        }
+
+        public MessageResponseBuilder addPreviewMessage(PreviewMessage previewMessage) {
+            this.previewMessages.add(previewMessage);
             return this;
         }
 

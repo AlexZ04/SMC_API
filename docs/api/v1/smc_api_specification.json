@@ -206,7 +206,7 @@
           "previewMessages": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/PreviewMessage"
             }
           },
           "filesIds": {
@@ -239,6 +239,23 @@
           },
           "distribution": {
             "$ref": "#/components/schemas/DistributionModel"
+          }
+        }
+      },
+      "PreviewMessage": {
+        "type": "object",
+        "properties": {
+          "responseText": {
+            "type": "string"
+          },
+          "inlineElements": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ElementModel"
+              }
+            }
           }
         }
       },

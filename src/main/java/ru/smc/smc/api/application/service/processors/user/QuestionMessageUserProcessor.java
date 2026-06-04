@@ -53,12 +53,12 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
 
     private List<List<ElementModel>> createInlineKeyboard() {
         return List.of(
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.FIRST_QUESTION)),
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.SECOND_QUESTION)),
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.THIRD_QUESTION)),
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.FOURTH_QUESTION)),
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.FIFTH_QUESTION)),
-                List.of(KeyboardsProperties.createInlineButton(FaqQuestionsTexts.SIXTH_QUESTION))
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.FIRST_QUESTION)),
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.SECOND_QUESTION)),
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.THIRD_QUESTION)),
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.FOURTH_QUESTION)),
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.FIFTH_QUESTION)),
+                List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.SIXTH_QUESTION))
         );
     }
 }

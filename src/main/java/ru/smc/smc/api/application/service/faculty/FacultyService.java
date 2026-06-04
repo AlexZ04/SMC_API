@@ -2,6 +2,8 @@ package ru.smc.smc.api.application.service.faculty;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.smc.smc.api.application.common.constant.ErrorsMessages;
+import ru.smc.smc.api.application.common.exceptions.NotFoundException;
 import ru.smc.smc.api.domain.entity.Faculty;
 import ru.smc.smc.api.domain.repository.FacultyRepository;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FacultyService {
 
+    private static final int DEFAULT_FACULTY_ID = 0;
     private static final String FACULTY_CHOICE_MESSAGE = "Выберите номер или наименование факультета:";
     private static final String ALL_FACULTIES_MESSAGE = "Список факультетов:";
 
@@ -38,6 +41,11 @@ public class FacultyService {
 
     public Optional<List<Faculty>> findActiveFacultiesByMessage(String message) {
         return facultyResolverService.findActiveFacultiesByMessage(message);
+    }
+
+    public Faculty findDefaultFaculty() {
+        return facultyRepository.findById(DEFAULT_FACULTY_ID)
+                .orElseThrow(() -> new NotFoundException(ErrorsMessages.FACULTY_NOT_FOUND));
     }
 
     public String formFacultyIds(List<Faculty> faculties) {

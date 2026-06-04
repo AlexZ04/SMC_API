@@ -23,7 +23,9 @@ import java.util.List;
 public class ChangeFacultyMessageUserProcessor implements MessageUserProcessor {
 
     private static final String FACULTY_CHANGED_MESSAGE_FORMAT = "Факультет настроен: %s";
+    private static final String FACULTY_RESET_MESSAGE = "Факультет сброшен";
     private static final String INCORRECT_FACULTY_MESSAGE = "Некорректный факультет. Выберите факультет из списка.";
+    private static final String RESET_FACULTY_BUTTON = "Сбросить факультет";
     private static final String UNSUBSCRIBE_BUTTON = "Отписаться от уведомлений";
     private static final String BACK_BUTTON = "Назад";
 
@@ -35,14 +37,19 @@ public class ChangeFacultyMessageUserProcessor implements MessageUserProcessor {
         if (user.getCurrentState() != UserState.CHANGE_FACULTY) {
             user.setSelectedDistributionType(null);
 
-            return responseService.createUserResponse(user, UserState.CHANGE_FACULTY,
-                    facultyService.getFacultiesChoiceMessage());
+            return responseService.createUserResponseWithInlineKeyboard(user, UserState.CHANGE_FACULTY,
+                    facultyService.getFacultiesChoiceMessage(), createChangeFacultyKeyboard());
+        }
+
+        if (request.getMessage().equalsIgnoreCase(RESET_FACULTY_BUTTON)) {
+            return processFacultyReset(user);
         }
 
         return facultyService.findActiveFacultyByMessage(request.getMessage())
                 .map(faculty -> processCorrectFacultyChoice(user, faculty))
-                .orElseGet(() -> responseService.createUserResponseWithPreviewMessages(user, UserState.CHANGE_FACULTY,
-                        INCORRECT_FACULTY_MESSAGE, List.of(facultyService.getFacultiesChoiceMessage())));
+                .orElseGet(() -> responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user,
+                        UserState.CHANGE_FACULTY, INCORRECT_FACULTY_MESSAGE,
+                        List.of(facultyService.getFacultiesChoiceMessage()), createChangeFacultyKeyboard()));
     }
 
     @Override
@@ -68,6 +75,13 @@ public class ChangeFacultyMessageUserProcessor implements MessageUserProcessor {
                 String.format(FACULTY_CHANGED_MESSAGE_FORMAT, faculty.getNameRu()));
     }
 
+    private UserResponseItem processFacultyReset(BotUser user) {
+        user.setFaculty(facultyService.findDefaultFaculty());
+        user.setSelectedDistributionType(null);
+
+        return responseService.createUserResponse(user, UserState.MAIN_MENU, FACULTY_RESET_MESSAGE);
+    }
+
     private Subscription getOrCreateSubscription(BotUser user) {
         if (user.getSubscription() != null) {
             return user.getSubscription();
@@ -79,6 +93,12 @@ public class ChangeFacultyMessageUserProcessor implements MessageUserProcessor {
         user.setSubscription(subscription);
 
         return subscription;
+    }
+
+    private List<List<ElementModel>> createChangeFacultyKeyboard() {
+        return List.of(
+                List.of(createBlackButton(RESET_FACULTY_BUTTON))
+        );
     }
 
     private List<List<ElementModel>> createDistributionMenuKeyboard() {

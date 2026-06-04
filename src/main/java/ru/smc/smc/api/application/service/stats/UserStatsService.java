@@ -25,6 +25,9 @@ public class UserStatsService {
 
             Платформа: %s
             Идентификатор: %s
+            Имя: {getName(%s:%s)}
+            Идентификатор из адаптера: {getId(%s:%s)}
+            Ссылка: {getLink(%s:%s)}
             Сообщений отправлено пользователем: %s
             Подписки: %s
             Факультет: %s
@@ -57,6 +60,12 @@ public class UserStatsService {
 
     private String formUserInfo(BotUser user) {
         return String.format(USER_INFO_FORMAT,
+                user.getPlatform(),
+                user.getIdOnPlatform(),
+                user.getPlatform(),
+                user.getIdOnPlatform(),
+                user.getPlatform(),
+                user.getIdOnPlatform(),
                 user.getPlatform(),
                 user.getIdOnPlatform(),
                 user.getMessageSent(),

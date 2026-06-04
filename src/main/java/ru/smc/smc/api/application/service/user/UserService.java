@@ -99,7 +99,7 @@ public class UserService {
         existingUser.setRole(targetRole);
         botUserRepository.save(existingUser);
 
-        return "Пользователю " + idOnPlatform + " на платформе " + platform + " выдана роль " + targetRole;
+        return "Пользователю " + formUserMacros(platform, idOnPlatform) + " выдана роль " + targetRole;
     }
 
     public String removeAdminRole(AvailablePlatform platform, String idOnPlatform) {
@@ -123,6 +123,12 @@ public class UserService {
         botUserRepository.save(existingUser);
 
         return "Пользователь " + idOnPlatform + " на платформе " + platform + " понижен до роли " + UserRole.USER;
+    }
+
+    private String formUserMacros(AvailablePlatform platform, String idOnPlatform) {
+        String userIdentifier = platform + ":" + idOnPlatform;
+
+        return "{getName(" + userIdentifier + ")} {getLink(" + userIdentifier + ")}";
     }
 
     private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers, String receiverChannel) {

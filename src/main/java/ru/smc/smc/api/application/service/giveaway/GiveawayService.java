@@ -21,7 +21,7 @@ public class GiveawayService {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final String EMPTY_PARTICIPANTS_MESSAGE = "В текущем розыгрыше пока нет участников";
     private static final String PARTICIPANTS_MESSAGE_FORMAT = "Всего участников розыгрыша: %s\n%s";
-    private static final String PARTICIPANT_FORMAT = "%s - {getName()} - {getId()} - %s - {getLink()}";
+    private static final String PARTICIPANT_FORMAT = "%s - {getName(%s:%s)} - {getId()} - %s - {getLink()}";
 
     private final GiveawayParticipantRepository giveawayParticipantRepository;
 
@@ -34,6 +34,8 @@ public class GiveawayService {
 
         GiveawayParticipant giveawayParticipant = new GiveawayParticipant();
         giveawayParticipant.setUser(user);
+        giveawayParticipant.setPlatform(user.getPlatform());
+        giveawayParticipant.setIdOnPlatform(user.getIdOnPlatform());
         giveawayParticipant.setParticipantNumber(findNextParticipantNumber());
 
         return giveawayParticipantRepository.save(giveawayParticipant);
@@ -101,7 +103,9 @@ public class GiveawayService {
     private String formParticipantInfo(GiveawayParticipant participant) {
         return String.format(PARTICIPANT_FORMAT,
                 participant.getParticipantNumber(),
-                participant.getUser().getPlatform());
+                participant.getPlatform(),
+                participant.getIdOnPlatform(),
+                participant.getPlatform());
     }
 
     private int parseParticipantNumber(String participantNumber) {

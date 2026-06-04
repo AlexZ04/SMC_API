@@ -24,5 +24,6 @@
     <include file="db/changelog/015-add-bot-user-user-channel.xml"/>
     <include file="db/changelog/016-create-giveaway-participant.xml"/>
     <include file="db/changelog/017-add-bot-stats-message-user-sent.xml"/>
+    <include file="db/changelog/018-add-giveaway-participant-platform-info.xml"/>
 
 </databaseChangeLog>

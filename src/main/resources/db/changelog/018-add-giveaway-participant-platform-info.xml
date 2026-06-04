@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="018-add-giveaway-participant-platform-info" author="aleksey.z">
+        <addColumn tableName="giveaway_participant">
+            <column name="platform" type="varchar(255)"/>
+            <column name="id_on_platform" type="varchar(255)"/>
+        </addColumn>
+
+        <sql>
+            update giveaway_participant gp
+            set platform = bu.platform,
+                id_on_platform = bu.id_on_platform
+            from bot_user bu
+            where gp.user_id = bu.inner_id
+        </sql>
+
+        <addNotNullConstraint
+                tableName="giveaway_participant"
+                columnName="platform"
+                columnDataType="varchar(255)"/>
+
+        <addNotNullConstraint
+                tableName="giveaway_participant"
+                columnName="id_on_platform"
+                columnDataType="varchar(255)"/>
+    </changeSet>
+
+</databaseChangeLog>

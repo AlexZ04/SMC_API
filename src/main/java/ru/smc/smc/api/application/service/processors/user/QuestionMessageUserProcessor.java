@@ -24,6 +24,9 @@ import java.util.List;
 public class QuestionMessageUserProcessor implements MessageUserProcessor {
 
     private static final String QUESTION_DISTRIBUTION_HEADER = "Пользователь отправил вопрос администраторам";
+    private static final String QUESTION_MENU_PREVIEW_MESSAGE = """
+            Часто задаваемые вопросы представлены ниже
+            Также вы можете задать вопрос напрямую администратору, просто отправив его в чат""";
 
     private final ResponseService responseService;
     private final UserMessageToAdminsFormatter userMessageToAdminsFormatter;
@@ -32,8 +35,8 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
 
         if (user.getCurrentState() == UserState.MAIN_MENU) {
-            return responseService.createUserResponseWithInlineKeyboard(user, UserState.QUESTION, FileUtility.getFileMessage("faq/general-message"),
-                    createInlineKeyboard());
+            return responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user, UserState.QUESTION,
+                    FileUtility.getFileMessage("faq/general-message"), List.of(QUESTION_MENU_PREVIEW_MESSAGE), createInlineKeyboard());
         }
 
         if (FaqUtility.checkIfQuestionIsFaq(request.getMessage().toLowerCase())) {

@@ -88,5 +88,10 @@ public class MessageResponse {
             this.replyElements.add(row);
             return this;
         }
+
+        public MessageResponseBuilder addReplyRow(List<ElementModel> row) {
+            this.replyElements.add(row);
+            return this;
+        }
     }
 }

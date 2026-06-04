@@ -24,7 +24,6 @@ import java.util.Optional;
 public class SetDistributionMessageUserProcessor implements MessageUserProcessor {
 
     private static final String MENU_MESSAGE = "Ты подписан(-а) на следующие рассылки:";
-    private static final String MENU_PREVIEW_MESSAGE = "Настройка рассылок";
     private static final String EMPTY_SUBSCRIPTIONS_MESSAGE = "Пока ты не подписан(-а) ни на одну рассылку";
     private static final String UNSUBSCRIBE_BUTTON = "Отписаться от уведомлений";
     private static final String BACK_BUTTON = "Назад";
@@ -56,7 +55,7 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         }
 
         if (user.getCurrentState() == UserState.SET_DISTRIBUTION) {
-            return responseService.createUserResponseWithInlineKeyboard(user, UserState.SET_DISTRIBUTION,
+            return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                     INCORRECT_MESSAGE, createDistributionMenuKeyboard());
         }
 
@@ -78,7 +77,7 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
 
         distributionType.subscribe(subscription);
 
-        return responseService.createUserResponseWithInlineKeyboard(user, UserState.SET_DISTRIBUTION,
+        return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                 distributionType.getSubscribeMessage(), createDistributionMenuKeyboard());
     }
 
@@ -86,7 +85,7 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         List<UserDistributionType> subscribedDistributionTypes = findSubscribedDistributionTypes(subscription);
 
         if (subscribedDistributionTypes.isEmpty()) {
-            return responseService.createUserResponseWithInlineKeyboard(user, UserState.SET_DISTRIBUTION,
+            return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                     NO_SUBSCRIPTIONS_MESSAGE, createDistributionMenuKeyboard());
         }
 
@@ -109,14 +108,14 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
                                                              UserDistributionType distributionType) {
         distributionType.unsubscribe(subscription);
 
-        return responseService.createUserResponseWithInlineKeyboard(user, UserState.SET_DISTRIBUTION,
+        return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                 distributionType.getUnsubscribeMessage() + "\n\n" + formSubscriptionsInfo(subscription),
                 createDistributionMenuKeyboard());
     }
 
     private UserResponseItem createDistributionMenuResponse(BotUser user, Subscription subscription) {
-        return responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user, UserState.SET_DISTRIBUTION,
-                formSubscriptionsInfo(subscription), List.of(MENU_PREVIEW_MESSAGE), createDistributionMenuKeyboard());
+        return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
+                formSubscriptionsInfo(subscription), createDistributionMenuKeyboard());
     }
 
     private String formSubscriptionsInfo(Subscription subscription) {

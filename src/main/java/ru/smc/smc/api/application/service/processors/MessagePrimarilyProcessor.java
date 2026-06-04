@@ -19,6 +19,8 @@ import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.utilities.MessageDescriptor;
 import ru.smc.smc.api.application.utilities.UserUtility;
 
+import java.time.Instant;
+
 import static ru.smc.smc.api.application.common.constant.ErrorsMessages.INVALID_API_KEY;
 
 /*
@@ -83,6 +85,7 @@ public class MessagePrimarilyProcessor {
         user.setMessageSent(userMessages);
         String userChannel = defineMessageChannel(messageRoleType);
         user.setUserChannel(userChannel);
+        user.setUpdateTime(Instant.now());
         user.activateCurrentState(userChannel);
         botUserRepository.save(user);
     }

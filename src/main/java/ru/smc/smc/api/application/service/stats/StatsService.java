@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 public class StatsService {
 
     private static final String WITHOUT_FACULTY = "Не установлен";
-    private static final String WITHOUT_CHANNEL = "не указан";
-
     private final BotStatsRepository botStatsRepository;
     private final BotUserRepository botUserRepository;
 
@@ -38,8 +36,8 @@ public class StatsService {
                 formSubscriptionsStats(users) + "\n\n" +
                 "Пользователи по факультетам:\n" +
                 formFacultyStats(users) + "\n\n" +
-                "Пользователи по платформам и каналам:\n" +
-                formPlatformAndChannelStats(users);
+                "Пользователи по платформам:\n" +
+                formPlatformStats(users);
     }
 
     public void updateBotStats(UserResponseItem response) {
@@ -98,11 +96,11 @@ public class StatsService {
         return formMapStats(usersByFaculty);
     }
 
-    private String formPlatformAndChannelStats(List<BotUser> users) {
-        Map<String, Long> usersByPlatformAndChannel = users.stream()
-                .collect(Collectors.groupingBy(this::definePlatformAndChannel, TreeMap::new, Collectors.counting()));
+    private String formPlatformStats(List<BotUser> users) {
+        Map<String, Long> usersByPlatform = users.stream()
+                .collect(Collectors.groupingBy(user -> user.getPlatform().name(), TreeMap::new, Collectors.counting()));
 
-        return formMapStats(usersByPlatformAndChannel);
+        return formMapStats(usersByPlatform);
     }
 
     private String formMapStats(Map<String, Long> stats) {
@@ -135,9 +133,4 @@ public class StatsService {
         return user.getFaculty().getNameRu();
     }
 
-    private String definePlatformAndChannel(BotUser user) {
-        String channel = user.getUserChannel() == null ? WITHOUT_CHANNEL : user.getUserChannel();
-
-        return user.getPlatform() + " / " + channel;
-    }
 }

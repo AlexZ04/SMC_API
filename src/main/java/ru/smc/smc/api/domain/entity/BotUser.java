@@ -67,6 +67,8 @@ public class BotUser {
 
     private Instant createTime =  Instant.now();
 
+    private Instant updateTime = Instant.now();
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Subscription subscription;
 

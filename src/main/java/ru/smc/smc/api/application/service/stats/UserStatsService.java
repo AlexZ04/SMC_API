@@ -32,7 +32,8 @@ public class UserStatsService {
             Подписки: %s
             Факультет: %s
             Первое использование бота: %s
-            Канал пользования: %s""";
+            Последнее использование бота: %s
+            Последний использованный канал: %s""";
     private static final String NO_SUBSCRIPTIONS = "нет";
     private static final String WITHOUT_FACULTY = "Не установлен";
     private static final String WITHOUT_CHANNEL = "не указан";
@@ -72,6 +73,7 @@ public class UserStatsService {
                 formSubscriptionsInfo(user),
                 defineFacultyName(user),
                 formatCreateTime(user),
+                formatUpdateTime(user),
                 defineUserChannel(user));
     }
 
@@ -103,6 +105,10 @@ public class UserStatsService {
 
     private String formatCreateTime(BotUser user) {
         return USER_INFO_DATE_FORMATTER.format(user.getCreateTime().atZone(ZoneId.systemDefault()));
+    }
+
+    private String formatUpdateTime(BotUser user) {
+        return USER_INFO_DATE_FORMATTER.format(user.getUpdateTime().atZone(ZoneId.systemDefault()));
     }
 
     private String defineUserChannel(BotUser user) {

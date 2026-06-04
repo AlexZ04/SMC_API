@@ -11,6 +11,7 @@ import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.user.UserService;
 import ru.smc.smc.api.application.service.stats.StatsService;
+import ru.smc.smc.api.application.service.thanks.ThanksMessageService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.MessageHistory;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
@@ -41,6 +42,7 @@ public class MessagePrimarilyProcessor {
     private final UserService userService;
     private final ResponseService responseService;
     private final StatsService statsService;
+    private final ThanksMessageService thanksMessageService;
 
     @Value("${api-config.key}")
     private String validApiKey;
@@ -62,6 +64,10 @@ public class MessagePrimarilyProcessor {
         // проверка сообщения на сообщения-триггеры возвращения в главное меню
         if (request.getMessage().isReturnMessage()) {
             return responseService.createReturnToMainMenuMessage(user);
+        }
+
+        if (thanksMessageService.isThanksMessage(request.getMessage())) {
+            return thanksMessageService.processThanksMessage(user);
         }
 
         return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) :

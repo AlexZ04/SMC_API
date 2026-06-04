@@ -21,7 +21,7 @@ public class KeyboardsProperties {
     public ElementModel BACK_TO_BOT_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "К боту", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel SET_MY_FACULTY_BUTTON = new ElementModel(ElementType.BUTTON, null,
-            "Настроить свой факультет", Colors.BLACK.getColor(), Colors.WHITE.getColor());
+            "Настроить свой факультет", Colors.WHITE.getColor(), Colors.BLACK.getColor());
     public ElementModel ADMIN_STATS_BUTTON = new ElementModel(ElementType.BUTTON, null,
             BotCommands.STATS_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel ADMIN_CHANGE_SPORTORG_BUTTON = new ElementModel(ElementType.BUTTON, null,

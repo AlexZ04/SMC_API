@@ -9,6 +9,7 @@ import ru.smc.smc.api.application.common.enums.UserDistributionType;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
+import ru.smc.smc.api.application.common.model.response.PreviewMessage;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.faculty.FacultyService;
 import ru.smc.smc.api.application.service.response.ResponseService;
@@ -41,6 +42,10 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         Subscription subscription = getOrCreateSubscription(user);
 
         if (user.getCurrentState() == UserState.UNSUBSCRIBE_DISTRIBUTION) {
+            if (request.getMessage().equalsIgnoreCase(BACK_BUTTON)) {
+                return createDistributionMenuResponse(user, subscription);
+            }
+
             return processUnsubscribeChoice(request, user, subscription);
         }
 
@@ -89,19 +94,15 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
                     NO_SUBSCRIPTIONS_MESSAGE, createDistributionMenuKeyboard());
         }
 
-        return responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user, UserState.UNSUBSCRIBE_DISTRIBUTION,
-                UNSUBSCRIBE_WARNING, List.of(UNSUBSCRIBE_CHOICE_MESSAGE),
-                createUnsubscribeKeyboard(subscribedDistributionTypes));
+        return createUnsubscribeMenuResponse(user, subscribedDistributionTypes, UNSUBSCRIBE_WARNING);
     }
 
     private UserResponseItem processUnsubscribeChoice(MessageRequestBody request, BotUser user, Subscription subscription) {
         return UserDistributionType.findByButtonText(request.getMessage())
                 .filter(distributionType -> distributionType.isSubscribed(subscription))
                 .map(distributionType -> processCorrectUnsubscribeChoice(user, subscription, distributionType))
-                .orElseGet(() -> responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user,
-                        UserState.UNSUBSCRIBE_DISTRIBUTION, INCORRECT_MESSAGE,
-                        List.of(UNSUBSCRIBE_CHOICE_MESSAGE),
-                        createUnsubscribeKeyboard(findSubscribedDistributionTypes(subscription))));
+                .orElseGet(() -> createUnsubscribeMenuResponse(user, findSubscribedDistributionTypes(subscription),
+                        INCORRECT_MESSAGE));
     }
 
     private UserResponseItem processCorrectUnsubscribeChoice(BotUser user, Subscription subscription,
@@ -116,6 +117,16 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
     private UserResponseItem createDistributionMenuResponse(BotUser user, Subscription subscription) {
         return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                 formSubscriptionsInfo(subscription), createDistributionMenuKeyboard());
+    }
+
+    private UserResponseItem createUnsubscribeMenuResponse(BotUser user,
+                                                           List<UserDistributionType> subscribedDistributionTypes,
+                                                           String responseMessage) {
+        return responseService.createUserResponseWithCustomPreviewMessagesAndReplyKeyboard(user,
+                UserState.UNSUBSCRIBE_DISTRIBUTION, responseMessage,
+                List.of(new PreviewMessage(UNSUBSCRIBE_CHOICE_MESSAGE,
+                        createUnsubscribeKeyboard(subscribedDistributionTypes))),
+                createBackKeyboard());
     }
 
     private String formSubscriptionsInfo(Subscription subscription) {
@@ -153,9 +164,12 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         List<List<ElementModel>> keyboard = new ArrayList<>();
 
         distributionTypes.forEach(distributionType -> keyboard.add(List.of(createBlackButton(distributionType.getButtonText()))));
-        keyboard.add(List.of(createBlackButton(BACK_BUTTON)));
 
         return keyboard;
+    }
+
+    private List<List<ElementModel>> createBackKeyboard() {
+        return List.of(List.of(createBlackButton(BACK_BUTTON)));
     }
 
     private ElementModel createWhiteButton(String message) {

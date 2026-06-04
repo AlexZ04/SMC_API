@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
+import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.exceptions.UnauthorizedException;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
@@ -34,6 +35,7 @@ import static ru.smc.smc.api.application.common.constant.ErrorsMessages.INVALID_
 public class MessagePrimarilyProcessor {
     private static final String ADMIN_CHANNEL = "admin-channel";
     private static final String USER_CHANNEL = "user-channel";
+    private static final String BACK_BUTTON = "Назад";
 
     private final AdminMessageService adminMessageService;
     private final UserMessageService userMessageService;
@@ -62,7 +64,7 @@ public class MessagePrimarilyProcessor {
         }
 
         // проверка сообщения на сообщения-триггеры возвращения в главное меню
-        if (request.getMessage().isReturnMessage()) {
+        if (request.getMessage().isReturnMessage() && !isUnsubscribeDistributionBackMessage(request, user)) {
             return responseService.createReturnToMainMenuMessage(user);
         }
 
@@ -76,6 +78,11 @@ public class MessagePrimarilyProcessor {
 
     private boolean isApiKeyValid(String apiKey) {
         return apiKey.equals(validApiKey);
+    }
+
+    private boolean isUnsubscribeDistributionBackMessage(MessageRequestBody request, BotUser user) {
+        return user.getCurrentState() == UserState.UNSUBSCRIBE_DISTRIBUTION &&
+                request.getMessage().equalsIgnoreCase(BACK_BUTTON);
     }
 
     // первичная обработка сообщения: логирование, сохранение в историческую таблицу и обновление статистики

@@ -175,6 +175,27 @@ public class ResponseService {
         return finalResponse;
     }
 
+    public UserResponseItem createUserResponseWithCustomPreviewMessagesAndReplyKeyboard(BotUser user, UserState nextState,
+                                                                                        String responseMessage,
+                                                                                        List<PreviewMessage> previewMessages,
+                                                                                        List<List<ElementModel>> replyElements) {
+        updateUserState(user, nextState);
+
+        var responseBuilder = formPrimaryResponseInfoBuilder(user);
+
+        var messageResponseBuilder = MessageResponse.builder()
+                .responseText(responseMessage);
+
+        previewMessages.forEach(messageResponseBuilder::addPreviewMessage);
+        replyElements.forEach(messageResponseBuilder::addReplyRow);
+
+        responseBuilder.responseToUser(messageResponseBuilder.build());
+        UserResponseItem finalResponse = responseBuilder.build();
+        statsService.updateBotStats(finalResponse);
+
+        return finalResponse;
+    }
+
     public UserResponseItem createUserResponseWithPreviewMessagesAndInlineKeyboard(BotUser user, UserState nextState,
                                                                                    String responseMessage,
                                                                                    List<String> previewMessages,

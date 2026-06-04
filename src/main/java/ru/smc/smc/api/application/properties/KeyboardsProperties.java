@@ -13,7 +13,7 @@ public class KeyboardsProperties {
     public ElementModel SET_UP_DISTRIBUTION_BUTTON = new ElementModel(ElementType.BUTTON, null, "Настроить рассылку",
             Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel FEEDBACK_LINK = new ElementModel(ElementType.LINK, "https://vk.com/smk_tsu?ref=group_menu&w=app5619682_-158563071%2523694549",
-            "Обратная связь", Colors.WHITE.getColor(), Colors.BLACK.getColor());
+            "Обратная связь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
             "Помощь", Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel PARTICIPATE_IN_GIVEAWAY = new ElementModel(ElementType.BUTTON, null,

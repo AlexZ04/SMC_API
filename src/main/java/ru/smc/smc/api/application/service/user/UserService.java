@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final String ADMIN_CHANNEL = "admin-channel";
+    private static final String USER_CHANNEL = "user-channel";
 
     private final BotUserRepository botUserRepository;
     private final BotUserFactory botUserFactory;
@@ -32,6 +32,10 @@ public class UserService {
     }
 
     public List<PlatformReceiver> findBotUsersByGroup(DistributionGroups distributionGroup) {
+        return findBotUsersByGroup(distributionGroup, USER_CHANNEL);
+    }
+
+    public List<PlatformReceiver> findBotUsersByGroup(DistributionGroups distributionGroup, String receiverChannel) {
         List<BotUser> receivers = new ArrayList<>();
 
         if (distributionGroup == DistributionGroups.ADMINS) {
@@ -46,15 +50,15 @@ public class UserService {
             receivers = botUserRepository.findBySubscriptionSubscribedToScheduleDistributionTrue();
         }
 
-        return mapUsersToPlatformReceivers(receivers);
+        return mapUsersToPlatformReceivers(receivers, receiverChannel);
     }
 
     public List<PlatformReceiver> findCompetitionSubscribersByFacultyIds(List<Integer> facultyIds) {
-        return mapUsersToPlatformReceivers(botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds));
+        return mapBotUsersToPlatformReceivers(botUserRepository.findBySubscriptionSubscribedToCompetitionDistributionTrueAndFacultyIdIn(facultyIds));
     }
 
     public List<PlatformReceiver> mapBotUsersToPlatformReceivers(List<BotUser> botUsers) {
-        return mapUsersToPlatformReceivers(botUsers);
+        return mapUsersToPlatformReceivers(botUsers, USER_CHANNEL);
     }
 
     public String getAdminsInfo() {
@@ -121,13 +125,13 @@ public class UserService {
         return "Пользователь " + idOnPlatform + " на платформе " + platform + " понижен до роли " + UserRole.USER;
     }
 
-    private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers) {
+    private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers, String receiverChannel) {
         Map<ReceiverGroupKey, List<String>> receiversIdsByGroup = new LinkedHashMap<>();
 
         botUsers.stream()
-                .filter(this::canReceiveDistribution)
                 .forEach(botUser -> {
-                    ReceiverGroupKey groupKey = new ReceiverGroupKey(botUser.getPlatform(), normalizeDistributionRole(botUser.getRole()));
+                    ReceiverGroupKey groupKey = new ReceiverGroupKey(
+                            botUser.getPlatform(), normalizeDistributionRole(botUser.getRole()), receiverChannel);
                     receiversIdsByGroup.computeIfAbsent(groupKey, key -> new ArrayList<>()).add(botUser.getIdOnPlatform());
                 });
 
@@ -140,6 +144,7 @@ public class UserService {
         return new PlatformReceiver()
                 .setPlatform(receiverGroupKey.platform())
                 .setRole(receiverGroupKey.role())
+                .setUserChannel(receiverGroupKey.userChannel())
                 .setReceiversId(receiversIds);
     }
 
@@ -151,10 +156,6 @@ public class UserService {
         return role;
     }
 
-    private boolean canReceiveDistribution(BotUser botUser) {
-        return botUser.getRole() != UserRole.USER || !ADMIN_CHANNEL.equals(botUser.getUserChannel());
-    }
-
     private int getRolePriority(UserRole role) {
         return switch (role) {
             case USER -> 0;
@@ -163,6 +164,6 @@ public class UserService {
         };
     }
 
-    private record ReceiverGroupKey(AvailablePlatform platform, UserRole role) {
+    private record ReceiverGroupKey(AvailablePlatform platform, UserRole role, String userChannel) {
     }
 }

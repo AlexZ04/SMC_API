@@ -282,6 +282,13 @@
               "type": "string"
             }
           },
+          "userChannel": {
+            "type": "string",
+            "enum": [
+              "user-channel",
+              "admin-channel"
+            ]
+          },
           "role": {
             "type": "string",
             "enum": [

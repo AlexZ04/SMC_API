@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="019-add-bot-user-channel-states" author="aleksey.z">
+        <addColumn tableName="bot_user">
+            <column name="user_current_state" type="varchar(255)" defaultValue="MAIN_MENU">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_current_state" type="varchar(255)" defaultValue="MAIN_MENU">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <sql>
+            update bot_user
+            set admin_current_state = current_state
+            where user_channel = 'admin-channel'
+        </sql>
+
+        <sql>
+            update bot_user
+            set user_current_state = current_state
+            where user_channel = 'user-channel'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

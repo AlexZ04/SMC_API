@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionMessageUserProcessor implements MessageUserProcessor {
 
+    private static final String ADMIN_CHANNEL = "admin-channel";
     private static final String QUESTION_DISTRIBUTION_HEADER = "Пользователь отправил вопрос администраторам";
     private static final String QUESTION_MENU_PREVIEW_MESSAGE = """
             Часто задаваемые вопросы представлены ниже
@@ -46,7 +47,7 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
 
         return responseService.createUserResponseWithDistribution(user, UserState.QUESTION, FileUtility.getFileMessage("your-question-redirected"),
                 new ArrayList<>(), userMessageToAdminsFormatter.formMessage(QUESTION_DISTRIBUTION_HEADER, request, user),
-                DistributionGroups.ADMINS, false);
+                DistributionGroups.ADMINS, false, ADMIN_CHANNEL);
     }
 
     @Override

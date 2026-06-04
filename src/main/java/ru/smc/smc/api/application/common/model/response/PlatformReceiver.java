@@ -12,5 +12,6 @@ import java.util.List;
 public class PlatformReceiver {
     private AvailablePlatform platform;
     private UserRole role;
+    private String userChannel;
     private List<String> receiversId;
 }

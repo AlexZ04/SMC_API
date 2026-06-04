@@ -20,6 +20,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BotUser {
 
+    private static final String ADMIN_CHANNEL = "admin-channel";
+
     @Id
     private UUID innerId = UUID.randomUUID();
 
@@ -48,6 +50,14 @@ public class BotUser {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private UserState userCurrentState = UserState.MAIN_MENU;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserState adminCurrentState = UserState.MAIN_MENU;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role = UserRole.USER;
 
     @Column(nullable = false)
@@ -59,4 +69,27 @@ public class BotUser {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Subscription subscription;
+
+    public void activateCurrentState(String userChannel) {
+        currentState = defineCurrentState(userChannel);
+    }
+
+    public void updateCurrentState(String userChannel, UserState userState) {
+        currentState = userState;
+
+        if (ADMIN_CHANNEL.equals(userChannel)) {
+            adminCurrentState = userState;
+            return;
+        }
+
+        userCurrentState = userState;
+    }
+
+    private UserState defineCurrentState(String userChannel) {
+        if (ADMIN_CHANNEL.equals(userChannel)) {
+            return adminCurrentState;
+        }
+
+        return userCurrentState;
+    }
 }

@@ -81,7 +81,9 @@ public class MessagePrimarilyProcessor {
     private void updateUserInfo(BotUser user, MessageRoleType messageRoleType) {
         Long userMessages = user.getMessageSent() + 1;
         user.setMessageSent(userMessages);
-        user.setUserChannel(defineMessageChannel(messageRoleType));
+        String userChannel = defineMessageChannel(messageRoleType);
+        user.setUserChannel(userChannel);
+        user.activateCurrentState(userChannel);
         botUserRepository.save(user);
     }
 

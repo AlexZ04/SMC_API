@@ -24,6 +24,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ResponseService {
 
+    private static final String USER_CHANNEL = "user-channel";
+
     private final ResponseMessagesProperties responseMessagesProperties;
     private final ResponseUIService responseUIService;
     private final StatsService statsService;
@@ -70,6 +72,15 @@ public class ResponseService {
                                                                List<List<ElementModel>> inlineElements,
                                                                String distributionText,
                                                                DistributionGroups group, boolean sendToHimself) {
+        return createUserResponseWithDistribution(user, nextState, responseMessage, inlineElements, distributionText,
+                group, sendToHimself, USER_CHANNEL);
+    }
+
+    public UserResponseItem createUserResponseWithDistribution(BotUser user, UserState nextState, String responseMessage,
+                                                               List<List<ElementModel>> inlineElements,
+                                                               String distributionText,
+                                                               DistributionGroups group, boolean sendToHimself,
+                                                               String receiverChannel) {
         updateUserState(user, nextState);
 
         var responseBuilder = formPrimaryResponseInfoBuilder(user);
@@ -91,7 +102,7 @@ public class ResponseService {
         distributionResponse.setDistribution(new DistributionModel());
         distributionResponse.getDistribution().setDistributionText(distributionText);
         distributionResponse.getDistribution().setSendToHimself(sendToHimself);
-        distributionResponse.getDistribution().setReceivers(userService.findBotUsersByGroup(group));
+        distributionResponse.getDistribution().setReceivers(userService.findBotUsersByGroup(group, receiverChannel));
 
         responseBuilder.responseToUser(distributionResponse);
 
@@ -239,7 +250,7 @@ public class ResponseService {
     }
 
     private void updateUserState(BotUser user, UserState userState) {
-        user.setCurrentState(userState);
+        user.updateCurrentState(user.getUserChannel(), userState);
         botUserRepository.save(user);
     }
 }

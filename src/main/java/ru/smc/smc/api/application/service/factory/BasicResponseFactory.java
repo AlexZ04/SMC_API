@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BasicResponseFactory {
 
+    private static final String ADMIN_CHANNEL = "admin-channel";
     private static final String UNKNOWN_MESSAGE_DISTRIBUTION_HEADER = "Пользователь отправил неопознанное сообщение";
 
     private final ResponseService responseService;
@@ -40,6 +41,7 @@ public class BasicResponseFactory {
                 List.of(),
                 userMessageToAdminsFormatter.formMessage(UNKNOWN_MESSAGE_DISTRIBUTION_HEADER, request, user),
                 DistributionGroups.ADMINS,
-                false);
+                false,
+                ADMIN_CHANNEL);
     }
 }

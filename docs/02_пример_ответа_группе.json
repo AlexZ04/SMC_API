@@ -73,11 +73,13 @@
       {
         "platform": "VK",
         "role": "USER",
+        "userChannel": "user-channel",
         "receiversId": ["123", "125"]
       },
       {
         "platform": "TG",
         "role": "ADMIN",
+        "userChannel": "user-channel",
         "receiversId": ["1111"]
       }
     ]

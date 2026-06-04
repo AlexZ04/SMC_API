@@ -8,6 +8,7 @@ import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.ElementModel;
+import ru.smc.smc.api.application.common.model.response.PreviewMessage;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.response.ResponseService;
@@ -36,8 +37,8 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
 
         if (user.getCurrentState() == UserState.MAIN_MENU) {
-            return responseService.createUserResponseWithPreviewMessagesAndInlineKeyboard(user, UserState.QUESTION,
-                    FileUtility.getFileMessage("faq/general-message"), List.of(QUESTION_MENU_PREVIEW_MESSAGE), createInlineKeyboard());
+            return responseService.createUserResponseWithCustomPreviewMessages(user, UserState.QUESTION,
+                    QUESTION_MENU_PREVIEW_MESSAGE, createPreviewMessages());
         }
 
         if (FaqUtility.checkIfQuestionIsFaq(request.getMessage().toLowerCase())) {
@@ -64,5 +65,9 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
                 List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.FIFTH_QUESTION)),
                 List.of(KeyboardsProperties.createFaqInlineButton(FaqQuestionsTexts.SIXTH_QUESTION))
         );
+    }
+
+    private List<PreviewMessage> createPreviewMessages() {
+        return List.of(new PreviewMessage(FileUtility.getFileMessage("faq/general-message"), createInlineKeyboard()));
     }
 }

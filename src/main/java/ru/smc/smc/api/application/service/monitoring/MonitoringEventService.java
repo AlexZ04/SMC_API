@@ -34,7 +34,7 @@ public class MonitoringEventService {
     private static final String ERROR_LEVEL = "ERROR";
     private static final int MONITORING_QUEUE_SIZE = 100;
     private static final DateTimeFormatter HUMAN_READABLE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss").withZone(ZoneId.systemDefault());
+            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     private final ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(MONITORING_QUEUE_SIZE), new ThreadPoolExecutor.DiscardPolicy());
@@ -50,6 +50,9 @@ public class MonitoringEventService {
 
     @Value("${monitoring.channel:smc-api}")
     private String channel;
+
+    @Value("${monitoring.time-zone:Europe/Samara}")
+    private String timeZone;
 
     private RestClient restClient;
 
@@ -120,7 +123,7 @@ public class MonitoringEventService {
     }
 
     private String formCurrentTime() {
-        return HUMAN_READABLE_TIME_FORMATTER.format(Instant.now());
+        return HUMAN_READABLE_TIME_FORMATTER.withZone(ZoneId.of(timeZone)).format(Instant.now());
     }
 
     private String formChannel(BotUser triggeredBy) {

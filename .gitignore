@@ -37,5 +37,6 @@ out/
 .vscode/
 .env
 .env.*
+!.env.example
 config/faculties.json
 config/admins-list.json

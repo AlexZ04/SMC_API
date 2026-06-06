@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   application:
     name: Smc.api
 
@@ -17,6 +20,12 @@ server:
 
 api-config:
   key: ${API_CONFIG_KEY:test-api-key}
+
+monitoring:
+  enabled: ${MONITORING_ENABLED:false}
+  base-url: ${MONITORING_BASE_URL:http://localhost:8080/smc-monitoring}
+  api-key: ${MONITORING_API_KEY:test-api-key}
+  channel: ${MONITORING_CHANNEL:smc-api}
 
 springdoc:
   api-docs:

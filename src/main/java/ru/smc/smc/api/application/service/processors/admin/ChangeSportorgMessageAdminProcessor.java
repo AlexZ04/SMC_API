@@ -8,6 +8,7 @@ import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.faculty.FacultyService;
+import ru.smc.smc.api.application.service.monitoring.MonitoringEventService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.service.sportorg.SportorgService;
 import ru.smc.smc.api.domain.entity.BotUser;
@@ -30,6 +31,7 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
     private final ResponseService responseService;
     private final FacultyService facultyService;
     private final SportorgService sportorgService;
+    private final MonitoringEventService monitoringEventService;
 
     @Override
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
@@ -67,10 +69,13 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
         }
 
         Faculty selectedFaculty = user.getSelectedFaculty();
+        String previousSportorgInfo = formCurrentSportorgInfo(selectedFaculty);
         String sportorgName = sportorgInfoParts[0] + " " + sportorgInfoParts[1];
         String sportorgLink = sportorgInfoParts[2];
 
         sportorgService.updateSportorg(selectedFaculty, sportorgName, sportorgLink);
+        monitoringEventService.sendInfo(user, formSportorgChangedMonitoringMessage(user, selectedFaculty,
+                previousSportorgInfo, sportorgName, sportorgLink));
         user.setSelectedFaculty(null);
 
         return responseService.createUserResponseWithDistribution(user, UserState.MAIN_MENU,
@@ -89,5 +94,17 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
         }
 
         return sportsOrganizer.getName() + " " + sportsOrganizer.getSocialLink();
+    }
+
+    private String formSportorgChangedMonitoringMessage(BotUser user, Faculty faculty, String previousSportorgInfo,
+                                                        String sportorgName, String sportorgLink) {
+        return """
+                Обновлена информация про спорторга.
+                Факультет: %s
+                Пользователь: %s на платформе %s
+                Было: %s
+                Стало: %s %s
+                """.formatted(faculty.getNameRu(), user.getIdOnPlatform(), user.getPlatform(),
+                previousSportorgInfo, sportorgName, sportorgLink);
     }
 }

@@ -12,6 +12,7 @@ import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.distribution.DistributionSendService;
 import ru.smc.smc.api.application.service.distribution.DistributionSendServiceResolver;
 import ru.smc.smc.api.application.service.faculty.FacultyService;
+import ru.smc.smc.api.application.service.monitoring.MonitoringEventService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
@@ -36,6 +37,7 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
     private final ResponseService responseService;
     private final FacultyService facultyService;
     private final DistributionSendServiceResolver distributionSendServiceResolver;
+    private final MonitoringEventService monitoringEventService;
 
     @Override
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
@@ -106,8 +108,11 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
         String distributionText = distributionSendService.getDistributionText();
         List<UUID> distributionFiles = distributionSendService.getDistributionFiles();
         var receivers = distributionSendService.getReceivers(user);
+        String selectedDistributionFacultyIds = user.getSelectedDistributionFacultyIds();
 
         clearSelectedDistributionInfo(user);
+        monitoringEventService.sendInfo(user, formDistributionSentMonitoringMessage(distributionType, user,
+                distributionText, distributionFiles, selectedDistributionFacultyIds));
 
         return responseService.createUserResponseWithDistributionReceivers(user, UserState.MAIN_MENU,
                 String.format(DISTRIBUTION_SENT_MESSAGE_FORMAT, distributionType.getResultText()),
@@ -139,5 +144,19 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
     private void clearSelectedDistributionInfo(BotUser user) {
         user.setSelectedDistributionType(null);
         user.setSelectedDistributionFacultyIds(null);
+    }
+
+    private String formDistributionSentMonitoringMessage(AdminDistributionType distributionType, BotUser user,
+                                                         String distributionText, List<UUID> distributionFiles,
+                                                         String selectedDistributionFacultyIds) {
+        return """
+                Отправлена рассылка.
+                Тип: %s
+                Пользователь: %s на платформе %s
+                Текст: %s
+                Файлы: %s
+                Факультеты: %s
+                """.formatted(distributionType.name(), user.getIdOnPlatform(), user.getPlatform(), distributionText,
+                distributionFiles, selectedDistributionFacultyIds == null ? "не указаны" : selectedDistributionFacultyIds);
     }
 }

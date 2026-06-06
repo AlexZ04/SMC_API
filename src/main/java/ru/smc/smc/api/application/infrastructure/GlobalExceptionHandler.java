@@ -1,5 +1,6 @@
 package ru.smc.smc.api.application.infrastructure;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +10,15 @@ import ru.smc.smc.api.application.common.exceptions.BadRequestException;
 import ru.smc.smc.api.application.common.exceptions.NotFoundException;
 import ru.smc.smc.api.application.common.exceptions.UnauthorizedException;
 import ru.smc.smc.api.application.common.model.response.ErrorResponse;
+import ru.smc.smc.api.application.service.monitoring.MonitoringEventService;
 
 @Slf4j
 @ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final MonitoringEventService monitoringEventService;
+
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> catchUsedCredentialsException(BadRequestException exception) {
         logError(exception);
@@ -47,5 +53,6 @@ public class GlobalExceptionHandler {
 
     private void logError(Exception exception) {
         log.error("Получена новая ошибка: {}", exception.getMessage(), exception);
+        monitoringEventService.sendError(exception);
     }
 }

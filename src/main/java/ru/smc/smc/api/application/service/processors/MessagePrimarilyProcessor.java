@@ -10,6 +10,7 @@ import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.exceptions.UnauthorizedException;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
+import ru.smc.smc.api.application.service.monitoring.MonitoringEventService;
 import ru.smc.smc.api.application.service.user.UserService;
 import ru.smc.smc.api.application.service.stats.StatsService;
 import ru.smc.smc.api.application.service.thanks.ThanksMessageService;
@@ -45,6 +46,7 @@ public class MessagePrimarilyProcessor {
     private final ResponseService responseService;
     private final StatsService statsService;
     private final ThanksMessageService thanksMessageService;
+    private final MonitoringEventService monitoringEventService;
 
     @Value("${api-config.key}")
     private String validApiKey;
@@ -60,6 +62,8 @@ public class MessagePrimarilyProcessor {
 
         // проверка на наличие прав у пользователя
         if (messageRoleType == MessageRoleType.ADMIN && !UserUtility.isUserAdmin(user)) {
+            monitoringEventService.sendWarn(user, "Пользователь без прав администратора обратился к админскому эндпоинту. " +
+                    "Платформа: " + user.getPlatform() + ". Идентификатор: " + user.getIdOnPlatform());
             return responseService.createForbiddenAccessMessage(user);
         }
 

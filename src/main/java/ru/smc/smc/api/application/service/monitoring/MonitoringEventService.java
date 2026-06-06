@@ -2,10 +2,13 @@ package ru.smc.smc.api.application.service.monitoring;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.client.RestClient;
 import ru.smc.smc.api.application.common.model.monitoring.MonitoringEventRequest;
 import ru.smc.smc.api.application.common.model.monitoring.TriggeredUser;
@@ -13,6 +16,8 @@ import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -28,6 +33,8 @@ public class MonitoringEventService {
     private static final String WARN_LEVEL = "WARN";
     private static final String ERROR_LEVEL = "ERROR";
     private static final int MONITORING_QUEUE_SIZE = 100;
+    private static final DateTimeFormatter HUMAN_READABLE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss").withZone(ZoneId.systemDefault());
 
     private final ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<>(MONITORING_QUEUE_SIZE), new ThreadPoolExecutor.DiscardPolicy());
@@ -80,8 +87,8 @@ public class MonitoringEventService {
             return;
         }
 
-        MonitoringEventRequest request = new MonitoringEventRequest(level, channel, formTriggeredUser(triggeredBy),
-                message, Instant.now().toString());
+        MonitoringEventRequest request = new MonitoringEventRequest(level, formChannel(triggeredBy), formTriggeredUser(triggeredBy),
+                message, formCurrentTime());
 
         executorService.execute(() -> sendEvent(request));
     }
@@ -110,5 +117,30 @@ public class MonitoringEventService {
 
     private String formExceptionMessage(Exception exception) {
         return "Получено исключение " + exception.getClass().getSimpleName() + ": " + exception.getMessage();
+    }
+
+    private String formCurrentTime() {
+        return HUMAN_READABLE_TIME_FORMATTER.format(Instant.now());
+    }
+
+    private String formChannel(BotUser triggeredBy) {
+        return channel + " | endpoint: " + getCurrentEndpoint() + " | platform: " + getPlatform(triggeredBy);
+    }
+
+    private String getCurrentEndpoint() {
+        if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes requestAttributes)) {
+            return "unknown";
+        }
+
+        HttpServletRequest request = requestAttributes.getRequest();
+        return request.getMethod() + " " + request.getRequestURI();
+    }
+
+    private String getPlatform(BotUser triggeredBy) {
+        if (triggeredBy == null || triggeredBy.getPlatform() == null) {
+            return "unknown";
+        }
+
+        return triggeredBy.getPlatform().name();
     }
 }

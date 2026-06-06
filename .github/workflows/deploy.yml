@@ -180,7 +180,7 @@ jobs:
 
               mkdir -p /home/deploy/smk-api/config
 
-              if [ -z "$(find /home/deploy/smk-api/config -mindepth 1 -maxdepth 1 -print -quit)" ]; then
+              if [ -z "\$(find /home/deploy/smk-api/config -mindepth 1 -maxdepth 1 -print -quit)" ]; then
                 echo "Bootstrapping /home/deploy/smk-api/config from image defaults..."
                 docker rm -f "$CONTAINER_NAME-config-bootstrap" >/dev/null 2>&1 || true
                 docker create --name "$CONTAINER_NAME-config-bootstrap" ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest >/dev/null

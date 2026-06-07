@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.smc.smc.api.application.common.exceptions.BadRequestException;
@@ -41,6 +42,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), exception.getMessage()),
                 HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> catchNoResourceFoundException(NoResourceFoundException exception) {
+        log.warn("Запрошен несуществующий ресурс: {}", exception.getMessage());
+
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage()),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler

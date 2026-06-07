@@ -26,7 +26,7 @@ monitoring:
   base-url: ${MONITORING_BASE_URL:http://localhost:8080/smc-monitoring}
   api-key: ${MONITORING_API_KEY:test-api-key}
   channel: ${MONITORING_CHANNEL:smc-api}
-  time-zone: ${MONITORING_TIME_ZONE:Europe/Samara}
+  time-zone: ${MONITORING_TIME_ZONE:Asia/Tomsk}
 
 springdoc:
   api-docs:

@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service.processors.admin;
+package ru.smc.smc.api.application.processor.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import ru.smc.smc.api.domain.entity.BotUser;
 
 @Service
 @RequiredArgsConstructor
-public class StartMessageAdminProcessor implements MessageAdminProcessor {
+public class StartMessageUserProcessor implements MessageUserProcessor {
 
-    private static final String RESPONSE_TEXT = "Привет! Это панель администратора";
+    private static final String RESPONSE_TEXT = "Привет! Это пользовательская панель";
 
     private final ResponseService responseService;
 

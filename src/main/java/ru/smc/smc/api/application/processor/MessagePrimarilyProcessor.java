@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service.processors;
+package ru.smc.smc.api.application.processor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;

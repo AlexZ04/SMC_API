@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.service.processors.user;
+package ru.smc.smc.api.application.processor.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

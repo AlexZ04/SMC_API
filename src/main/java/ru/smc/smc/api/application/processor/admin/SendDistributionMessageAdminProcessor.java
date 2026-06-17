@@ -19,6 +19,7 @@ import ru.smc.smc.api.domain.entity.Faculty;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -156,7 +157,30 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
                 Текст: %s
                 Файлы: %s
                 Факультеты: %s
-                """.formatted(distributionType.name(), user.getIdOnPlatform(), user.getPlatform(), distributionText,
-                distributionFiles, selectedDistributionFacultyIds == null ? "не указаны" : selectedDistributionFacultyIds);
+                """.formatted(distributionType.getButtonText(), user.getIdOnPlatform(), user.getPlatform(), distributionText,
+                distributionFiles.size(), formMonitoringFacultyNames(selectedDistributionFacultyIds));
+    }
+
+    private String formMonitoringFacultyNames(String selectedDistributionFacultyIds) {
+        if (selectedDistributionFacultyIds == null || selectedDistributionFacultyIds.isBlank()) {
+            return "не указаны";
+        }
+
+        String facultyNames = List.of(selectedDistributionFacultyIds.split(";")).stream()
+                .map(String::trim)
+                .map(this::findFacultyName)
+                .collect(Collectors.joining(", "));
+
+        return facultyNames.isBlank() ? "не указаны" : facultyNames;
+    }
+
+    private String findFacultyName(String facultyId) {
+        try {
+            return facultyService.findActiveFacultyById(Integer.parseInt(facultyId))
+                    .map(Faculty::getNameRu)
+                    .orElse(facultyId);
+        } catch (NumberFormatException exception) {
+            return facultyId;
+        }
     }
 }

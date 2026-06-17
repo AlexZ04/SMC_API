@@ -111,7 +111,7 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
         String selectedDistributionFacultyIds = user.getSelectedDistributionFacultyIds();
 
         clearSelectedDistributionInfo(user);
-        monitoringEventService.sendInfo(user, formDistributionSentMonitoringMessage(distributionType, user,
+        monitoringEventService.sendDistributionSentInfo(user, formDistributionSentMonitoringMessage(distributionType, user,
                 distributionText, distributionFiles, selectedDistributionFacultyIds));
 
         return responseService.createUserResponseWithDistributionReceivers(user, UserState.MAIN_MENU,

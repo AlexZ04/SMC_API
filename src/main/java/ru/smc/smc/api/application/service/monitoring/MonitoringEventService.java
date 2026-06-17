@@ -77,6 +77,10 @@ public class MonitoringEventService {
         sendEvent(INFO_LEVEL, triggeredBy, message);
     }
 
+    public void sendDistributionSentInfo(BotUser triggeredBy, String message) {
+        sendEvent(INFO_LEVEL, triggeredBy, message);
+    }
+
     public void sendWarn(BotUser triggeredBy, String message) {
         sendEvent(WARN_LEVEL, triggeredBy, message);
     }

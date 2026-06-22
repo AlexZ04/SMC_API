@@ -174,8 +174,9 @@ public class MessageDescriptor {
 
     private static MessageMeaningType checkIfGetAllSportorgsMessage(String message, MessageRoleType messageRoleType,
                                                                     UserState currentUserState) {
-        return messageRoleType == MessageRoleType.ADMIN && currentUserState == UserState.MAIN_MENU &&
-                message.equalsIgnoreCase(BotCommands.GET_ALL_SPORTORGS_COMMAND) ?
+        return currentUserState == UserState.MAIN_MENU &&
+                ((messageRoleType == MessageRoleType.ADMIN && message.equalsIgnoreCase(BotCommands.GET_ALL_SPORTORGS_COMMAND)) ||
+                        (messageRoleType == MessageRoleType.USER && message.equalsIgnoreCase("Спорторги других факультетов"))) ?
                 MessageMeaningType.GET_ALL_SPORTORGS : MessageMeaningType.UNDEFINED;
     }
 

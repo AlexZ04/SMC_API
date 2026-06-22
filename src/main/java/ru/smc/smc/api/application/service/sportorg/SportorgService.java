@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
 import ru.smc.smc.api.domain.entity.SportsOrganizer;
+import ru.smc.smc.api.domain.repository.BotUserRepository;
 import ru.smc.smc.api.domain.repository.FacultyRepository;
 import ru.smc.smc.api.domain.repository.SportsOrganizerRepository;
 
@@ -21,6 +22,7 @@ public class SportorgService {
 
     private final FacultyRepository facultyRepository;
     private final SportsOrganizerRepository sportsOrganizerRepository;
+    private final BotUserRepository botUserRepository;
 
     public void updateSportorg(Faculty faculty, String name, String socialLink) {
         SportsOrganizer sportsOrganizer = faculty.getSportsOrganizer();
@@ -30,11 +32,13 @@ public class SportorgService {
             faculty.assignSportsOrganizer(sportsOrganizer);
         }
 
+        BotUser previousSportorgUser = sportsOrganizer.getBotUser();
         sportsOrganizer.setName(name);
         sportsOrganizer.setSocialLink(socialLink);
         sportsOrganizer.setBotUser(null);
         sportsOrganizer.setUpdateTime(Instant.now());
         sportsOrganizerRepository.save(sportsOrganizer);
+        updateSportsOrganizerFlag(previousSportorgUser);
     }
 
     public void bindSportorgToUser(Faculty faculty, BotUser botUser) {
@@ -44,13 +48,16 @@ public class SportorgService {
             return;
         }
 
+        BotUser previousSportorgUser = sportsOrganizer.getBotUser();
         sportsOrganizer.setBotUser(botUser);
         sportsOrganizer.setUpdateTime(Instant.now());
         sportsOrganizerRepository.save(sportsOrganizer);
+        updateSportsOrganizerFlag(previousSportorgUser);
+        updateSportsOrganizerFlag(botUser);
     }
 
     public boolean isSportsOrganizer(BotUser botUser) {
-        return sportsOrganizerRepository.existsByBotUser(botUser);
+        return botUser.isSportsOrganizer();
     }
 
     @Transactional(readOnly = true)
@@ -83,5 +90,20 @@ public class SportorgService {
         }
 
         return sportsOrganizer.getName() + " " + sportsOrganizer.getSocialLink();
+    }
+
+    private void updateSportsOrganizerFlag(BotUser botUser) {
+        if (botUser == null) {
+            return;
+        }
+
+        boolean sportsOrganizer = sportsOrganizerRepository.existsByBotUser(botUser);
+
+        if (botUser.isSportsOrganizer() == sportsOrganizer) {
+            return;
+        }
+
+        botUser.setSportsOrganizer(sportsOrganizer);
+        botUserRepository.save(botUser);
     }
 }

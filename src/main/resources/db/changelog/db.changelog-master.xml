@@ -28,5 +28,6 @@
     <include file="db/changelog/019-add-bot-user-channel-states.xml"/>
     <include file="db/changelog/020-add-bot-user-update-time.xml"/>
     <include file="db/changelog/021-add-sports-organizer-bot-user.xml"/>
+    <include file="db/changelog/022-add-bot-user-sports-organizer.xml"/>
 
 </databaseChangeLog>

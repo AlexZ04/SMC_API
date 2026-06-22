@@ -30,7 +30,7 @@ public class ResponseUIService {
         if (!isAdminKeyboardAvailable(user)) {
             switch (userState.getKeyboardCode()) {
                 case 0 -> {
-                    makeMainKeyboard(messageResponseBuilder);
+                    makeMainKeyboard(messageResponseBuilder, user);
                 }
                 default -> {
                     makeBackToBotKeyboard(messageResponseBuilder);
@@ -57,7 +57,7 @@ public class ResponseUIService {
         }
     }
 
-    private void makeMainKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
+    private void makeMainKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder, BotUser user) {
         if (featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)) {
             messageResponseBuilder.addReplyButton(KeyboardsProperties.PARTICIPATE_IN_GIVEAWAY);
             messageResponseBuilder.addReplyRow(KeyboardsProperties.ASK_QUESTION_BUTTON, KeyboardsProperties.SET_UP_DISTRIBUTION_BUTTON);
@@ -66,7 +66,7 @@ public class ResponseUIService {
             messageResponseBuilder.addReplyButton(KeyboardsProperties.SET_UP_DISTRIBUTION_BUTTON);
         }
 
-        messageResponseBuilder.addReplyRow(KeyboardsProperties.FEEDBACK_LINK, KeyboardsProperties.HELP_BUTTON);
+        messageResponseBuilder.addReplyRow(getSportorgDependentButton(user), KeyboardsProperties.HELP_BUTTON);
     }
 
     private void makeBackToBotKeyboard(MessageResponse.MessageResponseBuilder messageResponseBuilder) {
@@ -87,7 +87,7 @@ public class ResponseUIService {
         if (!isAdminKeyboardAvailable(user)) {
             switch (userState.getKeyboardCode()) {
                 case 0 -> {
-                    return makeMainKeyboard();
+                    return makeMainKeyboard(user);
                 }
                 default -> {
                     return makeBackToBotKeyboard();
@@ -110,7 +110,7 @@ public class ResponseUIService {
         return UserUtility.isUserAdmin(user) && ADMIN_CHANNEL.equals(user.getUserChannel());
     }
 
-    private List<List<ElementModel>> makeMainKeyboard() {
+    private List<List<ElementModel>> makeMainKeyboard(BotUser user) {
         List<List<ElementModel>> keyboard = new ArrayList<>();
 
         if (featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)) {
@@ -125,7 +125,7 @@ public class ResponseUIService {
         }
 
         keyboard.add(List.of(
-                KeyboardsProperties.FEEDBACK_LINK,
+                getSportorgDependentButton(user),
                 KeyboardsProperties.HELP_BUTTON
         ));
 
@@ -144,5 +144,13 @@ public class ResponseUIService {
                 List.of(KeyboardsProperties.ADMIN_SEND_DISTRIBUTION_BUTTON, KeyboardsProperties.ADMIN_CHANGE_TOGGLE_STATE_BUTTON),
                 List.of(KeyboardsProperties.ADMIN_STATS_BUTTON, KeyboardsProperties.ADMIN_HELP_BUTTON)
         );
+    }
+
+    private ElementModel getSportorgDependentButton(BotUser user) {
+        if (user.isSportsOrganizer()) {
+            return KeyboardsProperties.FEEDBACK_LINK;
+        }
+
+        return KeyboardsProperties.OTHER_SPORTORGS_BUTTON;
     }
 }

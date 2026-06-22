@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="022-add-bot-user-sports-organizer" author="aleksey.z">
+        <addColumn tableName="bot_user">
+            <column name="sports_organizer" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <sql>
+            update bot_user
+            set sports_organizer = true
+            where inner_id in (
+                select bot_user_inner_id
+                from sports_organizer
+                where bot_user_inner_id is not null
+            )
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

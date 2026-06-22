@@ -63,6 +63,9 @@ public class BotUser {
     @Column(nullable = false)
     private String userChannel = "admin-channel";
 
+    @Column(nullable = false)
+    private boolean sportsOrganizer = false;
+
     private Long messageSent = 0L;
 
     private Instant createTime =  Instant.now();

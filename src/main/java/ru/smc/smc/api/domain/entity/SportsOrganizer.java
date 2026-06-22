@@ -22,6 +22,10 @@ public class SportsOrganizer {
     @JoinColumn(name = "faculty_id", nullable = false, unique = true)
     private Faculty faculty;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bot_user_inner_id")
+    private BotUser botUser;
+
     @Column(nullable = false)
     private String name;
 

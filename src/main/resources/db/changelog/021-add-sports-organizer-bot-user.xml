@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="021-add-sports-organizer-bot-user" author="aleksey.z">
+        <addColumn tableName="sports_organizer">
+            <column name="bot_user_inner_id" type="uuid"/>
+        </addColumn>
+
+        <createIndex tableName="sports_organizer" indexName="idx_sports_organizer_bot_user_inner_id">
+            <column name="bot_user_inner_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="sports_organizer"
+                baseColumnNames="bot_user_inner_id"
+                constraintName="fk_sports_organizer_bot_user"
+                referencedTableName="bot_user"
+                referencedColumnNames="inner_id"
+                onDelete="SET NULL"/>
+    </changeSet>
+
+</databaseChangeLog>

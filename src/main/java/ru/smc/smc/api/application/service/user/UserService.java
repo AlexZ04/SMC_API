@@ -31,6 +31,16 @@ public class UserService {
         return botUser.orElseGet(() -> botUserFactory.createNewUser(availablePlatform, idOnPlatform));
     }
 
+    public BotUser findOrCreateAndSaveBotUser(AvailablePlatform availablePlatform, String idOnPlatform) {
+        Optional<BotUser> botUser = botUserRepository.findBotUserByPlatformAndIdOnPlatform(availablePlatform, idOnPlatform);
+
+        if (botUser.isPresent()) {
+            return botUser.get();
+        }
+
+        return botUserRepository.save(botUserFactory.createNewUser(availablePlatform, idOnPlatform));
+    }
+
     public List<PlatformReceiver> findBotUsersByGroup(DistributionGroups distributionGroup) {
         return findBotUsersByGroup(distributionGroup, USER_CHANNEL);
     }

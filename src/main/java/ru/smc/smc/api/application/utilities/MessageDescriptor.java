@@ -157,7 +157,8 @@ public class MessageDescriptor {
         return messageRoleType == MessageRoleType.ADMIN &&
                 ((currentUserState == UserState.MAIN_MENU && message.equalsIgnoreCase(BotCommands.CHANGE_SPORTORG_COMMAND)) ||
                         currentUserState == UserState.CHANGE_SPORTORG ||
-                        currentUserState == UserState.CHANGE_SPORTORG_INFO) ?
+                        currentUserState == UserState.CHANGE_SPORTORG_INFO ||
+                        currentUserState == UserState.CHANGE_SPORTORG_USER_LINK) ?
                 MessageMeaningType.CHANGE_SPORTORG : MessageMeaningType.UNDEFINED;
     }
 

@@ -3,6 +3,7 @@ package ru.smc.smc.api.application.service.sportorg;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.Faculty;
 import ru.smc.smc.api.domain.entity.SportsOrganizer;
 import ru.smc.smc.api.domain.repository.FacultyRepository;
@@ -31,8 +32,25 @@ public class SportorgService {
 
         sportsOrganizer.setName(name);
         sportsOrganizer.setSocialLink(socialLink);
+        sportsOrganizer.setBotUser(null);
         sportsOrganizer.setUpdateTime(Instant.now());
         sportsOrganizerRepository.save(sportsOrganizer);
+    }
+
+    public void bindSportorgToUser(Faculty faculty, BotUser botUser) {
+        SportsOrganizer sportsOrganizer = faculty.getSportsOrganizer();
+
+        if (sportsOrganizer == null) {
+            return;
+        }
+
+        sportsOrganizer.setBotUser(botUser);
+        sportsOrganizer.setUpdateTime(Instant.now());
+        sportsOrganizerRepository.save(sportsOrganizer);
+    }
+
+    public boolean isSportsOrganizer(BotUser botUser) {
+        return sportsOrganizerRepository.existsByBotUser(botUser);
     }
 
     @Transactional(readOnly = true)

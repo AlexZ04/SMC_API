@@ -27,8 +27,9 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
     private static final String ADMIN_CHANNEL = "admin-channel";
     private static final String QUESTION_DISTRIBUTION_HEADER = "Пользователь отправил вопрос администраторам";
     private static final String QUESTION_MENU_PREVIEW_MESSAGE = """
-            Часто задаваемые вопросы представлены ниже
-            Также вы можете задать вопрос напрямую администратору, просто отправив его в чат""";
+            Часто задаваемые вопросы представлены ниже.
+            
+            Также ты можешь задать вопрос напрямую администраторам — просто отправь его в чат.""";
 
     private final ResponseService responseService;
     private final UserMessageToAdminsFormatter userMessageToAdminsFormatter;

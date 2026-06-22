@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserStatsService {
 
-    private static final String USER_NOT_FOUND_MESSAGE = "Пользователь на платформе %s с идентификатором %s не найден";
+    private static final String USER_NOT_FOUND_MESSAGE = "Пользователь на платформе %s с идентификатором %s не найден.";
     private static final String USER_INFO_HEADER = "Информация о пользователе %s на платформе %s:";
     private static final String USER_INFO_FORMAT = """
 
@@ -35,7 +35,7 @@ public class UserStatsService {
             Последнее использование бота: %s
             Последний использованный канал: %s""";
     private static final String NO_SUBSCRIPTIONS = "нет";
-    private static final String WITHOUT_FACULTY = "Не установлен";
+    private static final String WITHOUT_FACULTY = "не установлен";
     private static final String WITHOUT_CHANNEL = "не указан";
     private static final DateTimeFormatter USER_INFO_DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 

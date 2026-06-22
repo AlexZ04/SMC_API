@@ -15,8 +15,8 @@ import ru.smc.smc.api.domain.entity.BotUser;
 @RequiredArgsConstructor
 public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String CHANGE_TOGGLE_STATE_MESSAGE = "Введите наименование тоггла для изменения состояния:\n";
-    private static final String TOGGLE_STATE_CHANGED_MESSAGE_FORMAT = "Состояние тоггла %s изменено на: %s";
+    private static final String CHANGE_TOGGLE_STATE_MESSAGE = "Введи наименование тоггла, состояние которого нужно изменить:\n";
+    private static final String TOGGLE_STATE_CHANGED_MESSAGE_FORMAT = "Состояние тоггла %s изменено: %s";
 
     private final ResponseService responseService;
     private final FeatureToggleService featureToggleService;

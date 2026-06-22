@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class GiveawayService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static final String EMPTY_PARTICIPANTS_MESSAGE = "В текущем розыгрыше пока нет участников";
+    private static final String EMPTY_PARTICIPANTS_MESSAGE = "В текущем розыгрыше пока нет участников.";
     private static final String PARTICIPANTS_MESSAGE_FORMAT = "Всего участников розыгрыша: %s\n%s";
     private static final String PARTICIPANT_FORMAT = "%s - {getName(%s:%s)} - {getId()} - %s - {getLink()}";
 

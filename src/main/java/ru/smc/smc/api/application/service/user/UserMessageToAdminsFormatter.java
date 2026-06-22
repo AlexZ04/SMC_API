@@ -14,7 +14,7 @@ public class UserMessageToAdminsFormatter {
             Имя: {getName()}
             Идентификатор: {getId()}
             Ссылка: {getLink()}
-            Сообщение: %s""";
+            Сообщение пользователя: %s""";
 
     public String formMessage(String header, MessageRequestBody request, BotUser user) {
         return String.format(MESSAGE_FORMAT,

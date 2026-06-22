@@ -25,14 +25,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SendDistributionMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String SEND_DISTRIBUTION_MENU_MESSAGE = "Выберете тип рассылки:";
-    private static final String CONFIRMATION_MESSAGE = "Для отправки сообщения введите ПОДТВЕРДИТЬ";
+    private static final String SEND_DISTRIBUTION_MENU_MESSAGE = "Выбери тип рассылки:";
+    private static final String CONFIRMATION_MESSAGE = "Для отправки сообщения введи ПОДТВЕРДИТЬ";
     private static final String CONFIRMATION_WORD = "ПОДТВЕРДИТЬ";
-    private static final String INCORRECT_DISTRIBUTION_TYPE_MESSAGE = "Некорректный тип рассылки. Выберете тип рассылки из списка.";
-    private static final String COMPETITIONS_FACULTIES_MESSAGE = "Введите номера или наименования факультетов, для которых будет отправлена рассылка (ввод через ;). Можно вводить комбинированно.";
-    private static final String INCORRECT_FACULTIES_MESSAGE = "Некорректный список факультетов. Введите номера или наименования факультетов через ;";
+    private static final String INCORRECT_DISTRIBUTION_TYPE_MESSAGE = "Некорректный тип рассылки. Выбери один из предложенных вариантов.";
+    private static final String COMPETITIONS_FACULTIES_MESSAGE = "Введи через ; номера или названия факультетов, которым придёт рассылка. Можно вводить комбинированно.";
+    private static final String INCORRECT_FACULTIES_MESSAGE = "Некорректный список факультетов. Введи номера или названия факультетов через ;";
     private static final String COMPETITIONS_CONFIRMATION_MESSAGE_FORMAT = "Сообщение отправится факультетам %s\n" + CONFIRMATION_MESSAGE;
-    private static final String INCORRECT_CONFIRMATION_MESSAGE = "Для отправки сообщения введите ПОДТВЕРДИТЬ";
+    private static final String INCORRECT_CONFIRMATION_MESSAGE = "Для отправки сообщения введи ПОДТВЕРДИТЬ";
     private static final String DISTRIBUTION_SENT_MESSAGE_FORMAT = "Рассылка %s отправлена";
 
     private final ResponseService responseService;

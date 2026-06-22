@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StatsService {
 
-    private static final String WITHOUT_FACULTY = "Не установлен";
+    private static final String WITHOUT_FACULTY = "не установлен";
     private final BotStatsRepository botStatsRepository;
     private final BotUserRepository botUserRepository;
 
@@ -84,7 +84,7 @@ public class StatsService {
                 .filter(user -> isSubscribedToSchedule(user.getSubscription()))
                 .count();
 
-        return "Мероприятия СМК: " + eventsSubscribers + "\n" +
+        return "Мероприятия СМК ППОС ТГУ: " + eventsSubscribers + "\n" +
                 "Соревнования сборной факультета: " + competitionsSubscribers + "\n" +
                 "Обновление расписания занятий: " + scheduleSubscribers;
     }
@@ -105,7 +105,7 @@ public class StatsService {
 
     private String formMapStats(Map<String, Long> stats) {
         if (stats.isEmpty()) {
-            return "Нет данных";
+            return "Пока нет данных";
         }
 
         return stats.entrySet().stream()

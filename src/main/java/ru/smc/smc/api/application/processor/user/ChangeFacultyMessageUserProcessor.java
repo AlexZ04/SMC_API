@@ -22,9 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChangeFacultyMessageUserProcessor implements MessageUserProcessor {
 
-    private static final String FACULTY_CHANGED_MESSAGE_FORMAT = "Факультет настроен: %s";
-    private static final String FACULTY_RESET_MESSAGE = "Факультет сброшен";
-    private static final String INCORRECT_FACULTY_MESSAGE = "Некорректный факультет. Выберите факультет из списка.";
+    private static final String FACULTY_CHANGED_MESSAGE_FORMAT = "Выбран факультет: %s\nТы сможешь изменить факультет в любой момент.";
+    private static final String FACULTY_RESET_MESSAGE = "Факультет сброшен. Ты сможешь выбрать его снова позже.";
+    private static final String INCORRECT_FACULTY_MESSAGE = "Неверный факультет! Выбери один факультет из списка.";
     private static final String RESET_FACULTY_BUTTON = "Сбросить факультет";
     private static final String UNSUBSCRIBE_BUTTON = "Отписаться от уведомлений";
     private static final String BACK_BUTTON = "Назад";

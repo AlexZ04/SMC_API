@@ -13,7 +13,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 @RequiredArgsConstructor
 public class StartMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String RESPONSE_TEXT = "Привет! Это панель администратора";
+    private static final String RESPONSE_TEXT = "Привет! Это панель администратора СМК ППОС ТГУ.";
 
     private final ResponseService responseService;
 

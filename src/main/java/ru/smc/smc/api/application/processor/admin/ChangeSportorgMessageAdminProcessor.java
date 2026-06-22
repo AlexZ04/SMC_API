@@ -21,11 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String INCORRECT_FACULTY_MESSAGE = "Некорректный номер факультета. Выберете номер факультета из списка.";
-    private static final String INPUT_SPORTORG_INFO_MESSAGE_FORMAT = "Текущий спорторг: %s\nВвведите Фамилию Имя ссылку на соц.сеть нового спорторга %s. Пример: Иванов Иван ссылка";
+    private static final String INCORRECT_FACULTY_MESSAGE = "Неверный факультет! Выбери один факультет из списка.";
+    private static final String INPUT_SPORTORG_INFO_MESSAGE_FORMAT = "Текущий спорторг: %s\nВведи нового спорторга %s в формате ФАМИЛИЯ ИМЯ ссылка на соц.сеть. Пример: Иванов Иван ссылка";
     private static final String EMPTY_SPORTORG_INFO = "не указан";
-    private static final String INCORRECT_SPORTORG_INFO_MESSAGE = "Некорректный формат. Введите Фамилию Имя ссылку на соц.сеть нового спорторга. Пример: Иванов Иван ссылка";
-    private static final String SPORTORG_INFO_CHANGED_MESSAGE_FORMAT = "Информация про спорторга %s записана, возвращение в главное меню";
+    private static final String INCORRECT_SPORTORG_INFO_MESSAGE = "Некорректный формат. Введи ФАМИЛИЮ ИМЯ и ссылку на соц.сеть нового спорторга. Пример: Иванов Иван ссылка";
+    private static final String SPORTORG_INFO_CHANGED_MESSAGE_FORMAT = "Информация о спорторге %s изменена. Возвращение в главное меню.";
     private static final String SPORTORG_INFO_CHANGED_DISTRIBUTION_FORMAT = "Пользователь %s обновил(-а) информацию про спорторга %s";
 
     private final ResponseService responseService;

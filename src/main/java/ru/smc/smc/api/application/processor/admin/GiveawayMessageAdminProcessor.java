@@ -15,9 +15,9 @@ import ru.smc.smc.api.domain.entity.BotUser;
 @RequiredArgsConstructor
 public class GiveawayMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String PARTICIPANTS_CLEARED_MESSAGE = "Список участников розыгрыша обнулён";
-    private static final String INPUT_WINNERS_AMOUNT_MESSAGE_FORMAT = "Введите, сколько участников розыгрыша необходимо получить. Всего участников розыгрыша: %s";
-    private static final String INCORRECT_WINNERS_AMOUNT_MESSAGE_FORMAT = "Некорректное количество участников. Введите число от 1 до %s";
+    private static final String PARTICIPANTS_CLEARED_MESSAGE = "Список участников розыгрыша обнулён.";
+    private static final String INPUT_WINNERS_AMOUNT_MESSAGE_FORMAT = "Введи, сколько участников розыгрыша необходимо получить. Всего участников розыгрыша: %s";
+    private static final String INCORRECT_WINNERS_AMOUNT_MESSAGE_FORMAT = "Некорректное количество участников. Введи число от 1 до %s";
     private static final String WINNERS_MESSAGE_FORMAT = "Выбранные участники розыгрыша:\n%s";
 
     private final ResponseService responseService;

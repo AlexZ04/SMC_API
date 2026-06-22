@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManageAdminsMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String INPUT_ADMIN_INFO_MESSAGE_FORMAT = "Введите платформу и идентификатор пользователя. Пример: TG 123456\nДопустимые платформы: %s";
-    private static final String INCORRECT_ADMIN_INFO_MESSAGE = "Некорректный формат. Введите платформу и идентификатор пользователя. Пример: TG 123456";
-    private static final String NO_RIGHTS_MESSAGE = "Недостаточно прав для выполнения действия";
+    private static final String INPUT_ADMIN_INFO_MESSAGE_FORMAT = "Введи платформу и идентификатор пользователя. Пример: TG 123456\nДопустимые платформы: %s";
+    private static final String INCORRECT_ADMIN_INFO_MESSAGE = "Некорректный формат. Введи платформу и идентификатор пользователя. Пример: TG 123456";
+    private static final String NO_RIGHTS_MESSAGE = "Недостаточно прав для выполнения этого действия.";
 
     private final ResponseService responseService;
     private final UserService userService;

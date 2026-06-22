@@ -28,11 +28,11 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
     private static final String EMPTY_SUBSCRIPTIONS_MESSAGE = "Пока ты не подписан(-а) ни на одну рассылку";
     private static final String UNSUBSCRIBE_BUTTON = "Отписаться от уведомлений";
     private static final String BACK_BUTTON = "Назад";
-    private static final String UNSUBSCRIBE_WARNING = "При отписке от рассылки ты сможешь снова подписаться на них позже";
-    private static final String UNSUBSCRIBE_CHOICE_MESSAGE = "Выберите тип рассылки, от которой хочешь отписаться:";
-    private static final String NO_SUBSCRIPTIONS_MESSAGE = "Сейчас нет рассылок, от которых можно отписаться";
-    private static final String INCORRECT_MESSAGE = "Выберите действие из списка";
-    private static final String FACULTY_REQUIRED_MESSAGE = "Для подписки на рассылку о соревнованиях сборной факультета сначала настрой свой факультет.";
+    private static final String UNSUBSCRIBE_WARNING = "При отписке от рассылки ты сможешь снова подписаться на неё позже.";
+    private static final String UNSUBSCRIBE_CHOICE_MESSAGE = "Выбери тип рассылки, от которой хочешь отписаться:";
+    private static final String NO_SUBSCRIPTIONS_MESSAGE = "Сейчас нет рассылок, от которых можно отписаться.";
+    private static final String INCORRECT_MESSAGE = "Выбери действие из списка.";
+    private static final String FACULTY_REQUIRED_MESSAGE = "Сначала выбери свой факультет, нажав на кнопку ниже.";
 
     private final ResponseService responseService;
     private final FacultyService facultyService;

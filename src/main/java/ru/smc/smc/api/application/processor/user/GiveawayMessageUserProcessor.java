@@ -17,8 +17,8 @@ import ru.smc.smc.api.domain.entity.GiveawayParticipant;
 @RequiredArgsConstructor
 public class GiveawayMessageUserProcessor implements MessageUserProcessor {
 
-    private static final String GIVEAWAY_DISABLED_MESSAGE = "Розыгрыш сейчас недоступен";
-    private static final String PARTICIPANT_REGISTERED_MESSAGE_FORMAT = "Ты участвуешь в розыгрыше. Твой номер участника: %s";
+    private static final String GIVEAWAY_DISABLED_MESSAGE = "Розыгрыш сейчас недоступен. Когда он начнётся, кнопка участия появится в меню.";
+    private static final String PARTICIPANT_REGISTERED_MESSAGE_FORMAT = "Ты участвуешь в розыгрыше! Твой номер участника: %s";
 
     private final ResponseService responseService;
     private final FeatureToggleService featureToggleService;

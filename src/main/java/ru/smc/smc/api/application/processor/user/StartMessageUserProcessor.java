@@ -13,7 +13,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 @RequiredArgsConstructor
 public class StartMessageUserProcessor implements MessageUserProcessor {
 
-    private static final String RESPONSE_TEXT = "Привет! Это пользовательская панель";
+    private static final String RESPONSE_TEXT = "Привет!👋\nЯ бот Спортивно-массовой комиссии. Помогу не пропустить важную информацию о спорте в ТГУ и отвечу на частые вопросы.";
 
     private final ResponseService responseService;
 

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetUserInfoMessageAdminProcessor implements MessageAdminProcessor {
 
-    private static final String INPUT_USER_INFO_MESSAGE_FORMAT = "Введите платформу и идентификатор пользователя. Пример: VK 123456\nДопустимые платформы: %s";
-    private static final String INCORRECT_USER_INFO_MESSAGE = "Некорректный формат. Введите платформу и идентификатор пользователя. Пример: VK 123456";
+    private static final String INPUT_USER_INFO_MESSAGE_FORMAT = "Введи платформу и идентификатор пользователя. Пример: VK 123456\nДопустимые платформы: %s";
+    private static final String INCORRECT_USER_INFO_MESSAGE = "Некорректный формат. Введи платформу и идентификатор пользователя. Пример: VK 123456";
 
     private final ResponseService responseService;
     private final UserStatsService userStatsService;

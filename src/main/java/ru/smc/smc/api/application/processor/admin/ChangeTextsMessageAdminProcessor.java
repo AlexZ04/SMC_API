@@ -23,7 +23,7 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String CHANGE_TEXTS_MENU_PATHFILE = "admin-change-texts";
     private static final String CHANGE_TEXTS_INPUT_MESSAGE_PATHFILE = "admin-change-texts-input-message";
-    private static final String DISTRIBUTION_UPDATED_MESSAGE = "Сообщение для рассылки обновлено, спасибо";
+    private static final String DISTRIBUTION_UPDATED_MESSAGE = "Сообщение для рассылки обновлено, спасибо!";
 
     private final ResponseService responseService;
     private final DistributionFileService distributionFileService;

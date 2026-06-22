@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class FacultyService {
 
     private static final int DEFAULT_FACULTY_ID = 0;
-    private static final String FACULTY_CHOICE_MESSAGE = "Выберите номер или наименование факультета:";
+    private static final String FACULTY_CHOICE_MESSAGE = "Пожалуйста, выбери один факультет из списка и отправь число или название, закреплённое за твоим факультетом:";
     private static final String ALL_FACULTIES_MESSAGE = "Список факультетов:";
 
     private final FacultyRepository facultyRepository;

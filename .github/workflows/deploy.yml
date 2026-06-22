@@ -188,6 +188,22 @@ jobs:
                 docker rm -f "$CONTAINER_NAME-config-bootstrap" >/dev/null
               else
                 echo "Using existing /home/deploy/smk-api/config"
+                echo "Syncing immutable bot text files from image defaults..."
+                docker rm -f "$CONTAINER_NAME-config-sync" >/dev/null 2>&1 || true
+                docker create --name "$CONTAINER_NAME-config-sync" ghcr.io/$REGISTRY_NAMESPACE/$IMAGE_NAME:latest >/dev/null
+                rm -rf /tmp/smk-api-config-sync
+                mkdir -p /tmp/smk-api-config-sync/texts
+                docker cp "$CONTAINER_NAME-config-sync:/app/config/texts/." /tmp/smk-api-config-sync/texts/
+                docker rm -f "$CONTAINER_NAME-config-sync" >/dev/null
+                mkdir -p /home/deploy/smk-api/config/texts
+
+                find /tmp/smk-api-config-sync/texts -type f ! -path "*/customizable/*" -print0 | while IFS= read -r -d "" source_file; do
+                  relative_path="\${source_file#/tmp/smk-api-config-sync/texts/}"
+                  mkdir -p "/home/deploy/smk-api/config/texts/\$(dirname "\$relative_path")"
+                  cp "\$source_file" "/home/deploy/smk-api/config/texts/\$relative_path"
+                done
+
+                rm -rf /tmp/smk-api-config-sync
               fi
 
               docker network inspect $NETWORK_NAME >/dev/null 2>&1 || docker network create $NETWORK_NAME

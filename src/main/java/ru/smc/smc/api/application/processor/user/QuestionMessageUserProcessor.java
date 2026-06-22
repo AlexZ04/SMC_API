@@ -30,6 +30,7 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
             Часто задаваемые вопросы представлены ниже.
             
             Также ты можешь задать вопрос напрямую администраторам — просто отправь его в чат.""";
+    private static final String FAQ_QUESTIONS_PREVIEW_MESSAGE = "Вот список вопросов:";
 
     private final ResponseService responseService;
     private final UserMessageToAdminsFormatter userMessageToAdminsFormatter;
@@ -69,6 +70,6 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
     }
 
     private List<PreviewMessage> createPreviewMessages() {
-        return List.of(new PreviewMessage(FileUtility.getFileMessage("faq/general-message"), createInlineKeyboard()));
+        return List.of(new PreviewMessage(FAQ_QUESTIONS_PREVIEW_MESSAGE, createInlineKeyboard()));
     }
 }

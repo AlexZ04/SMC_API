@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FeatureToggleService {
@@ -59,6 +60,23 @@ public class FeatureToggleService {
         return toggle.isActive();
     }
 
+    public Optional<Boolean> changeToggleStatusToOppositeIfExists(String toggleName) {
+        List<FeatureToggle> allToggles = getAllToggles();
+        Optional<FeatureToggle> toggleOptional = findSpecificToggle(allToggles, toggleName);
+
+        if (toggleOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        FeatureToggle toggle = toggleOptional.get();
+        toggle.setActive(!toggle.isActive());
+
+        mapper.writerWithDefaultPrettyPrinter()
+                .writeValue(TOGGLES_PATH.toFile(), allToggles);
+
+        return Optional.of(toggle.isActive());
+    }
+
     private List<FeatureToggle> getAllToggles() {
         List<FeatureToggle> toggles;
 
@@ -82,10 +100,14 @@ public class FeatureToggleService {
     }
 
     private FeatureToggle getSpecificToggle(List<FeatureToggle> featureToggles, String toggleName) {
+        return findSpecificToggle(featureToggles, toggleName)
+                .orElseThrow(() -> new BadRequestException("Тоггл " + toggleName + " не найден"));
+    }
+
+    private Optional<FeatureToggle> findSpecificToggle(List<FeatureToggle> featureToggles, String toggleName) {
         return featureToggles.stream()
                 .filter(toggle -> toggle.getToggleName().equalsIgnoreCase(toggleName))
-                .findFirst()
-                .orElseThrow(() -> new BadRequestException("Тоггл " + toggleName + " не найден"));
+                .findFirst();
     }
 
     private String parseToggleListToText(List<FeatureToggle> toggles) {

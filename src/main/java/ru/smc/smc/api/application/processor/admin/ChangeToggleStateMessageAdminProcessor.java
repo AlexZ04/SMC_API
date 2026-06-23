@@ -17,6 +17,7 @@ public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProce
 
     private static final String CHANGE_TOGGLE_STATE_MESSAGE = "Введи наименование тоггла, состояние которого нужно изменить:\n";
     private static final String TOGGLE_STATE_CHANGED_MESSAGE_FORMAT = "Состояние тоггла %s изменено: %s";
+    private static final String TOGGLE_NOT_FOUND_MESSAGE_FORMAT = "Тоггл %s не найден. Введи наименование тоггла из списка:\n";
 
     private final ResponseService responseService;
     private final FeatureToggleService featureToggleService;
@@ -26,13 +27,10 @@ public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProce
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
         if (user.getCurrentState() == UserState.CHANGE_TOGGLE_STATE) {
             String toggleName = request.getMessage().trim();
-            boolean active = featureToggleService.changeToggleStatusToOpposite(toggleName);
-            monitoringEventService.sendInfo(user, "Переключён тоггл " + toggleName + " пользователем {getName(" +
-                    user.getIdOnPlatform() + ")}. Новое состояние: " + (active ? "Включен" : "Выключен"));
-
-            return responseService.createUserResponse(user, UserState.MAIN_MENU,
-                    String.format(TOGGLE_STATE_CHANGED_MESSAGE_FORMAT, toggleName,
-                            active ? "Включен" : "Выключен"));
+            return featureToggleService.changeToggleStatusToOppositeIfExists(toggleName)
+                    .map(active -> processToggleChanged(user, toggleName, active))
+                    .orElseGet(() -> responseService.createUserResponse(user, UserState.CHANGE_TOGGLE_STATE,
+                            String.format(TOGGLE_NOT_FOUND_MESSAGE_FORMAT, toggleName) + featureToggleService.getSystemTogglesInfo()));
         }
 
         return responseService.createUserResponse(user, UserState.CHANGE_TOGGLE_STATE,
@@ -42,5 +40,14 @@ public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProce
     @Override
     public MessageMeaningType meaning() {
         return MessageMeaningType.CHANGE_TOGGLE_STATE;
+    }
+
+    private UserResponseItem processToggleChanged(BotUser user, String toggleName, boolean active) {
+        monitoringEventService.sendInfo(user, "Переключён тоггл " + toggleName + " пользователем {getName(" +
+                user.getIdOnPlatform() + ")}. Новое состояние: " + (active ? "Включен" : "Выключен"));
+
+        return responseService.createUserResponse(user, UserState.MAIN_MENU,
+                String.format(TOGGLE_STATE_CHANGED_MESSAGE_FORMAT, toggleName,
+                        active ? "Включен" : "Выключен"));
     }
 }

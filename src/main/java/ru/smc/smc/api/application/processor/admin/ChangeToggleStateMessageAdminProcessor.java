@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.admin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
 import ru.smc.smc.api.application.common.enums.UserState;
@@ -13,6 +14,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String CHANGE_TOGGLE_STATE_MESSAGE = "Введи наименование тоггла, состояние которого нужно изменить:\n";
@@ -29,8 +31,12 @@ public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProce
             String toggleName = request.getMessage().trim();
             return featureToggleService.changeToggleStatusToOppositeIfExists(toggleName)
                     .map(active -> processToggleChanged(user, toggleName, active))
-                    .orElseGet(() -> responseService.createUserResponse(user, UserState.CHANGE_TOGGLE_STATE,
-                            String.format(TOGGLE_NOT_FOUND_MESSAGE_FORMAT, toggleName) + featureToggleService.getSystemTogglesInfo()));
+                    .orElseGet(() -> {
+                        log.warn("Администратор ({}, {}) попытался изменить несуществующий тоггл {}",
+                                user.getPlatform(), user.getIdOnPlatform(), toggleName);
+                        return responseService.createUserResponse(user, UserState.CHANGE_TOGGLE_STATE,
+                                String.format(TOGGLE_NOT_FOUND_MESSAGE_FORMAT, toggleName) + featureToggleService.getSystemTogglesInfo());
+                    });
         }
 
         return responseService.createUserResponse(user, UserState.CHANGE_TOGGLE_STATE,
@@ -45,6 +51,8 @@ public class ChangeToggleStateMessageAdminProcessor implements MessageAdminProce
     private UserResponseItem processToggleChanged(BotUser user, String toggleName, boolean active) {
         monitoringEventService.sendInfo(user, "Переключён тоггл " + toggleName + " пользователем {getName(" +
                 user.getIdOnPlatform() + ")}. Новое состояние: " + (active ? "Включен" : "Выключен"));
+        log.info("Администратор ({}, {}) изменил состояние тоггла {}: {}",
+                user.getPlatform(), user.getIdOnPlatform(), toggleName, active ? "Включен" : "Выключен");
 
         return responseService.createUserResponse(user, UserState.MAIN_MENU,
                 String.format(TOGGLE_STATE_CHANGED_MESSAGE_FORMAT, toggleName,

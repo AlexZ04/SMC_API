@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.service.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 import ru.smc.smc.api.application.common.enums.DistributionGroups;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private static final String USER_CHANNEL = "user-channel";
@@ -91,6 +93,7 @@ public class UserService {
             BotUser newUser = botUserFactory.createNewUser(platform, idOnPlatform);
             newUser.setRole(targetRole);
             botUserRepository.save(newUser);
+            log.info("Создан пользователь ({}, {}) с ролью {}", platform, idOnPlatform, targetRole);
 
             return "Пользователь " + idOnPlatform + " на платформе " + platform + " создан с ролью " + targetRole;
         }
@@ -108,6 +111,7 @@ public class UserService {
 
         existingUser.setRole(targetRole);
         botUserRepository.save(existingUser);
+        log.info("Пользователь ({}, {}) обновлён до роли {}", platform, idOnPlatform, targetRole);
 
         return "Пользователю " + formUserMacros(platform, idOnPlatform) + " выдана роль " + targetRole;
     }
@@ -131,6 +135,7 @@ public class UserService {
 
         existingUser.setRole(UserRole.USER);
         botUserRepository.save(existingUser);
+        log.info("Пользователь ({}, {}) понижен до роли {}", platform, idOnPlatform, UserRole.USER);
 
         return "Пользователь " + idOnPlatform + " на платформе " + platform + " понижен до роли " + UserRole.USER;
     }

@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.Colors;
 import ru.smc.smc.api.application.common.enums.ElementType;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SetDistributionMessageUserProcessor implements MessageUserProcessor {
 
     private static final String MENU_MESSAGE = "Ты подписан(-а) на следующие рассылки:";
@@ -81,6 +83,8 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
         }
 
         distributionType.subscribe(subscription);
+        log.info("Пользователь ({}, {}) подписался на рассылку {}",
+                user.getPlatform(), user.getIdOnPlatform(), distributionType);
 
         return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                 distributionType.getSubscribeMessage(), createDistributionMenuKeyboard());
@@ -108,6 +112,8 @@ public class SetDistributionMessageUserProcessor implements MessageUserProcessor
     private UserResponseItem processCorrectUnsubscribeChoice(BotUser user, Subscription subscription,
                                                              UserDistributionType distributionType) {
         distributionType.unsubscribe(subscription);
+        log.info("Пользователь ({}, {}) отписался от рассылки {}",
+                user.getPlatform(), user.getIdOnPlatform(), distributionType);
 
         return responseService.createUserResponseWithReplyKeyboard(user, UserState.SET_DISTRIBUTION,
                 distributionType.getUnsubscribeMessage() + "\n\n" + formSubscriptionsInfo(subscription),

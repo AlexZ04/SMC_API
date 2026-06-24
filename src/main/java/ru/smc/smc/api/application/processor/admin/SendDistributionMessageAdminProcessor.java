@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.admin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AdminDistributionType;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SendDistributionMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String SEND_DISTRIBUTION_MENU_MESSAGE = "Выбери тип рассылки:";
@@ -110,10 +112,16 @@ public class SendDistributionMessageAdminProcessor implements MessageAdminProces
         List<UUID> distributionFiles = distributionSendService.getDistributionFiles();
         var receivers = distributionSendService.getReceivers(user);
         String selectedDistributionFacultyIds = user.getSelectedDistributionFacultyIds();
+        int receiversAmount = receivers.stream()
+                .mapToInt(receiver -> receiver.getReceiversId().size())
+                .sum();
 
         clearSelectedDistributionInfo(user);
         monitoringEventService.sendDistributionSentInfo(user, formDistributionSentMonitoringMessage(distributionType, user,
                 distributionText, distributionFiles, selectedDistributionFacultyIds));
+        log.info("Администратор ({}, {}) отправил рассылку типа {}. Получателей: {}, файлов: {}, факультеты: {}",
+                user.getPlatform(), user.getIdOnPlatform(), distributionType, receiversAmount, distributionFiles.size(),
+                formMonitoringFacultyNames(selectedDistributionFacultyIds));
 
         return responseService.createUserResponseWithDistributionReceivers(user, UserState.MAIN_MENU,
                 String.format(DISTRIBUTION_SENT_MESSAGE_FORMAT, distributionType.getResultText()),

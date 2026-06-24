@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.admin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.AdminTextSettingsTexts;
 import ru.smc.smc.api.application.common.enums.AdminDistributionType;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String CHANGE_TEXTS_MENU_PATHFILE = "admin-change-texts";
@@ -36,6 +38,8 @@ public class ChangeTextsMessageAdminProcessor implements MessageAdminProcessor {
             request.validateAttachments();
             FileUtility.writeCustomizableFileMessage(distributionType.getPathFile(), defineDistributionText(request));
             distributionFileService.replaceFiles(distributionType, request.getAttachments());
+            log.info("Администратор ({}, {}) обновил сообщение рассылки {}. Количество вложений: {}",
+                    user.getPlatform(), user.getIdOnPlatform(), distributionType, request.getAttachments().size());
 
             return responseService.createUserResponse(user, UserState.MAIN_MENU, DISTRIBUTION_UPDATED_MESSAGE);
         }

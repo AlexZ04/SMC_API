@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.admin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.BotCommands;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
@@ -13,6 +14,7 @@ import ru.smc.smc.api.domain.entity.BotUser;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GiveawayMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String PARTICIPANTS_CLEARED_MESSAGE = "Список участников розыгрыша обнулён.";
@@ -34,6 +36,8 @@ public class GiveawayMessageAdminProcessor implements MessageAdminProcessor {
         }
 
         if (request.getMessage().equalsIgnoreCase(BotCommands.CLEAR_GIVEAWAY_PARTICIPANTS_COMMAND)) {
+            log.info("Администратор ({}, {}) запросил очистку списка участников розыгрыша",
+                    user.getPlatform(), user.getIdOnPlatform());
             giveawayService.clearParticipants();
 
             return responseService.createUserResponse(user, UserState.MAIN_MENU, PARTICIPANTS_CLEARED_MESSAGE);
@@ -53,10 +57,18 @@ public class GiveawayMessageAdminProcessor implements MessageAdminProcessor {
         int totalParticipants = giveawayService.countParticipants();
 
         return giveawayService.getRandomParticipantsInfo(participantsAmount)
-                .map(participantsInfo -> responseService.createUserResponse(user, UserState.MAIN_MENU,
-                        String.format(WINNERS_MESSAGE_FORMAT, participantsInfo)))
-                .orElseGet(() -> responseService.createUserResponse(user, UserState.GET_GIVEAWAY_WINNERS,
-                        String.format(INCORRECT_WINNERS_AMOUNT_MESSAGE_FORMAT, totalParticipants)));
+                .map(participantsInfo -> {
+                    log.info("Администратор ({}, {}) получил {} победителей розыгрыша",
+                            user.getPlatform(), user.getIdOnPlatform(), participantsAmount);
+                    return responseService.createUserResponse(user, UserState.MAIN_MENU,
+                            String.format(WINNERS_MESSAGE_FORMAT, participantsInfo));
+                })
+                .orElseGet(() -> {
+                    log.warn("Администратор ({}, {}) ввёл некорректное количество победителей розыгрыша: {}. Всего участников: {}",
+                            user.getPlatform(), user.getIdOnPlatform(), request.getMessage(), totalParticipants);
+                    return responseService.createUserResponse(user, UserState.GET_GIVEAWAY_WINNERS,
+                            String.format(INCORRECT_WINNERS_AMOUNT_MESSAGE_FORMAT, totalParticipants));
+                });
     }
 
     private int parseParticipantsAmount(String message) {

@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FaqQuestionsTexts;
 import ru.smc.smc.api.application.common.enums.DistributionGroups;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuestionMessageUserProcessor implements MessageUserProcessor {
 
     private static final String ADMIN_CHANNEL = "admin-channel";
@@ -48,6 +50,8 @@ public class QuestionMessageUserProcessor implements MessageUserProcessor {
                     FileUtility.getFileMessage(FaqUtility.getPathToAnswer(request.getMessage().toLowerCase())));
         }
 
+        log.info("Пользователь ({}, {}) отправил вопрос администраторам",
+                user.getPlatform(), user.getIdOnPlatform());
         return responseService.createUserResponseWithDistribution(user, UserState.QUESTION, FileUtility.getFileMessage("your-question-redirected"),
                 new ArrayList<>(), userMessageToAdminsFormatter.formMessage(QUESTION_DISTRIBUTION_HEADER, request, user),
                 DistributionGroups.ADMINS, false, ADMIN_CHANNEL);

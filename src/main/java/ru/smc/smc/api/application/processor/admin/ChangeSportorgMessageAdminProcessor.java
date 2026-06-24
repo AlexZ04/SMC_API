@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.admin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.AvailablePlatform;
 import ru.smc.smc.api.application.common.enums.DistributionGroups;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcessor {
 
     private static final String INCORRECT_FACULTY_MESSAGE = "Неверный факультет! Выбери один факультет из списка.";
@@ -86,6 +88,9 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
         String sportorgLink = sportorgInfoParts[2];
 
         sportorgService.updateSportorg(selectedFaculty, sportorgName, sportorgLink);
+        log.info("Администратор ({}, {}) обновил спорторга факультета {}. Было: {}. Стало: {} {}",
+                user.getPlatform(), user.getIdOnPlatform(), selectedFaculty.getNameRu(), previousSportorgInfo,
+                sportorgName, sportorgLink);
         monitoringEventService.sendInfo(user, formSportorgChangedMonitoringMessage(user, selectedFaculty,
                 previousSportorgInfo, sportorgName, sportorgLink));
 
@@ -99,6 +104,8 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
         }
 
         if (request.getMessage().equalsIgnoreCase(SKIP_SPORTORG_USER_LINK_MESSAGE)) {
+            log.info("Администратор ({}, {}) пропустил привязку спорторга факультета {} к пользователю",
+                    user.getPlatform(), user.getIdOnPlatform(), user.getSelectedFaculty().getNameRu());
             return finishSportorgChanging(user);
         }
 
@@ -116,6 +123,9 @@ public class ChangeSportorgMessageAdminProcessor implements MessageAdminProcesso
 
         BotUser sportorgUser = userService.findOrCreateAndSaveBotUser(platform, sportorgUserInfoParts[1]);
         sportorgService.bindSportorgToUser(user.getSelectedFaculty(), sportorgUser);
+        log.info("Администратор ({}, {}) привязал спорторга факультета {} к пользователю ({}, {})",
+                user.getPlatform(), user.getIdOnPlatform(), user.getSelectedFaculty().getNameRu(),
+                sportorgUser.getPlatform(), sportorgUser.getIdOnPlatform());
 
         return finishSportorgChanging(user);
     }

@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.service.giveaway;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.domain.entity.BotUser;
 import ru.smc.smc.api.domain.entity.GiveawayParticipant;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GiveawayService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -38,7 +40,11 @@ public class GiveawayService {
         giveawayParticipant.setIdOnPlatform(user.getIdOnPlatform());
         giveawayParticipant.setParticipantNumber(findNextParticipantNumber());
 
-        return giveawayParticipantRepository.save(giveawayParticipant);
+        GiveawayParticipant savedParticipant = giveawayParticipantRepository.save(giveawayParticipant);
+        log.info("Пользователь ({}, {}) зарегистрирован в розыгрыше с номером {}",
+                user.getPlatform(), user.getIdOnPlatform(), savedParticipant.getParticipantNumber());
+
+        return savedParticipant;
     }
 
     public String getParticipantsInfo() {
@@ -52,7 +58,9 @@ public class GiveawayService {
     }
 
     public void clearParticipants() {
+        long participantsAmount = giveawayParticipantRepository.count();
         giveawayParticipantRepository.deleteAll();
+        log.info("Список участников розыгрыша очищен. Удалено участников: {}", participantsAmount);
     }
 
     public int countParticipants() {
@@ -74,6 +82,8 @@ public class GiveawayService {
 
         List<GiveawayParticipant> randomParticipants = new ArrayList<>(allParticipants);
         Collections.shuffle(randomParticipants, RANDOM);
+        log.info("Выбраны победители розыгрыша. Запрошено участников: {}, всего участников: {}",
+                participantsAmount, allParticipants.size());
 
         return Optional.of(formParticipantsInfo(randomParticipants.subList(0, participantsAmount)));
     }

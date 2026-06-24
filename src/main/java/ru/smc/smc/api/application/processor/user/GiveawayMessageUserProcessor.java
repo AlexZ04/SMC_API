@@ -1,6 +1,7 @@
 package ru.smc.smc.api.application.processor.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.constant.FeatureToggles;
 import ru.smc.smc.api.application.common.enums.MessageMeaningType;
@@ -15,6 +16,7 @@ import ru.smc.smc.api.domain.entity.GiveawayParticipant;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GiveawayMessageUserProcessor implements MessageUserProcessor {
 
     private static final String GIVEAWAY_DISABLED_MESSAGE = "Розыгрыш сейчас недоступен. Когда он начнётся, кнопка участия появится в меню.";
@@ -27,6 +29,8 @@ public class GiveawayMessageUserProcessor implements MessageUserProcessor {
     @Override
     public UserResponseItem processMessage(MessageRequestBody request, BotUser user) {
         if (!featureToggleService.isToggleActive(FeatureToggles.GIVEAWAY)) {
+            log.warn("Пользователь ({}, {}) попытался участвовать в выключенном розыгрыше",
+                    user.getPlatform(), user.getIdOnPlatform());
             return responseService.createUserResponse(user, UserState.MAIN_MENU, GIVEAWAY_DISABLED_MESSAGE);
         }
 

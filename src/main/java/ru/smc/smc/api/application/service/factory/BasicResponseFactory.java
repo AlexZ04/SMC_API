@@ -28,6 +28,8 @@ public class BasicResponseFactory {
     private final UserMessageToAdminsFormatter userMessageToAdminsFormatter;
 
     public UserResponseItem formErrorResponse(BotUser user) {
+        log.warn("Сообщение пользователя ({}, {}) не распознано",
+                user.getPlatform(), user.getIdOnPlatform());
         return responseService.createUserResponse(user, user.getCurrentState(), FileUtility.getFileMessage("dont-understand-message"));
     }
 
@@ -36,6 +38,8 @@ public class BasicResponseFactory {
             return formErrorResponse(user);
         }
 
+        log.warn("Сообщение пользователя ({}, {}) не распознано. Уведомление будет отправлено администраторам",
+                user.getPlatform(), user.getIdOnPlatform());
         return responseService.createUserResponseWithDistribution(user, user.getCurrentState(),
                 FileUtility.getFileMessage("dont-understand-message"),
                 List.of(),

@@ -1,4 +1,4 @@
-package ru.smc.smc.api.application.utilities;
+package ru.smc.smc.api.application.utility;
 
 import lombok.experimental.UtilityClass;
 import ru.smc.smc.api.application.common.exceptions.NotFoundException;

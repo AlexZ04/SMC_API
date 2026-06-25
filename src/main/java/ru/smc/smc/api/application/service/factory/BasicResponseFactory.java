@@ -10,7 +10,7 @@ import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
 import ru.smc.smc.api.application.service.response.ResponseService;
 import ru.smc.smc.api.application.service.user.UserMessageToAdminsFormatter;
-import ru.smc.smc.api.application.utilities.FileUtility;
+import ru.smc.smc.api.application.utility.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.List;

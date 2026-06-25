@@ -13,7 +13,7 @@ import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.distribution.DistributionFileService;
 import ru.smc.smc.api.application.service.response.ResponseService;
-import ru.smc.smc.api.application.utilities.FileUtility;
+import ru.smc.smc.api.application.utility.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.List;

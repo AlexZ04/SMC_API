@@ -7,7 +7,7 @@ import ru.smc.smc.api.application.common.enums.UserState;
 import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.response.ResponseService;
-import ru.smc.smc.api.application.utilities.FileUtility;
+import ru.smc.smc.api.application.utility.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 @Service

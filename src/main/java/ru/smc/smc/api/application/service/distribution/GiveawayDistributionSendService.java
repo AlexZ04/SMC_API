@@ -6,7 +6,7 @@ import ru.smc.smc.api.application.common.enums.AdminDistributionType;
 import ru.smc.smc.api.application.common.model.response.PlatformReceiver;
 import ru.smc.smc.api.application.service.giveaway.GiveawayService;
 import ru.smc.smc.api.application.service.user.UserService;
-import ru.smc.smc.api.application.utilities.FileUtility;
+import ru.smc.smc.api.application.utility.FileUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.List;

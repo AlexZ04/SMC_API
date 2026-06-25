@@ -20,8 +20,8 @@ import ru.smc.smc.api.domain.entity.MessageHistory;
 import ru.smc.smc.api.domain.repository.BotUserRepository;
 import ru.smc.smc.api.domain.repository.MessageHistoryRepository;
 import ru.smc.smc.api.application.service.response.ResponseService;
-import ru.smc.smc.api.application.utilities.MessageDescriptor;
-import ru.smc.smc.api.application.utilities.UserUtility;
+import ru.smc.smc.api.application.utility.MessageDescriptor;
+import ru.smc.smc.api.application.utility.UserUtility;
 
 import java.time.Instant;
 

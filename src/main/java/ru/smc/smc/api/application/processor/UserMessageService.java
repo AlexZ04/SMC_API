@@ -11,7 +11,7 @@ import ru.smc.smc.api.application.common.model.request.MessageRequestBody;
 import ru.smc.smc.api.application.common.model.response.UserResponseItem;
 import ru.smc.smc.api.application.service.factory.BasicResponseFactory;
 import ru.smc.smc.api.application.processor.user.MessageUserProcessor;
-import ru.smc.smc.api.application.utilities.MessageDescriptor;
+import ru.smc.smc.api.application.utility.MessageDescriptor;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.HashMap;

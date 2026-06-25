@@ -35,7 +35,7 @@ public class KeyboardsProperties {
     public ElementModel ADMIN_CHANGE_TOGGLE_STATE_BUTTON = new ElementModel(ElementType.BUTTON, null,
             BotCommands.CHANGE_TOGGLE_STATE_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
     public ElementModel ADMIN_HELP_BUTTON = new ElementModel(ElementType.BUTTON, null,
-            BotCommands.HELP_COMMAND, Colors.BLACK.getColor(), Colors.WHITE.getColor());
+            BotCommands.HELP_COMMAND, Colors.WHITE.getColor(), Colors.BLACK.getColor());
 
     public ElementModel createInlineButton(String message) {
         return new ElementModel(ElementType.BUTTON, null,

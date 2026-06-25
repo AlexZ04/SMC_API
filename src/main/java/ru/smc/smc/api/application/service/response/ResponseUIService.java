@@ -8,7 +8,7 @@ import ru.smc.smc.api.application.common.model.response.ElementModel;
 import ru.smc.smc.api.application.common.model.response.MessageResponse;
 import ru.smc.smc.api.application.properties.KeyboardsProperties;
 import ru.smc.smc.api.application.service.featuretoggle.FeatureToggleService;
-import ru.smc.smc.api.application.utilities.UserUtility;
+import ru.smc.smc.api.application.utility.UserUtility;
 import ru.smc.smc.api.domain.entity.BotUser;
 
 import java.util.ArrayList;

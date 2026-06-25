@@ -3,6 +3,7 @@ package ru.smc.smc.api.application.processor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.smc.smc.api.application.common.enums.MessageRoleType;
@@ -52,32 +53,38 @@ public class MessagePrimarilyProcessor {
     private String validApiKey;
 
     public UserResponseItem processMessage(MessageRequestBody request, MessageRoleType messageRoleType, String apiKey) {
-        if (!isApiKeyValid(apiKey)) {
-            throw new UnauthorizedException(INVALID_API_KEY);
+        fillLoggingContext(request, messageRoleType);
+
+        try {
+            if (!isApiKeyValid(apiKey)) {
+                throw new UnauthorizedException(INVALID_API_KEY);
+            }
+
+            BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());
+
+            primaryProcessingMessage(request, messageRoleType, user);
+
+            // проверка на наличие прав у пользователя
+            if (messageRoleType == MessageRoleType.ADMIN && !UserUtility.isUserAdmin(user)) {
+                monitoringEventService.sendWarn(user, "Пользователь без прав администратора обратился к админскому эндпоинту. " +
+                        "Платформа: " + user.getPlatform() + ". Идентификатор: " + user.getIdOnPlatform());
+                return responseService.createForbiddenAccessMessage(user);
+            }
+
+            // проверка сообщения на сообщения-триггеры возвращения в главное меню
+            if (request.getMessage().isReturnMessage() && !isUnsubscribeDistributionBackMessage(request, user)) {
+                return responseService.createReturnToMainMenuMessage(user);
+            }
+
+            if (thanksMessageService.isThanksMessage(request.getMessage())) {
+                return thanksMessageService.processThanksMessage(user);
+            }
+
+            return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) :
+                    userMessageService.processMessage(request, user);
+        } finally {
+            MDC.clear();
         }
-
-        BotUser user = userService.findOrCreateBotUser(request.getPlatform(), request.getUserIdOnPlatform());
-
-        primaryProcessingMessage(request, messageRoleType, user);
-
-        // проверка на наличие прав у пользователя
-        if (messageRoleType == MessageRoleType.ADMIN && !UserUtility.isUserAdmin(user)) {
-            monitoringEventService.sendWarn(user, "Пользователь без прав администратора обратился к админскому эндпоинту. " +
-                    "Платформа: " + user.getPlatform() + ". Идентификатор: " + user.getIdOnPlatform());
-            return responseService.createForbiddenAccessMessage(user);
-        }
-
-        // проверка сообщения на сообщения-триггеры возвращения в главное меню
-        if (request.getMessage().isReturnMessage() && !isUnsubscribeDistributionBackMessage(request, user)) {
-            return responseService.createReturnToMainMenuMessage(user);
-        }
-
-        if (thanksMessageService.isThanksMessage(request.getMessage())) {
-            return thanksMessageService.processThanksMessage(user);
-        }
-
-        return messageRoleType == MessageRoleType.ADMIN ? adminMessageService.processMessage(request, user) :
-                userMessageService.processMessage(request, user);
     }
 
     private boolean isApiKeyValid(String apiKey) {
@@ -124,5 +131,17 @@ public class MessagePrimarilyProcessor {
     private void logIncomingMessage(MessageRequestBody request, MessageRoleType messageRoleType) {
         log.info("Получено новое сообщение типа '{}': {}. Платформа: {}, id пользователя на платформе: '{}', количество вложений: {}",
                 messageRoleType, request.getMessage(), request.getPlatform(), request.getUserIdOnPlatform(), request.getAttachmentsAmount());
+    }
+
+    private void fillLoggingContext(MessageRequestBody request, MessageRoleType messageRoleType) {
+        if (request.getPlatform() != null) {
+            MDC.put("platform", request.getPlatform().name());
+        }
+
+        if (request.getUserIdOnPlatform() != null) {
+            MDC.put("userId", request.getUserIdOnPlatform());
+        }
+
+        MDC.put("messageType", messageRoleType.name());
     }
 }

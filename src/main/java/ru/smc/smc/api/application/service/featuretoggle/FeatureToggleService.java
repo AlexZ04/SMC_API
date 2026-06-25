@@ -18,8 +18,7 @@ import java.util.Optional;
 public class FeatureToggleService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static final Path TOGGLES_PATH =
-            Path.of("config/feature-toggles.json");
+    private static final Path TOGGLES_PATH = Path.of("config/feature-toggles.json");
 
     public String getSystemTogglesInfo() {
         List<FeatureToggle> toggles = getAllToggles();
@@ -29,35 +28,6 @@ public class FeatureToggleService {
 
     public boolean isToggleActive(String toggleName) {
         return getSpecificToggle(getAllToggles(), toggleName).isActive();
-    }
-
-    public void changeActiveToggleStatus(String toggleName, boolean activate) {
-        List<FeatureToggle> allToggles = getAllToggles();
-        FeatureToggle toggle = getSpecificToggle(allToggles, toggleName);
-
-        if (toggle.isActive() != activate) {
-            toggle.setActive(activate);
-
-            mapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(TOGGLES_PATH.toFile(), allToggles);
-        }
-        else {
-            throw new BadRequestException(ErrorsMessages.TOGGLE_FUNCTIONAL +
-                    (activate ? "включена: " : "выключена: ") +
-                    toggle.getToggleName());
-        }
-    }
-
-    public boolean changeToggleStatusToOpposite(String toggleName) {
-        List<FeatureToggle> allToggles = getAllToggles();
-        FeatureToggle toggle = getSpecificToggle(allToggles, toggleName);
-
-        toggle.setActive(!toggle.isActive());
-
-        mapper.writerWithDefaultPrettyPrinter()
-                .writeValue(TOGGLES_PATH.toFile(), allToggles);
-
-        return toggle.isActive();
     }
 
     public Optional<Boolean> changeToggleStatusToOppositeIfExists(String toggleName) {

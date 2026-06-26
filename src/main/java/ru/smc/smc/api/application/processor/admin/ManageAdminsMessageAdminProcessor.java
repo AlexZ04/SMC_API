@@ -45,7 +45,7 @@ public class ManageAdminsMessageAdminProcessor implements MessageAdminProcessor 
             return responseService.createUserResponse(user, UserState.ADD_SUPER_ADMIN, formInputAdminInfoMessage());
         }
 
-        return responseService.createUserResponse(user, UserState.REMOVE_ADMIN, formInputAdminInfoMessage());
+        return responseService.createUserResponse(user, UserState.REMOVE_ADMIN, formRemoveAdminInfoMessage());
     }
 
     @Override
@@ -84,6 +84,10 @@ public class ManageAdminsMessageAdminProcessor implements MessageAdminProcessor 
 
     private String formInputAdminInfoMessage() {
         return String.format(INPUT_ADMIN_INFO_MESSAGE_FORMAT, formAvailablePlatforms());
+    }
+
+    private String formRemoveAdminInfoMessage() {
+        return userService.getAdminsInfo() + "\n\n" + formInputAdminInfoMessage();
     }
 
     private String formAvailablePlatforms() {

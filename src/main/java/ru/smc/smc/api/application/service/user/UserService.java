@@ -77,6 +77,8 @@ public class UserService {
         StringBuilder adminsInfo = new StringBuilder("Администраторы системы:");
 
         botUserRepository.findByRoleNot(UserRole.USER).forEach(admin -> adminsInfo.append("\n")
+                .append(formUserLinkMacros(admin.getPlatform(), admin.getIdOnPlatform()))
+                .append(" - ")
                 .append(admin.getIdOnPlatform())
                 .append(" - ")
                 .append(admin.getPlatform())
@@ -144,6 +146,12 @@ public class UserService {
         String userIdentifier = platform + ":" + idOnPlatform;
 
         return "{getName(" + userIdentifier + ")} {getLink(" + userIdentifier + ")}";
+    }
+
+    private String formUserLinkMacros(AvailablePlatform platform, String idOnPlatform) {
+        String userIdentifier = platform + ":" + idOnPlatform;
+
+        return "[{getLink(" + userIdentifier + ")}|{getName(" + userIdentifier + ")}]";
     }
 
     private List<PlatformReceiver> mapUsersToPlatformReceivers(List<BotUser> botUsers, String receiverChannel) {

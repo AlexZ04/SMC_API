@@ -1,102 +1,89 @@
 {
-  "status": "ok",
-  "userPlatform": "VK",
+  "status": "OK",
+  "platform": "VK",
   "userIdOnPlatform": "111",
   "role": "ADMIN",
   "responseToUser": {
-    "previewMessages": [
-      {
-        "responseText": "Первое сообщение",
-        "inlineElements": [
-          [
-            {
-              "type": "button",
-              "link": null,
-              "text": "1",
-              "color": "dark-gray",
-              "textColor": "white"
-            }
-          ]
-        ]
-      }
-    ],
-    "filesIds": ["550e8400-e29b-41d4-a716-446655440000"],
-    "messageText": "Привет! Это рассылка!",
-    "inlineElements": [
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "1",
-          "color": "dark-gray",
-          "textСolor": "white"
-        }
-      ],
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "3",
-          "color": "dark-gray",
-          "textСolor": "white"
-        }
-      ],
-      [
-        {
-          "type": "button",
-          "link": null,
-          "text": "2",
-          "color": "dark-gray",
-          "textСolor": "white"
-        }
-      ]
-    ],
+    "previewMessages": [],
+    "filesIds": [],
+    "responseText": "Рассылка общая отправлена",
+    "inlineElements": [],
     "replyElements": [
       [
         {
-          "type": "button",
+          "type": "BUTTON",
           "link": null,
-          "text": "Задать вопрос",
+          "text": "/changeSportorg",
+          "color": "black",
+          "textColor": "white"
+        },
+        {
+          "type": "BUTTON",
+          "link": null,
+          "text": "/changeDistribution",
+          "color": "black",
+          "textColor": "white"
+        }
+      ],
+      [
+        {
+          "type": "BUTTON",
+          "link": null,
+          "text": "/sendDistribution",
+          "color": "black",
+          "textColor": "white"
+        },
+        {
+          "type": "BUTTON",
+          "link": null,
+          "text": "/changeToggleState",
+          "color": "black",
+          "textColor": "white"
+        }
+      ],
+      [
+        {
+          "type": "BUTTON",
+          "link": null,
+          "text": "/stats",
+          "color": "black",
+          "textColor": "white"
+        },
+        {
+          "type": "BUTTON",
+          "link": null,
+          "text": "/help",
           "color": "white",
           "textColor": "black"
         }
-      ],
-      [{
-        "type": "link",
-        "link": "{link}",
-        "text": "Обратная связь",
-        "color": "dark-gray",
-        "textColor": "white"
-      },
-        {
-          "type": "button",
-          "link": null,
-          "text": "Помощь",
-          "color": "dark-gray",
-          "textColor": "white"
-        }]
-    ]
-  },
-  "distribution": {
-    "messageText": "Привет! Это рассылка",
-    "distributionFiles": [
-      "550e8400-e29b-41d4-a716-446655440000",
-      "550e8400-e29b-41d4-a716-446655440001"
+      ]
     ],
-    "sendToHimself": false,
-    "receivers": [
-      {
-        "platform": "VK",
-        "role": "USER",
-        "userChannel": "user-channel",
-        "receiversId": ["123", "125"]
-      },
-      {
-        "platform": "TG",
-        "role": "ADMIN",
-        "userChannel": "user-channel",
-        "receiversId": ["1111"]
-      }
-    ]
+    "distribution": {
+      "distributionText": "Привет! Это рассылка",
+      "distributionFiles": [
+        "550e8400-e29b-41d4-a716-446655440000",
+        "550e8400-e29b-41d4-a716-446655440001"
+      ],
+      "sendToHimself": false,
+      "receivers": [
+        {
+          "platform": "VK",
+          "role": "USER",
+          "userChannel": "user-channel",
+          "receiversId": [
+            "123",
+            "125"
+          ]
+        },
+        {
+          "platform": "TG",
+          "role": "ADMIN",
+          "userChannel": "user-channel",
+          "receiversId": [
+            "1111"
+          ]
+        }
+      ]
+    }
   }
 }
